@@ -1,10 +1,16 @@
 import styles from "./Login.module.css";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 export function Login() {
+  const navigate = useNavigate();
   const { user, login } = useContext(UserContext);
   const [localUserName, setLocalUserName] = useState("");
+
+  useEffect(() => {
+    user && navigate("/");
+  }, [user, user?.id]);
 
   return (
     <>
@@ -18,12 +24,23 @@ export function Login() {
           login(localUserName);
         }}
       >
+        <select onChange={(val) => setLocalUserName(val.target.value)}>
+          <option value="">-</option>
+          <option value="falk@test.com">Falk</option>
+          <option value="sonja@test.com">Sonja</option>
+          <option value="oleksii@test.com">Oleksii</option>
+        </select>
+
         <input
           type="text"
           value={localUserName}
-          onChange={(event) => setLocalUserName(event.target.value)}
+          // onChange={(event) => setLocalUserName(event.target.value)}
+          onChange={(event) => setLocalUserName("falk@test.com")}
+          // onChange={(event) => setLocalUserName("sonja@test.com")}
+          // onChange={(event) => setLocalUserName("oleksii@test.com")}
         />
-        <button>Submit</button>
+
+        {user ? "" : <button>Login</button>}
       </form>
     </>
   );

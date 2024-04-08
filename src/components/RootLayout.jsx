@@ -1,8 +1,12 @@
 import styles from "./RootLayout.module.css";
+import { useContext, useEffect } from "react";
 import { Outlet, NavLink } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export function RootLayout() {
+  const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
+
   return (
     <>
       <nav>
@@ -13,9 +17,15 @@ export function RootLayout() {
             </NavLink>
           </li>
           <li title="Login">
-            <NavLink className={getNavClass} to="/login">
-              Login
-            </NavLink>
+            {user ? (
+              <NavLink className={getNavClass} to="/login" onClick={logout}>
+                Logout
+              </NavLink>
+            ) : (
+              <NavLink className={getNavClass} to="/login">
+                Login
+              </NavLink>
+            )}
           </li>
         </ul>
       </nav>
