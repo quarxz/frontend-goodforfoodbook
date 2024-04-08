@@ -4,6 +4,8 @@ import "./index.css";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import App from "./App.jsx";
+import { UserProvider } from "./context/UserContext";
+
 import { RootLayout } from "./components/RootLayout.jsx";
 import { Home } from "./components/Home.jsx";
 import { Login } from "./components/Login.jsx";
@@ -27,6 +29,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-  <RouterProvider router={router} />
+  <UserProvider>
+    <RouterProvider router={router} />
+  </UserProvider>
   // </React.StrictMode>,
 );
