@@ -1,9 +1,10 @@
 import styles from "./Home.module.css";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 
 export function Home() {
   const { user } = useContext(UserContext);
+  console.log(user);
 
   return (
     <>
