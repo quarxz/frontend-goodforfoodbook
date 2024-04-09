@@ -47,6 +47,11 @@
   src: url("../src/assets/fonts/Roboto/Roboto-Italic.ttf");
 }
 
+@font-face {
+  font-family: "GrapeNuts";
+  src: url("../src/assets/fonts/Grape_Nuts/Grape_Nuts/GrapeNuts-Regular.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -147,11 +152,12 @@
 a {
   font-weight: 500;
   color: #646cff;
+  color: #ddd;
   text-decoration: inherit;
 }
-a:hover {
-  color: #535bf2;
-}
+/* a:hover { */
+/* color: #fff; */
+/* } */
 
 body {
   position: absolute;
@@ -171,14 +177,14 @@ body {
 }
 
 nav {
-  position: sticky;
-  border: 1px solid red;
-  height: 100px;
+  /* position: sticky; */
+  /* border: 1px solid red; */
+  height: 150px;
 }
 
 main {
   margin: 0 auto;
-  min-height: calc(100vh - 250px);
+  min-height: calc(100vh - 300px);
   /* border: 1px solid green; */
   /* min-height: 95vh; */
 }
@@ -195,6 +201,23 @@ footer {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  gap: 1em;
+}
+
+nav ul li {
+  display: flex;
+
+  font-family: "Roboto-Regular", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0.5em 0 0.5em 1.5em;
+
+  letter-spacing: 0.2em;
 }
 
 /* button {
@@ -221,10 +244,10 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  /* a:hover {
+  a:hover {
     color: #747bff;
   }
   button {
     background-color: #f9f9f9;
-  } */
+  }
 }

@@ -9,6 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
 export function Login() {
   const navigate = useNavigate();
   const { user, login } = useContext(UserContext);
@@ -26,49 +29,64 @@ export function Login() {
 
   return (
     <>
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-      <h1>Good-for-FoodBook</h1>
       <h2>Login</h2>
       {user ? <p>{user.email}</p> : <p>Not logged in</p>}
 
-      <form
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "25ch" },
+          mt: 5,
+        }}
+        noValidate
+        autoComplete="off"
         onSubmit={(event) => {
           event.preventDefault();
           login(userEmail);
         }}
       >
-        <select onChange={(val) => setUserEmail(val.target.value)}>
-          <option value="">-</option>
-          <option value="falk@test.com">Falk</option>
-          <option value="anna@test.com">Anna</option>
-          <option value="max@test.com">Max</option>
-        </select>
+        <Box sx={{ minWidth: 120, p: 1 }}>
+          <FormControl sx={{ minWidth: 210 }}>
+            <InputLabel id="demo-simple-select-label">User</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={userEmail}
+              label="User"
+              onChange={(val) => setUserEmail(val.target.value)}
+            >
+              <MenuItem value="falk@test.com">Falk</MenuItem>
+              <MenuItem value="Anna@test.com">Anna</MenuItem>
+              <MenuItem value="Max@test.com">Max</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ minWidth: 120, p: 1 }}>
+          <FormControl sx={{ minWidth: 130 }}>
+            <TextField
+              id="outlined-basic"
+              label={"Selected User"}
+              variant="outlined"
+              value={userEmail}
+              onChange={(event) => setUserEmail("falk@test.com")}
+              // onChange={(event) => setLocalUserName("anna@test.com")}
+              // onChange={(event) => setLocalUserName("max@test.com")}
+            />
+          </FormControl>
+        </Box>
 
-        <input
-          type="text"
-          value={userEmail}
-          onChange={(event) => setUserEmail("falk@test.com")}
-          // onChange={(event) => setLocalUserName("anna@test.com")}
-          // onChange={(event) => setLocalUserName("max@test.com")}
-        />
-
-        {user ? "" : <button>Login</button>}
-      </form>
+        {user ? (
+          ""
+        ) : (
+          <Box sx={{ minWidth: 120, p: 1 }}>
+            <FormControl sx={{ minWidth: 120 }}>
+              <Button variant="contained" type="submit" sx={{ height: "3.9em" }}>
+                Login
+              </Button>
+            </FormControl>
+          </Box>
+        )}
+      </Box>
     </>
   );
 }

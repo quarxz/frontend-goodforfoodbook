@@ -8,7 +8,6 @@ export function Home() {
 
   return (
     <>
-      <h1>Good-for-FoodBook</h1>
       <h2>Home</h2>
       {user ? (
         <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
