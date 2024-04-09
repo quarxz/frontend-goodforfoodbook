@@ -10,7 +10,11 @@ export function Home() {
     <>
       <h1>Good-for-FoodBook</h1>
       <h2>Home</h2>
-      {user ? <p>Logged in as: {user.userName}</p> : <p>Not logged in</p>}
+      {user ? (
+        <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
+      ) : (
+        <p>Not logged in</p>
+      )}
     </>
   );
 }
