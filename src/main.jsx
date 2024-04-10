@@ -12,6 +12,7 @@ import { Login } from "./components/Login.jsx";
 import { StockList } from "./components/StockList.jsx";
 import { ShoppingBasket } from "./components/ShoppingBasket.jsx";
 import { ShoppingList } from "./components/ShoppingList.jsx";
+import { RecipeDetails } from "./components/RecipeDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: ":id",
+        element: <RecipeDetails />,
       },
       {
         path: "stocklist",

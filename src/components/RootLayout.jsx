@@ -18,38 +18,72 @@ import { UserListsNav } from "./UserListsNav";
  */
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
-import { purple, blue, red, pink, amber, grey, lightBlue } from "@mui/material/colors";
+import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mui/material/colors";
 
 export function RootLayout() {
+  const theme = useTheme();
   const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const getDesignTokens = (mode) => ({
+    palette: {
+      mode,
+      primary: {
+        ...amber,
+        ...(mode === "dark"
+          ? {
+              main: blue[300],
+            }
+          : { main: pink[100] }),
+      },
+      ...(mode === "dark"
+        ? {
+            background: {
+              default: deepOrange[300],
+              paper: grey[900],
+            },
+          }
+        : {
+            background: {
+              default: pink[900],
+              paper: pink[900],
+            },
+          }),
+      text: {
+        ...(mode === "light"
+          ? {
+              primary: grey[900],
+              secondary: grey[500],
+            }
+          : {
+              primary: grey[100],
+              secondary: grey[100],
+            }),
+      },
+    },
+  });
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? "dark" : "light",
-          //   primary: {
-          //     main: lightBlue[500],
-          //   },
-          //   secondary: {
-          //     main: red[500],
-          //   },
-        },
-      }),
-    [prefersDarkMode]
-  );
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const darkModeTheme = createTheme(getDesignTokens(prefersDarkMode ? "dark" : "light"));
+
+  //   const theme = useMemo(
+  //     () =>
+  //       createTheme({
+  //         palette: {
+  //           mode: prefersDarkMode ? "dark" : "light",
+  //         },
+  //       }),
+  //     [prefersDarkMode]
+  //   );
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={darkModeTheme}>
         <Box
           component="nav"
           sx={{
             pt: 4,
-            borderBottom: "1px dashed grey",
+            borderBottom: "0px dashed grey",
           }}
         >
           <Box
@@ -95,26 +129,23 @@ export function RootLayout() {
                 className="loginBtnCon"
                 sx={{ display: "flex", justifyContent: "flex-end" }}
               >
-                <ul>
-                  <li>
-                    {user ? (
-                      <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
-                    ) : (
-                      ""
-                    )}
-                  </li>
-                  <li>
-                    {user ? (
-                      <NavLink className={getNavClass} to="/login" onClick={logout}>
-                        Logout
-                      </NavLink>
-                    ) : (
-                      <NavLink className={getNavClass} to="/login">
-                        Login
-                      </NavLink>
-                    )}
-                  </li>
-                </ul>
+                <Stack spacing={2} direction="row" sx={{ padding: ".5em 0 " }}>
+                  {user ? (
+                    <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
+                  ) : (
+                    ""
+                  )}
+
+                  {user ? (
+                    <NavLink className={getNavClass} to="/login" onClick={logout}>
+                      Logout
+                    </NavLink>
+                  ) : (
+                    <NavLink className={getNavClass} to="/login">
+                      Login
+                    </NavLink>
+                  )}
+                </Stack>
               </Box>
               <Box component="div">
                 <UserListsNav />
@@ -147,7 +178,7 @@ export function RootLayout() {
               border: "0px dashed grey",
             }}
           >
-            <Box sx={{ marginTop: 2 }}>
+            <Box sx={{ marginTop: 0 }}>
               <RecipesFilter />
               <h1>Good-for-FoodBook</h1>
               <Outlet />

@@ -16,29 +16,22 @@ export function UserListsNav(params) {
 
   return (
     <>
-      <ul>
-        <li title="Stock List">
-          <Button
-            variant="outlined"
-            component={NavLink}
-            to="/stocklist"
-            sx={{ "color:active": "red" }}
-          >
-            Bestand
-          </Button>
-        </li>
-
-        <li title="Shopping List">
-          <Button variant="outlined" component={NavLink} to="/shoppinglist">
-            Shopping List
-          </Button>
-        </li>
-        <li title="Shopping Basket">
-          <Button variant="outlined" component={NavLink} to="/shoppingbasket">
-            Basket
-          </Button>
-        </li>
-      </ul>
+      <Stack spacing={2} direction="row" sx={{ padding: "0 0 2em 0" }}>
+        <Button
+          variant="outlined"
+          component={NavLink}
+          to="/stocklist"
+          sx={{ "color:active": "red" }}
+        >
+          Bestand
+        </Button>
+        <Button variant="outlined" component={NavLink} to="/shoppinglist">
+          Shopping List
+        </Button>
+        <Button variant="outlined" component={NavLink} to="/shoppingbasket">
+          Basket
+        </Button>
+      </Stack>
     </>
   );
 }

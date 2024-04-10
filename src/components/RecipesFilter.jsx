@@ -16,7 +16,7 @@ export function RecipesFilter() {
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
   return (
     <>
-      <Stack spacing={2} direction="row" sx={{ padding: "2em 0" }}>
+      <Stack spacing={2} direction="row" sx={{ padding: "0 0 2em 0" }}>
         <Button variant="outlined">Rezeptart</Button>
         <Button variant="outlined">Kategorie</Button>
         <Button variant="outlined">Ernährung</Button>

@@ -14,7 +14,7 @@
   font-style: normal;
   color: #fff;
 
-  font-size: 30px;
+  font-size: 40px;
   padding-top: 0.1em;
 }
 
@@ -23,5 +23,6 @@
   font-weight: 700;
   font-style: normal;
 
+  /* font-size: 30px; */
   color: #fff;
 }
