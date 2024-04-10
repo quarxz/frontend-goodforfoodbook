@@ -49,7 +49,9 @@ export function RecipeContent({ recipe, isloading }) {
                 >
                   -
                 </Button>
-                <Box component="p">{countPersons} Personen</Box>
+                <Box component="p">
+                  {countPersons} {countPersons > 1 ? "Personen" : "Person"}
+                </Box>
                 <Button
                   variant="outlined"
                   onClick={() => {
