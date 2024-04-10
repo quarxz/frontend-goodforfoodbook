@@ -7,6 +7,8 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { HomeRecipeItem } from "./HomeRecipeItem";
 
+import LinearProgress from "@mui/material/LinearProgress";
+
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -48,22 +50,32 @@ export function Home() {
     <>
       <h2>Home</h2>
 
-      <ImageList sx={{ mt: 3 }}>
-        <ImageListItem key="Subheader" cols={4}>
-          <ListSubheader component="div">Recipes</ListSubheader>
-        </ImageListItem>
-        {recipes.map((recipe) => {
-          // return <HomeRecipeItem recipe={recipe} />;
-          return (
-            <Link key={recipe._id} to={"/" + recipe._id}>
-              <ImageListItem key={recipe._id} sx={{ m: 2 }}>
-                <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
-                <ImageListItemBar id={recipe._id} title={recipe.name} subtitle={recipe.categorie} />
-              </ImageListItem>
-            </Link>
-          );
-        })}
-      </ImageList>
+      {isloading ? (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      ) : (
+        <ImageList sx={{ mt: 3, width: "100%" }}>
+          <ImageListItem key="Subheader" cols={4}>
+            <ListSubheader component="div">Recipes</ListSubheader>
+          </ImageListItem>
+          {recipes.map((recipe) => {
+            // return <HomeRecipeItem recipe={recipe} />;
+            return (
+              <Link key={recipe._id} to={"/" + recipe._id}>
+                <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+                  <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
+                  <ImageListItemBar
+                    id={recipe._id}
+                    title={recipe.name}
+                    subtitle={recipe.categorie}
+                  />
+                </ImageListItem>
+              </Link>
+            );
+          })}
+        </ImageList>
+      )}
     </>
   );
 }

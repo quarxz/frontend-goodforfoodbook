@@ -1,5 +1,5 @@
 import styles from "./RootLayout.module.css";
-import { useContext, useEffect, useMemo, createContext } from "react";
+import { useState, useContext, useEffect, useMemo, createContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -22,6 +22,7 @@ import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mu
 
 export function RootLayout() {
   const theme = useTheme();
+  const [userTheme, setUserTheme] = useState();
   const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
 
@@ -63,8 +64,8 @@ export function RootLayout() {
     },
   });
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const darkModeTheme = createTheme(getDesignTokens(prefersDarkMode ? "dark" : "light"));
+  //   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: light)");
+  //   const darkModeTheme = createTheme(getDesignTokens(prefersDarkMode ? "dark" : "light"));
 
   //   const theme = useMemo(
   //     () =>
@@ -76,9 +77,22 @@ export function RootLayout() {
   //     [prefersDarkMode]
   //   );
 
+  let mode = createTheme(getDesignTokens());
+  const prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+  if (prefersDarkTheme.matches) {
+    console.log("Dark Theme!", prefersDarkTheme.matches);
+    mode = createTheme(getDesignTokens("dark"));
+  }
+
+  const prefersLightTheme = window.matchMedia("(prefers-color-scheme: light)");
+  if (prefersLightTheme.matches) {
+    console.log("Light Theme!", prefersLightTheme.matches);
+    mode = createTheme(getDesignTokens("light"));
+  }
+
   return (
     <>
-      <ThemeProvider theme={darkModeTheme}>
+      <ThemeProvider theme={mode}>
         <Box
           component="nav"
           sx={{
@@ -175,7 +189,7 @@ export function RootLayout() {
             sx={{
               pl: 10,
               pr: 10,
-              border: "0px dashed grey",
+              border: "0px dashed  rgba(116, 123, 255, .5)",
             }}
           >
             <Box sx={{ marginTop: 0 }}>
@@ -185,7 +199,7 @@ export function RootLayout() {
             </Box>
           </Container>
         </Box>
-        <Box component="footer" sx={{ p: 2, border: "1px dashed grey" }}>
+        <Box component="footer" sx={{ p: 2, borderTop: "1px dashed grey" }}>
           <p>&copy; 2024 - falkking soft</p>
         </Box>
       </ThemeProvider>
