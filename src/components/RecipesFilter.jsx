@@ -16,8 +16,24 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 export function RecipesFilter({ onClickFilter }) {
+  const [isActiveFilterVegan, setIsActivFilterVegan] = useState(false);
+  const [isActiveFilterEasy, setIsActiveFilterEasy] = useState(false);
+  const [isActiveFilterFast, setIsActiveFilterFast] = useState(false);
+
   const { user, logout } = useContext(UserContext);
-  const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
+
+  const handleFilterButtonClick = (e) => {
+    const filter = e.target.id;
+    if (filter === "vegetarisch") {
+      setIsActivFilterVegan(!isActiveFilterVegan);
+    }
+    if (filter === "einfach") {
+      setIsActiveFilterEasy(!isActiveFilterEasy);
+    }
+    if (filter === "schnell") {
+      setIsActiveFilterFast(!isActiveFilterFast);
+    }
+  };
 
   return (
     <>
@@ -25,13 +41,37 @@ export function RecipesFilter({ onClickFilter }) {
         <Button variant="outlined">Rezeptart</Button>
         <Button variant="outlined">Kategorie</Button>
         <Button variant="outlined">Ernährung</Button>
-        <Button variant="text" id="vegetarisch" onClick={onClickFilter}>
+        <Button
+          variant="text"
+          id="vegetarisch"
+          onClick={(e) => {
+            onClickFilter(e);
+            handleFilterButtonClick(e);
+          }}
+          style={isActiveFilterVegan ? { fontWeight: 900 } : undefined}
+        >
           Vegetarisch
         </Button>
-        <Button variant="text" id="einfach" onClick={onClickFilter}>
+        <Button
+          variant="text"
+          id="einfach"
+          onClick={(e) => {
+            onClickFilter(e, isActiveFilterEasy);
+            handleFilterButtonClick(e);
+          }}
+          style={isActiveFilterEasy ? { fontWeight: 900 } : undefined}
+        >
           Einach
         </Button>
-        <Button variant="text" id="schnell" onClick={onClickFilter}>
+        <Button
+          variant="text"
+          id="schnell"
+          onClick={(e) => {
+            onClickFilter(e, isActiveFilterFast);
+            handleFilterButtonClick(e);
+          }}
+          style={isActiveFilterFast ? { fontWeight: 900 } : undefined}
+        >
           Schnell
         </Button>
       </Stack>

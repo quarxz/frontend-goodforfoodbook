@@ -1,7 +1,7 @@
 import styles from "./RecipeDetails.module.css";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { UserContext } from "../context/UserContext";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
@@ -9,7 +9,15 @@ import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { RecipeContent } from "./RecipeContent";
 
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import ImageListItemBar from "@mui/material/ImageListItemBar";
+import ListSubheader from "@mui/material/ListSubheader";
+import { RecipeBottomGallery } from "./RecipeBottomGallery";
+
 export function RecipeDetails() {
+  const [category, setCategory] = useState();
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,15 +31,17 @@ export function RecipeDetails() {
 
   const { VITE_API_URL: url } = import.meta.env;
 
-  const loadProducts = useCallback(async () => {
+  const loadRecipes = useCallback(async () => {
     console.log("load Data");
     try {
       setIsLoading(true);
       const { data } = await axios.get(`${url}/recipes/${id}`);
       console.log(data.recipe);
+
       // console.log(status);
       console.log(data.message);
       setRecipe(data.recipe);
+      setCategory(data.recipe.category);
     } catch (err) {
       console.log(err);
       setIsError(true);
@@ -41,14 +51,14 @@ export function RecipeDetails() {
   });
 
   useEffect(() => {
-    loadProducts();
+    loadRecipes();
   }, []);
 
   return (
     <>
       <h2>Recipe Details</h2>
-
       <RecipeContent recipe={recipe} isloading={isloading} />
+      <RecipeBottomGallery recipe={recipe} trigger={isloading} />
     </>
   );
 }

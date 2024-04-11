@@ -18,7 +18,8 @@ import ListSubheader from "@mui/material/ListSubheader";
 
 export function Home() {
   const location = useLocation();
-  const [filter, setFilter] = useState();
+  const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
+  const [filterRecipeType, setFilterRecipeType] = useState({ name: [], type: "" });
   const [recipes, setRecipes] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -26,7 +27,7 @@ export function Home() {
   const { user } = useContext(UserContext);
 
   // console.log(location);
-  console.log(user);
+  // console.log(user);
 
   const { VITE_API_URL: url } = import.meta.env;
 
@@ -50,19 +51,34 @@ export function Home() {
     loadProducts();
   }, []);
 
-  const handleFilter = (e) => {
+  const handleFilter = (e, isActive) => {
     const id = e.target.id;
-    if (id === "vegetarisch" || id === "einfach" || id === "schnell") {
-      setFilter(id);
-      console.log(id);
+
+    if (id === "vegetarisch") {
+      setFilterNutrationType({ name: id, type: "nutrationType" });
+      if (id === "vegetarisch" && filterNutrationType.name != "") {
+        setFilterNutrationType({ name: "", type: "" });
+      }
+    }
+    if (id === "einfach" || id === "schnell") {
+      setFilterRecipeType({ name: id, type: "recipeType" });
+      if (
+        (id === "einfach" && filterRecipeType.name != "") ||
+        (id === "schnell" && filterRecipeType.name != "")
+      ) {
+        setFilterRecipeType({ name: "", type: "" });
+      }
+    }
+
+    if (id === "schnell") {
     }
   };
 
   return (
     <>
       <RecipesFilter
-        onClickFilter={(e) => {
-          handleFilter(e);
+        onClickFilter={(e, isActive) => {
+          handleFilter(e, isActive);
         }}
       />
 
@@ -74,15 +90,22 @@ export function Home() {
         </Box>
       ) : (
         <ImageList sx={{ mt: 3, width: "100%" }}>
-          <ImageListItem key="Subheader" cols={4}>
-            <ListSubheader component="div">Recipes</ListSubheader>
-          </ImageListItem>
+          <ImageListItem key="Subheader" cols={4}></ImageListItem>
           {recipes
             .filter((recipes) => {
-              if (filter === recipes.recipeType) {
+              if (
+                filterNutrationType.type === "nutrationType" &&
+                filterNutrationType.name === recipes.nutrationType
+              ) {
                 return true;
               }
-              if (filter === undefined || filter === "") {
+              if (
+                filterRecipeType.type === "recipeType" &&
+                filterRecipeType.name === recipes.recipeType
+              ) {
+                return true;
+              }
+              if (filterNutrationType.name === "" || filterRecipeType.name === "") {
                 return true;
               }
             })

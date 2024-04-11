@@ -189,7 +189,7 @@ export function RootLayout() {
             sx={{
               pl: 10,
               pr: 10,
-              border: "1px dashed  rgba(116, 123, 255, .5)",
+              border: "0px dashed  rgba(116, 123, 255, .5)",
               position: "relative",
             }}
           >
