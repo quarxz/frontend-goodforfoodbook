@@ -57,7 +57,7 @@ export function RecipeDetails() {
   return (
     <>
       <h2>Recipe Details</h2>
-      <RecipeContent recipe={recipe} isloading={isloading} />
+      <RecipeContent recipe={recipe} isloading={isloading} id={id} />
       <RecipeBottomGallery recipe={recipe} trigger={isloading} />
     </>
   );

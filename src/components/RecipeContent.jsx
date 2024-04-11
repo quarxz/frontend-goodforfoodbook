@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import styles from "./RecipeContent.module.css";
+import { useNavigate } from "react-router-dom";
 import { RecipeContentIngredients } from "./RecipeContentIngredients";
+
+import axios from "axios";
 
 import { Box, Button, Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
@@ -13,13 +16,101 @@ import Checkbox from "@mui/material/Checkbox";
 
 // import SendIcon from "@mui/icons-material/Send";
 
-export function RecipeContent({ recipe, isloading }) {
+export function RecipeContent({ recipe, isloading, id }) {
+  const [isloadingIntern, setIsLoadingIntern] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const navigate = useNavigate();
   const [countPersons, setCountPersons] = useState(2);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleCheckStock = () => {
     console.log("Hurra ich bin soweit");
+    navigate("/stocklist");
   };
+
+  const { VITE_API_URL: url } = import.meta.env;
+
+  const checkRecipeIsInUserRecipeList = useCallback(async () => {
+    console.log("Load Data");
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const user = "65e5a98c3fd0f135269eabac";
+        const { data } = await axios.post(`${url}/users/${user}/checkRecipeIsInUserRecipeList`, {
+          recipeObjectId: id,
+        });
+        console.log(data.message);
+        setIsChecked(!isChecked);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log(err.response.data.message);
+      console.log(err.response.status);
+      // setIsChecked(!isChecked);
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+  const addRecipeToUserRecipeList = useCallback(async () => {
+    console.log("Load Data");
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const user = "65e5a98c3fd0f135269eabac";
+        const { data } = await axios.post(`${url}/users/${user}/addRecipeToUserRecipeList`, {
+          recipeObjectId: id,
+        });
+        console.log(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log(err.response.data.message);
+      console.log(err.response.status);
+      setIsChecked(!isChecked);
+
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+  const removeRecipeToUserRecipeList = useCallback(async () => {
+    console.log("Load Data");
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const user = "65e5a98c3fd0f135269eabac";
+        const { data } = await axios.post(`${url}/users/${user}/deleteRecipeToUserRecipeList`, {
+          recipeObjectId: id,
+        });
+        console.log(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+
+  const handleRecipeCheck = () => {
+    if (!isChecked) {
+      console.log("checked");
+      addRecipeToUserRecipeList();
+      setIsChecked(!isChecked);
+    } else {
+      console.log("unchecked");
+      removeRecipeToUserRecipeList();
+      setIsChecked(!isChecked);
+    }
+  };
+
+  useEffect(() => {
+    checkRecipeIsInUserRecipeList();
+    // setIsChecked(!isChecked);
+  }, [isloading]);
 
   return (
     <>
@@ -37,8 +128,10 @@ export function RecipeContent({ recipe, isloading }) {
             <Grid xs={5}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox defaultChecked />}
+                  control={<Checkbox />}
                   label="Rezept Merken"
+                  onChange={handleRecipeCheck}
+                  checked={isChecked}
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                 />
               </FormGroup>
@@ -216,8 +309,8 @@ export function RecipeContent({ recipe, isloading }) {
         ""
       ) : (
         <Box p={5} sx={{ display: "flex", justifyContent: "center" }}>
-          <Button variant="contained" onClick={handleCheckStock}>
-            Alles auf Lager - Bestand prüfen!
+          <Button variant="contained" onClick={handleCheckStock} size="large">
+            Alles auf Lager? Jetzt Bestand prüfen!
           </Button>
         </Box>
       )}
