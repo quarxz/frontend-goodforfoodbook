@@ -12,6 +12,7 @@ import { RecipeContent } from "./RecipeContent";
 export function RecipeDetails() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const { id } = useParams();
 
   const [isloading, setIsLoading] = useState(false);

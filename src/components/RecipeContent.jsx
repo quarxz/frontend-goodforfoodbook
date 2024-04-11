@@ -32,6 +32,21 @@ export function RecipeContent({ recipe, isloading }) {
       ) : (
         <Box>
           <h2>{recipe?.name}</h2>
+          <Stack
+            spacing={3}
+            direction="row"
+            sx={{
+              p: 2,
+              border: "1px dashed grey",
+              width: "70%",
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <Box>{recipe?.preparationTime}</Box>
+            <Box>{recipe?.waitingTime}</Box>
+            <Box>{recipe?.preparationTime + recipe?.waitingTime}</Box>
+          </Stack>
 
           <Stack
             spacing={5}
@@ -88,10 +103,7 @@ export function RecipeContent({ recipe, isloading }) {
           </Box>
         </Box>
       )}
+      <Box>{JSON.stringify(recipe)}</Box>
     </>
   );
-}
-
-<h3>Zutaten</h3>;
-{
 }

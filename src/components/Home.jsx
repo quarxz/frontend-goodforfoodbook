@@ -5,6 +5,8 @@ import { UserContext } from "../context/UserContext";
 
 import axios from "axios";
 import { Box } from "@mui/material";
+
+import { RecipesFilter } from "./RecipesFilter";
 import { HomeRecipeItem } from "./HomeRecipeItem";
 
 import LinearProgress from "@mui/material/LinearProgress";
@@ -16,10 +18,12 @@ import ListSubheader from "@mui/material/ListSubheader";
 
 export function Home() {
   const location = useLocation();
-  const { user } = useContext(UserContext);
+  const [filter, setFilter] = useState();
   const [recipes, setRecipes] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   // console.log(location);
   console.log(user);
@@ -46,8 +50,22 @@ export function Home() {
     loadProducts();
   }, []);
 
+  const handleFilter = (e) => {
+    const id = e.target.id;
+    if (id === "vegetarisch" || id === "einfach" || id === "schnell") {
+      setFilter(id);
+      console.log(id);
+    }
+  };
+
   return (
     <>
+      <RecipesFilter
+        onClickFilter={(e) => {
+          handleFilter(e);
+        }}
+      />
+
       <h2>Home</h2>
 
       {isloading ? (
@@ -59,21 +77,30 @@ export function Home() {
           <ImageListItem key="Subheader" cols={4}>
             <ListSubheader component="div">Recipes</ListSubheader>
           </ImageListItem>
-          {recipes.map((recipe) => {
-            // return <HomeRecipeItem recipe={recipe} />;
-            return (
-              <Link key={recipe._id} to={"/" + recipe._id}>
-                <ImageListItem key={recipe._id} sx={{ m: 2 }}>
-                  <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
-                  <ImageListItemBar
-                    id={recipe._id}
-                    title={recipe.name}
-                    subtitle={recipe.categorie}
-                  />
-                </ImageListItem>
-              </Link>
-            );
-          })}
+          {recipes
+            .filter((recipes) => {
+              if (filter === recipes.recipeType) {
+                return true;
+              }
+              if (filter === undefined || filter === "") {
+                return true;
+              }
+            })
+            .map((recipe) => {
+              // return <HomeRecipeItem recipe={recipe} />;
+              return (
+                <Link key={recipe._id} to={"/" + recipe._id}>
+                  <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+                    <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
+                    <ImageListItemBar
+                      id={recipe._id}
+                      title={recipe.name}
+                      subtitle={recipe.categorie}
+                    />
+                  </ImageListItem>
+                </Link>
+              );
+            })}
         </ImageList>
       )}
     </>

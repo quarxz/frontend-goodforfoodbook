@@ -189,11 +189,11 @@ export function RootLayout() {
             sx={{
               pl: 10,
               pr: 10,
-              border: "0px dashed  rgba(116, 123, 255, .5)",
+              border: "1px dashed  rgba(116, 123, 255, .5)",
+              position: "relative",
             }}
           >
             <Box sx={{ marginTop: 0 }}>
-              <RecipesFilter />
               <h1>Good-for-FoodBook</h1>
               <Outlet />
             </Box>
