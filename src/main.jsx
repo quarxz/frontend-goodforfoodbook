@@ -14,6 +14,8 @@ import { ShoppingBasket } from "./components/ShoppingBasket.jsx";
 import { ShoppingList } from "./components/ShoppingList.jsx";
 import { RecipeDetails } from "./components/RecipeDetails.jsx";
 
+import CssBaseline from "@mui/material/CssBaseline";
+
 const router = createBrowserRouter([
   {
     path: "/",

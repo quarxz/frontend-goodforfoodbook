@@ -4,17 +4,21 @@ import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 import axios from "axios";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 import { RecipesFilter } from "./RecipesFilter";
 import { HomeRecipeItem } from "./HomeRecipeItem";
 
+import Skeleton from "@mui/material/Skeleton";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
+
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 
 export function Home() {
   const location = useLocation();
@@ -74,6 +78,8 @@ export function Home() {
     }
   };
 
+  const matches = useMediaQuery("(min-width:960px)");
+
   return (
     <>
       <RecipesFilter
@@ -86,10 +92,15 @@ export function Home() {
 
       {isloading ? (
         <Box sx={{ width: "100%" }}>
-          <LinearProgress />
+          {/* <LinearProgress /> */}
+          <Stack spacing={2}>
+            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+          </Stack>
         </Box>
       ) : (
-        <ImageList sx={{ mt: 3, width: "100%" }}>
+        <ImageList cols={4} sx={{ mt: 3, width: "100%" }}>
           <ImageListItem key="Subheader" cols={4}></ImageListItem>
           {recipes
             .filter((recipes) => {
@@ -115,6 +126,7 @@ export function Home() {
                 <Link key={recipe._id} to={"/" + recipe._id}>
                   <ImageListItem key={recipe._id} sx={{ m: 2 }}>
                     <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
+
                     <ImageListItemBar
                       id={recipe._id}
                       title={recipe.name}

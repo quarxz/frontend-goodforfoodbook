@@ -20,8 +20,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mui/material/colors";
 
+import CssBaseline from "@mui/material/CssBaseline";
+
 export function RootLayout() {
-  const theme = useTheme();
+  //   const theme = useTheme();
   const [userTheme, setUserTheme] = useState();
   const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
@@ -40,7 +42,7 @@ export function RootLayout() {
       ...(mode === "dark"
         ? {
             background: {
-              default: deepOrange[300],
+              default: grey[900],
               paper: grey[900],
             },
           }
@@ -54,7 +56,7 @@ export function RootLayout() {
         ...(mode === "light"
           ? {
               primary: grey[900],
-              secondary: grey[500],
+              secondary: grey[900],
             }
           : {
               primary: grey[100],
@@ -63,6 +65,15 @@ export function RootLayout() {
       },
     },
   });
+
+  //   const theme = createTheme({
+  //     palette: {
+  //       background: {
+  //         default: grey[900],
+  //         paper: grey[900],
+  //       },
+  //     },
+  //   });
 
   //   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: light)");
   //   const darkModeTheme = createTheme(getDesignTokens(prefersDarkMode ? "dark" : "light"));
@@ -93,6 +104,7 @@ export function RootLayout() {
   return (
     <>
       <ThemeProvider theme={mode}>
+        <CssBaseline />
         <Box
           component="nav"
           sx={{
@@ -135,6 +147,16 @@ export function RootLayout() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "1em",
+
+                "@media (min-width:640px)": {
+                  display: "none",
+                },
+                "@media (min-width:960px)": {
+                  display: "none",
+                },
+                "@media (min-width:1280px)": {
+                  display: "inline",
+                },
               }}
               className="boxUserNav"
             >

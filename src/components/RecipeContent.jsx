@@ -117,7 +117,7 @@ export function RecipeContent({ recipe, isloading, id }) {
       {recipe?.image ? (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid xs={7}>
+            <Grid xs={12} sm={7} md={7}>
               <img
                 src={`${recipe?.image}`}
                 alt={`Bild für rezipe ${recipe?.name}`}
@@ -125,7 +125,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                 width={600}
               />
             </Grid>
-            <Grid xs={5}>
+            <Grid xs={12} sm={5} md={5}>
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox />}
