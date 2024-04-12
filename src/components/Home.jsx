@@ -21,6 +21,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 
 export function Home() {
+  const theme = useTheme();
   const location = useLocation();
   const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
   const [filterRecipeType, setFilterRecipeType] = useState({ name: [], type: "" });
@@ -29,6 +30,22 @@ export function Home() {
   const [isError, setIsError] = useState(false);
 
   const { user } = useContext(UserContext);
+
+  const matches_max_640 = useMediaQuery("(max-width:640px)");
+  const matches_max_960 = useMediaQuery("(max-width:960px)");
+  const matches_max_1280 = useMediaQuery("(max-width:1280px)");
+  const matches_max_1920 = useMediaQuery("(max-width:1920px)");
+
+  const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
+  const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
+  const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
+  const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
+  console.log("matchDownXS:", matchDownXS);
+  console.log("matchDownSM:", matchDownSM);
+  console.log("matchDownMD:", matchDownMD);
+  console.log("matchDownLG:", matchDownLG);
+  console.log("matchDownXL:", matchDownXL);
 
   // console.log(location);
   // console.log(user);
@@ -78,8 +95,6 @@ export function Home() {
     }
   };
 
-  const matches = useMediaQuery("(min-width:960px)");
-
   return (
     <>
       <RecipesFilter
@@ -100,8 +115,35 @@ export function Home() {
           </Stack>
         </Box>
       ) : (
-        <ImageList cols={4} sx={{ mt: 3, width: "100%" }}>
-          <ImageListItem key="Subheader" cols={4}></ImageListItem>
+        <ImageList
+          cols={
+            matches_max_640
+              ? 2
+              : matches_max_960
+              ? 2
+              : matches_max_1280
+              ? 3
+              : matches_max_1920
+              ? 4
+              : 5
+          }
+          // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
+          sx={{ mt: 3, width: "100%" }}
+        >
+          <ImageListItem
+            key="Subheader"
+            cols={
+              matches_max_640
+                ? 2
+                : matches_max_960
+                ? 2
+                : matches_max_1280
+                ? 3
+                : matches_max_1920
+                ? 4
+                : 5
+            }
+          ></ImageListItem>
           {recipes
             .filter((recipes) => {
               if (

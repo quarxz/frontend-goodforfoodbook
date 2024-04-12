@@ -59,8 +59,8 @@ export function RootLayout() {
               secondary: grey[900],
             }
           : {
-              primary: grey[100],
-              secondary: grey[100],
+              primary: grey[200],
+              secondary: grey[200],
             }),
       },
     },

@@ -15,7 +15,11 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
 import { RecipeBottomGallery } from "./RecipeBottomGallery";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+
 export function RecipeDetails() {
+  const theme = useTheme();
   const [category, setCategory] = useState();
 
   const location = useLocation();
@@ -28,6 +32,22 @@ export function RecipeDetails() {
   const [recipe, setRecipe] = useState();
 
   const { user } = useContext(UserContext);
+
+  const matches_max_640 = useMediaQuery("(max-width:640px)");
+  const matches_max_960 = useMediaQuery("(max-width:960px)");
+  const matches_max_1280 = useMediaQuery("(max-width:1280px)");
+  const matches_max_1920 = useMediaQuery("(max-width:1920px)");
+
+  const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
+  const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
+  const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
+  const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
+  console.log("matchDownXS:", matchDownXS);
+  console.log("matchDownSM:", matchDownSM);
+  console.log("matchDownMD:", matchDownMD);
+  console.log("matchDownLG:", matchDownLG);
+  console.log("matchDownXL:", matchDownXL);
 
   const { VITE_API_URL: url } = import.meta.env;
 

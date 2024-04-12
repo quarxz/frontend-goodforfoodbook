@@ -117,7 +117,7 @@ export function RecipeContent({ recipe, isloading, id }) {
       {recipe?.image ? (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid xs={12} sm={7} md={7}>
+            <Grid>
               <img
                 src={`${recipe?.image}`}
                 alt={`Bild für rezipe ${recipe?.name}`}
@@ -125,7 +125,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                 width={600}
               />
             </Grid>
-            <Grid xs={12} sm={5} md={5}>
+            <Grid>
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox />}
@@ -157,7 +157,7 @@ export function RecipeContent({ recipe, isloading, id }) {
 
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid xs={4}>
+              <Grid sm={12} md={12} lg={6}>
                 <Box>
                   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
                   tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
@@ -165,13 +165,13 @@ export function RecipeContent({ recipe, isloading, id }) {
                   no sea takimata sanctus est Lorem ipsum dolor sit amet.
                 </Box>
               </Grid>
-              <Grid xs={8}>
+              <Grid sm={12} md={12} lg={6}>
                 <Stack
                   spacing={5}
                   direction="row"
                   sx={{
                     p: 2,
-                    width: "60%",
+
                     display: "flex",
                     justifyContent: "flex-end",
                   }}
@@ -295,11 +295,11 @@ export function RecipeContent({ recipe, isloading, id }) {
         >
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid xs={6}>
+              <Grid>
                 <h2>Zubereitung</h2>
                 {recipe?.preparing}
               </Grid>
-              <Grid xs={6}></Grid>
+              <Grid></Grid>
             </Grid>
           </Box>
         </Box>
