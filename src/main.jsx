@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -13,8 +14,6 @@ import { StockList } from "./components/StockList.jsx";
 import { ShoppingBasket } from "./components/ShoppingBasket.jsx";
 import { ShoppingList } from "./components/ShoppingList.jsx";
 import { RecipeDetails } from "./components/RecipeDetails.jsx";
-
-import CssBaseline from "@mui/material/CssBaseline";
 
 const router = createBrowserRouter([
   {

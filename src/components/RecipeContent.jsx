@@ -14,7 +14,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-// import SendIcon from "@mui/icons-material/Send";
+import SendIcon from "@mui/icons-material/Send";
 
 export function RecipeContent({ recipe, isloading, id }) {
   const [isloadingIntern, setIsLoadingIntern] = useState(false);
@@ -309,7 +309,12 @@ export function RecipeContent({ recipe, isloading, id }) {
         ""
       ) : (
         <Box p={5} sx={{ display: "flex", justifyContent: "center" }}>
-          <Button variant="contained" onClick={handleCheckStock} size="large">
+          <Button
+            variant="contained"
+            onClick={handleCheckStock}
+            size="large"
+            endIcon={<SendIcon />}
+          >
             Alles auf Lager? Jetzt Bestand prüfen!
           </Button>
         </Box>
