@@ -1,11 +1,11 @@
 import React from "react";
 import "./index.css";
-import CssBaseline from "@mui/material/CssBaseline";
 
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { UserProvider } from "./context/UserContext";
+import { IngredientProvider } from "./context/IngredientContext";
 
 import { RootLayout } from "./components/RootLayout.jsx";
 import { Home } from "./components/Home.jsx";
@@ -51,9 +51,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
 
-  <UserProvider>
-    <RouterProvider router={router} />
-  </UserProvider>
+  <IngredientProvider>
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  </IngredientProvider>
 
   // </React.StrictMode>,
 );

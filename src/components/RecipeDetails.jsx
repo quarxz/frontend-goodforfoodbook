@@ -19,17 +19,16 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 
 export function RecipeDetails() {
-  const theme = useTheme();
   const [category, setCategory] = useState();
+  const [isloading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [recipe, setRecipe] = useState();
 
+  const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  const [isloading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [recipe, setRecipe] = useState();
 
   const { user } = useContext(UserContext);
 
@@ -38,16 +37,16 @@ export function RecipeDetails() {
   const matches_max_1280 = useMediaQuery("(max-width:1280px)");
   const matches_max_1920 = useMediaQuery("(max-width:1920px)");
 
-  const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
-  const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
-  const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
-  const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
-  console.log("matchDownXS:", matchDownXS);
-  console.log("matchDownSM:", matchDownSM);
-  console.log("matchDownMD:", matchDownMD);
-  console.log("matchDownLG:", matchDownLG);
-  console.log("matchDownXL:", matchDownXL);
+  // const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
+  // const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
+  // const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
+  // const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
+  // const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
+  // console.log("matchDownXS:", matchDownXS);
+  // console.log("matchDownSM:", matchDownSM);
+  // console.log("matchDownMD:", matchDownMD);
+  // console.log("matchDownLG:", matchDownLG);
+  // console.log("matchDownXL:", matchDownXL);
 
   const { VITE_API_URL: url } = import.meta.env;
 
@@ -56,7 +55,12 @@ export function RecipeDetails() {
     try {
       setIsLoading(true);
       const { data } = await axios.get(`${url}/recipes/${id}`);
+      // const { data: ingredients } = await axios.get(
+      //   `${url}/recipes/${id}/getIngredientsFromRecipe`
+      // );
       console.log(data.recipe);
+      // console.log(data.ingredients);
+      // setIngredients(ingredients.ingredients);
 
       // console.log(status);
       console.log(data.message);

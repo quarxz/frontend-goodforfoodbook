@@ -5,6 +5,9 @@ import { RecipeContentIngredients } from "./RecipeContentIngredients";
 
 import axios from "axios";
 
+import { UserContext } from "../context/UserContext";
+import { IngredientContext } from "../context/IngredientContext";
+
 import { Box, Button, Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import { Gauge } from "@mui/x-charts/Gauge";
@@ -20,9 +23,13 @@ export function RecipeContent({ recipe, isloading, id }) {
   const [isloadingIntern, setIsLoadingIntern] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [countPersons, setCountPersons] = useState(2);
+
+  // const [ingredients, setIngredients] = useState(recipe.ingredients);
+  const { user } = useContext(UserContext);
+  const { ingredient, addIngredients } = useContext(IngredientContext);
 
   const navigate = useNavigate();
-  const [countPersons, setCountPersons] = useState(2);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleCheckStock = () => {
@@ -95,6 +102,15 @@ export function RecipeContent({ recipe, isloading, id }) {
     }
   });
 
+  useEffect(() => {
+    checkRecipeIsInUserRecipeList();
+    addIngredients(recipe?.ingredients);
+  }, [isloading]);
+
+  useEffect(() => {
+    calculatIngredientsQuantity(countPersons);
+  }, [countPersons]);
+
   const handleRecipeCheck = () => {
     if (!isChecked) {
       console.log("checked");
@@ -107,10 +123,21 @@ export function RecipeContent({ recipe, isloading, id }) {
     }
   };
 
-  useEffect(() => {
-    checkRecipeIsInUserRecipeList();
-    // setIsChecked(!isChecked);
-  }, [isloading]);
+  const calculatIngredientsQuantity = (countPersons) => {
+    addIngredients(
+      recipe?.ingredients.map((item) => {
+        if (item.quantity > 0) {
+          if (countPersons > 1) {
+            return { ...item, quantity: (item.quantity * countPersons) / 2 };
+          } else {
+            return { ...item, quantity: item.quantity / 2 };
+          }
+        } else {
+          return item;
+        }
+      })
+    );
+  };
 
   return (
     <>
@@ -228,7 +255,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      countPersons > 1 && setCountPersons((prev) => (prev = prev - 1));
+                      countPersons > 1 && setCountPersons((prev) => prev - 1);
                     }}
                   >
                     -
@@ -239,7 +266,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      countPersons < 10 && setCountPersons((prev) => (prev = prev + 1));
+                      countPersons < 10 && setCountPersons((prev) => prev + 1);
                     }}
                   >
                     +
@@ -270,10 +297,12 @@ export function RecipeContent({ recipe, isloading, id }) {
               return (
                 <RecipeContentIngredients
                   key={ingredient._id}
-                  ingredient={{
-                    ...ingredient.ingredient,
-                    quantity: ingredient.quantity,
-                  }}
+                  ingredient={
+                    (ingredient = {
+                      ...ingredient.ingredient,
+                      quantity: ingredient.quantity,
+                    })
+                  }
                   countPersons={countPersons}
                 />
               );

@@ -36,16 +36,16 @@ export function Home() {
   const matches_max_1280 = useMediaQuery("(max-width:1280px)");
   const matches_max_1920 = useMediaQuery("(max-width:1920px)");
 
-  const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
-  const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
-  const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
-  const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
-  console.log("matchDownXS:", matchDownXS);
-  console.log("matchDownSM:", matchDownSM);
-  console.log("matchDownMD:", matchDownMD);
-  console.log("matchDownLG:", matchDownLG);
-  console.log("matchDownXL:", matchDownXL);
+  // const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
+  // const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
+  // const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
+  // const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
+  // const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
+  // console.log("matchDownXS:", matchDownXS);
+  // console.log("matchDownSM:", matchDownSM);
+  // console.log("matchDownMD:", matchDownMD);
+  // console.log("matchDownLG:", matchDownLG);
+  // console.log("matchDownXL:", matchDownXL);
 
   // console.log(location);
   // console.log(user);

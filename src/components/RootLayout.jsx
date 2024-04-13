@@ -1,4 +1,7 @@
 import styles from "./RootLayout.module.css";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import { useState, useContext, useEffect, useMemo, createContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -9,6 +12,7 @@ import Typography from "@mui/material/Box";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 
 import { RecipesFilter } from "./RecipesFilter";
 import { UserListsNav } from "./UserListsNav";
@@ -17,13 +21,14 @@ import { UserListsNav } from "./UserListsNav";
  * https://mui.com/material-ui/customization/color/
  */
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+
 import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mui/material/colors";
 
-import CssBaseline from "@mui/material/CssBaseline";
+import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 
 export function RootLayout() {
   //   const theme = useTheme();
+
   const [userTheme, setUserTheme] = useState();
   const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
@@ -42,8 +47,8 @@ export function RootLayout() {
       ...(mode === "dark"
         ? {
             background: {
-              default: grey[900],
-              paper: grey[900],
+              default: "#242424",
+              paper: "#242424",
             },
           }
         : {
@@ -101,6 +106,10 @@ export function RootLayout() {
     mode = createTheme(getDesignTokens("light"));
   }
 
+  const handleBurgerMenu = () => {
+    console.log("Hello from Burger Menu");
+  };
+
   return (
     <>
       <ThemeProvider theme={mode}>
@@ -139,6 +148,24 @@ export function RootLayout() {
               <NavLink className={getNavClass} to="/">
                 Good-for-FoodBook
               </NavLink>
+            </Box>
+
+            <Box
+              sx={{
+                "@media (min-width:640px)": {
+                  display: "inline",
+                },
+                "@media (min-width:960px)": {
+                  display: "inline",
+                },
+                "@media (min-width:1280px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <IconButton aria-label="delete" size="large" onClick={handleBurgerMenu}>
+                <MenuSharpIcon fontSize="inherit" />
+              </IconButton>
             </Box>
 
             <Box
