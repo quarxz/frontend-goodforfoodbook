@@ -25,22 +25,19 @@ export function RecipeContent({ recipe, isloading, id }) {
   const [isChecked, setIsChecked] = useState(false);
   const [countPersons, setCountPersons] = useState(2);
 
-  // const [ingredients, setIngredients] = useState(recipe.ingredients);
   const { user } = useContext(UserContext);
-  const { ingredient, addIngredients } = useContext(IngredientContext);
+  const { ingredients, addIngredients } = useContext(IngredientContext);
 
   const navigate = useNavigate();
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleCheckStock = () => {
-    console.log("Hurra ich bin soweit");
     navigate("/stocklist");
   };
 
   const { VITE_API_URL: url } = import.meta.env;
 
   const checkRecipeIsInUserRecipeList = useCallback(async () => {
-    console.log("Load Data");
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
@@ -260,9 +257,10 @@ export function RecipeContent({ recipe, isloading, id }) {
                   >
                     -
                   </Button>
-                  <Box component="p">
-                    {countPersons} {countPersons > 1 ? "Personen" : "Person"}
-                  </Box>
+                  <Stack spacing={1} direction="row">
+                    <Box>{countPersons}</Box>
+                    <Box>{countPersons > 1 ? "Personen" : "Person"}</Box>
+                  </Stack>
                   <Button
                     variant="outlined"
                     onClick={() => {

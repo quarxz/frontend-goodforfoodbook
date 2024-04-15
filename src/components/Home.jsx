@@ -54,7 +54,6 @@ export function Home() {
 
   useEffect(() => {
     async function loadProducts() {
-      console.log("Load Data");
       try {
         setIsLoading(true);
         const { data, status } = await axios.get(`${url}/recipes`);

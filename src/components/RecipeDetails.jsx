@@ -51,7 +51,6 @@ export function RecipeDetails() {
   const { VITE_API_URL: url } = import.meta.env;
 
   const loadRecipes = useCallback(async () => {
-    console.log("load Data");
     try {
       setIsLoading(true);
       const { data } = await axios.get(`${url}/recipes/${id}`);
