@@ -1,5 +1,5 @@
 import styles from "./StockList.module.css";
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
@@ -93,46 +93,6 @@ export function StockList() {
     loadIngredientsFromStock();
   }, [url, user_id, loadIngredientsFromStock]);
 
-  const mergeStockWithRecipeIngredients = useCallback(async () => {
-    console.log("Merge");
-    // console.log(ingredientsFromRecipe);
-    // console.log(stock);
-    let ingrFromRecipe = [];
-    let ingrFromStock = [];
-    ingredientsFromRecipe?.map(async (item) => {
-      ingrFromRecipe.push({
-        id: item.ingredient._id,
-        name: item.ingredient.name,
-        unit: item.ingredient.unit,
-        quantity: item.quantity,
-        category: item.ingredient.category,
-      });
-    });
-    // console.log(ingrFromRecipe);
-    // console.log(ingrFromRecipe[0].id);
-    stock?.map(async (item) => {
-      ingrFromStock.push({
-        id: item.ingredient._id,
-        name: item.ingredient.name,
-        unit: item.ingredient.unit,
-        quantity: item.quantity,
-        category: item.ingredient.category,
-      });
-    });
-    // console.log(ingrFromStock);
-    // console.log(ingrFromStock[0].id);
-
-    const combinedArray = [ingrFromRecipe, ingrFromStock];
-    console.log(combinedArray);
-    // if (ingredientsFromRecipe.ingredient.ingredient._id === stock.ingredient.ingredient._id) {
-    //   console.log(ingredientsFromRecipe);
-    // }
-    const newList = [];
-    // setStockWithRecipeIngredients();
-  }, []);
-
-  ingredientsFromRecipe && mergeStockWithRecipeIngredients();
-
   return (
     <>
       <h2>StockList</h2>
@@ -142,14 +102,14 @@ export function StockList() {
       </Box> */}
       <Stack spacing={8} direction="column" pb={10}>
         {ingredientsFromRecipe ? (
-          <Box key={1}>
-            <Stack key={2} spacing={2} direction="column">
+          <Box>
+            <Stack spacing={2} direction="column">
               <Box pb={2}>
                 <h3> Zutatenliste für das Rezept: [Rezeptname]</h3>
               </Box>
-              {ingredientsFromRecipe?.map((ingredient, index) => {
+              {ingredientsFromRecipe?.map((ingredient) => {
                 return (
-                  <>
+                  <Fragment key={ingredient._id}>
                     {stock?.some((obj) => obj.ingredient._id === ingredient.ingredient._id) && (
                       <StockListRecipeIngredient
                         key={ingredient._id}
@@ -171,12 +131,12 @@ export function StockList() {
                         stock={stock}
                       />
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
-              {ingredientsFromRecipe?.map((ingredient, index) => {
+              {ingredientsFromRecipe?.map((ingredient) => {
                 return (
-                  <>
+                  <Fragment key={ingredient._id}>
                     {!stock?.some((obj) => obj.ingredient._id === ingredient.ingredient._id) && (
                       <StockListRecipeIngredient
                         key={ingredient._id}
@@ -198,7 +158,7 @@ export function StockList() {
                         stock={stock}
                       />
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
             </Stack>
