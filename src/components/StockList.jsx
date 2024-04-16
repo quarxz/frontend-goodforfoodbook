@@ -14,9 +14,8 @@ export function StockList() {
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [stock, setStock] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
-  const [units, setUnits] = useState([]);
+
+  const [stockWithRecipeIngredients, setStockWithRecipeIngredients] = useState([]);
 
   const { user } = useContext(UserContext);
   const { ingredients: ingredientsFromRecipe } = useContext(IngredientContext);
@@ -26,39 +25,6 @@ export function StockList() {
 
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
-
-  const loadIngredients = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios.get(`${url}/ingredients`);
-      // console.log(data.ingredients);
-      console.log(data.message);
-      setIngredients(
-        data.ingredients.map((ingredient) => {
-          return { ...ingredient, label: ingredient.name };
-        })
-      );
-      setCategories(
-        data.ingredients.map((ingredient) => {
-          return { label: ingredient.category };
-        })
-      );
-      setUnits(
-        data.ingredients.map((ingredient) => {
-          return { name: ingredient.name, label: ingredient.unit };
-        })
-      );
-    } catch (err) {
-      console.log(err);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadIngredients();
-  }, []);
 
   const updateStockList = useCallback(
     async (ingredientObjId, quantity) => {
@@ -100,8 +66,18 @@ export function StockList() {
     }
   }, [url, user_id]);
 
+  const mergeStockWithRecipeIngredients = useCallback(async () => {
+    setStockWithRecipeIngredients(
+      stock?.map((stockIngredient) => {
+        stockIngredient = stockIngredient.ingredient;
+        console.log(stockIngredient.name);
+      })
+    );
+  }, [url]);
+
   useEffect(() => {
     loadIngredientsFromStock();
+    mergeStockWithRecipeIngredients();
   }, [url, user_id, loadIngredientsFromStock]);
 
   return (
@@ -113,10 +89,7 @@ export function StockList() {
       </Box>
 
       <AddIngredientPanel
-        categories={categories}
-        ingredients={ingredients}
-        units={units}
-        onUpdateStockList={(ingredientObjId, quantity) => {
+        onUpdateIngredientsList={(ingredientObjId, quantity) => {
           updateStockList(ingredientObjId, quantity);
         }}
       />

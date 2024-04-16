@@ -6,13 +6,59 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import SendIcon from "@mui/icons-material/Send";
 
-export function AddIngredientPanel({ categories, ingredients, units, onUpdateStockList }) {
+import axios from "axios";
+
+export function AddIngredientPanel({ onUpdateIngredientsList }) {
+  const [isloading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const [categories, setCategories] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [units, setUnits] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedIngredientName, setSelectedIngredientName] = useState(null);
   const [selectedIngredientId, setSelectedIngredientId] = useState(null);
   const [selectedIngredientUnit, setSelectedIngredientUnit] = useState(null);
   const [countItem, setCountItem] = useState(1);
   const [isAddButtonDisabled, setAddButtonDisabled] = useState(true);
+  const [isAutocompleteDisabled, setAutocompleteDisabled] = useState(true);
+
+  const { VITE_API_URL: url } = import.meta.env;
+  const user_id = "65e5a98c3fd0f135269eabac";
+
+  const loadIngredients = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${url}/ingredients`);
+      // console.log(data.ingredients);
+      console.log(data.message);
+      setIngredients(
+        data.ingredients.map((ingredient) => {
+          return { ...ingredient, label: ingredient.name };
+        })
+      );
+      setCategories(
+        data.ingredients.map((ingredient) => {
+          return { label: ingredient.category };
+        })
+      );
+      setUnits(
+        data.ingredients.map((ingredient) => {
+          return { name: ingredient.name, label: ingredient.unit };
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadIngredients();
+  }, []);
 
   const clearSelected = () => {
     setSelectedCategory(null);
@@ -21,6 +67,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
     setSelectedIngredientUnit(null);
     setAddButtonDisabled(true);
     setCountItem(1);
+    setAutocompleteDisabled(true);
   };
 
   return (
@@ -32,6 +79,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
           value={selectedCategory}
           onChange={(event, newValue) => {
             setSelectedCategory(newValue.label);
+            setAutocompleteDisabled(false);
           }}
           id="combo-categories"
           isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -42,6 +90,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
           renderInput={(params) => <TextField {...params} label="Kategorie" />}
         />
         <Autocomplete
+          disabled={isAutocompleteDisabled}
           disablePortal
           disableClearable
           value={selectedIngredientName}
@@ -68,6 +117,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
 
         <Stack spacing={3} direction="row">
           <Button
+            disabled={isAutocompleteDisabled}
             variant="outlined"
             onClick={() => {
               countItem > 1 && setCountItem((prev) => prev - 1);
@@ -77,6 +127,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
           </Button>
           <Box p={2}>{countItem}</Box>
           <Button
+            disabled={isAutocompleteDisabled}
             variant="outlined"
             onClick={() => {
               countItem > 0 && setCountItem((prev) => prev + 1);
@@ -87,6 +138,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
         </Stack>
 
         <Autocomplete
+          disabled={isAutocompleteDisabled}
           disablePortal
           disableClearable
           readOnly
@@ -106,7 +158,7 @@ export function AddIngredientPanel({ categories, ingredients, units, onUpdateSto
         <Button
           variant="outlined"
           onClick={() => {
-            onUpdateStockList(selectedIngredientId, countItem);
+            onUpdateIngredientsList(selectedIngredientId, countItem);
             // loadIngredientsFromStock();
             clearSelected();
           }}
