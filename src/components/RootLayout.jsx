@@ -162,12 +162,10 @@ export function RootLayout() {
               </Box>
 
               <Box
-                component="div"
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   gap: "1em",
-
                   "@media (min-width:640px)": {
                     display: "none",
                   },
@@ -181,8 +179,8 @@ export function RootLayout() {
                 className="boxUserNav"
               >
                 <Box
-                  component="div"
                   className="loginBtnCon"
+                  pb={2}
                   sx={{ display: "flex", justifyContent: "flex-end" }}
                 >
                   <Stack spacing={2} direction="row" sx={{ padding: ".5em 0 " }}>
@@ -191,19 +189,25 @@ export function RootLayout() {
                     ) : (
                       ""
                     )}
-                    {theme.palette.mode} mode
-                    <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-                      {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-                    </IconButton>
-                    {user ? (
-                      <NavLink className={getNavClass} to="/login" onClick={logout}>
-                        Logout
-                      </NavLink>
-                    ) : (
-                      <NavLink className={getNavClass} to="/login">
-                        Login
-                      </NavLink>
-                    )}
+                    <Box sx={{ border: "0px solid red" }}>
+                      {theme.palette.mode} mode
+                      <IconButton
+                        sx={{ ml: 1, mr: 1 }}
+                        onClick={colorMode.toggleColorMode}
+                        color="inherit"
+                      >
+                        {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+                      </IconButton>
+                      {user ? (
+                        <NavLink className={getNavClass} to="/login" onClick={logout}>
+                          Logout
+                        </NavLink>
+                      ) : (
+                        <NavLink className={getNavClass} to="/login">
+                          Login
+                        </NavLink>
+                      )}
+                    </Box>
                   </Stack>
                 </Box>
                 <Box component="div">

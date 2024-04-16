@@ -125,7 +125,9 @@ export function AddIngredientPanel({ onUpdateIngredientsList }) {
           >
             -
           </Button>
-          <Box p={2}>{countItem}</Box>
+          <Box p={2} width={50} textAlign="center">
+            {countItem}
+          </Box>
           <Button
             disabled={isAutocompleteDisabled}
             variant="outlined"

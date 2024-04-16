@@ -22,16 +22,15 @@ export function RecipeBottomGallery({ recipe, trigger }) {
   const [isError, setIsError] = useState(false);
 
   const { id } = useParams();
-  console.log(id);
-  console.log(recipe?.category);
+  // console.log(id);
+  // console.log(recipe?.category);
 
   const loadAllRecipesFromCatgory = useCallback(async () => {
-    console.log("Load Data");
     try {
       setIsLoading(true);
       if (recipe?.category) {
         const { data } = await axios.get(`${url}/recipes/${recipe?.category}/category`);
-        console.log(data.recipe);
+        // console.log(data.recipe);
         setRecipesFromCategory(data.recipe);
       }
     } catch (err) {
