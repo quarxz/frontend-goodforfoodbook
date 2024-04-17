@@ -20,8 +20,6 @@ export function StockList() {
 
   const [merged, setMerged] = useState(null);
 
-  const [stockWithRecipeIngredients, setStockWithRecipeIngredients] = useState([]);
-
   const { user } = useContext(UserContext);
   const { ingredients: ingredientsFromRecipe } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
