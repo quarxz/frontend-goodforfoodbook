@@ -100,12 +100,23 @@ export function StockList() {
       {/* <Box p={10}>
         <Link onClick={() => navigate(-1)}>Back</Link>
       </Box> */}
-      <Stack spacing={8} direction="column" pb={10}>
+
+      <Stack spacing={5} direction="column" pb={10}>
+        <Box>
+          <h4> Bestandsliste Artikel hinzufügen</h4>
+        </Box>
+        <Box p={2} sx={{ border: "1px solid #eee" }}>
+          <AddIngredientPanel
+            onUpdateIngredientsList={(ingredientObjId, quantity) => {
+              addIngredientToStockList(ingredientObjId, quantity);
+            }}
+          />
+        </Box>
         {ingredientsFromRecipe ? (
           <Box>
             <Stack spacing={2} direction="column">
               <Box pb={2}>
-                <h3> Zutatenliste für das Rezept: [Rezeptname]</h3>
+                <h4>Zutatenliste für das Rezept: [Rezeptname]</h4>
               </Box>
               {ingredientsFromRecipe?.map((ingredient) => {
                 return (
@@ -167,17 +178,10 @@ export function StockList() {
           ""
         )}
 
-        <Box p={5} sx={{ border: "1px solid #eee" }}>
-          <AddIngredientPanel
-            onUpdateIngredientsList={(ingredientObjId, quantity) => {
-              addIngredientToStockList(ingredientObjId, quantity);
-            }}
-          />
-        </Box>
         <Box>
           <Stack spacing={2} direction="column">
             <Box pb={2}>
-              <h3>Aktueller Bestand</h3>
+              <h4>Aktueller Bestand</h4>
             </Box>
             {stock?.map((ingredient, index) => {
               return (
