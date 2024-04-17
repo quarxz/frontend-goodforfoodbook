@@ -201,7 +201,6 @@ export function StockList() {
       });
     });
     console.log(merged);
-    setMerged(merged);
   }, [stock]);
 
   useEffect(() => {
@@ -233,33 +232,55 @@ export function StockList() {
               <Box pb={2}>
                 <h4>Zutatenliste für das Rezept: [Rezeptname]</h4>
               </Box>
-              {merged?.map((ingredient) => {
+              {ingredientsFromRecipe?.map((ingredient) => {
                 return (
                   <Fragment key={ingredient._id}>
-                    {stock?.some((obj) => obj.ingredient._id === ingredient._id) && (
+                    {stock?.some((obj) => obj.ingredient._id === ingredient.ingredient._id) && (
                       <StockListRecipeIngredient
                         key={ingredient._id}
-                        isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
-                        ingredient={ingredient}
+                        stockItem={stock?.map((item) => {
+                          return item.ingredient._id === ingredient.ingredient._id && item;
+                        })}
+                        isInStock={stock?.some(
+                          (obj) => obj.ingredient._id === ingredient.ingredient._id
+                        )}
+                        ingredient={
+                          (ingredient = {
+                            ...ingredient.ingredient,
+                            quantity: ingredient.quantity,
+                          })
+                        }
                         onUpdateIngredientsList={(ingredientObjId, quantity) => {
                           addIngredientToShoppingList(ingredientObjId, quantity);
                         }}
+                        stock={stock}
                       />
                     )}
                   </Fragment>
                 );
               })}
-              {merged?.map((ingredient) => {
+              {ingredientsFromRecipe?.map((ingredient) => {
                 return (
                   <Fragment key={ingredient._id}>
-                    {!stock?.some((obj) => obj.ingredient._id === ingredient._id) && (
+                    {!stock?.some((obj) => obj.ingredient._id === ingredient.ingredient._id) && (
                       <StockListRecipeIngredient
                         key={ingredient._id}
-                        isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
-                        ingredient={ingredient}
+                        stockItem={stock?.map((item) => {
+                          return item.ingredient._id === ingredient.ingredient._id && item;
+                        })}
+                        isInStock={stock?.some(
+                          (obj) => obj.ingredient._id === ingredient.ingredient._id
+                        )}
+                        ingredient={
+                          (ingredient = {
+                            ...ingredient.ingredient,
+                            quantity: ingredient.quantity,
+                          })
+                        }
                         onUpdateIngredientsList={(ingredientObjId, quantity) => {
                           addIngredientToShoppingList(ingredientObjId, quantity);
                         }}
+                        stock={stock}
                       />
                     )}
                   </Fragment>

@@ -18,11 +18,35 @@ import { lightGreen, grey, red, orange, deepOrange } from "@mui/material/colors"
 import SendIcon from "@mui/icons-material/Send";
 import ProductionQuantityLimitsSharpIcon from "@mui/icons-material/ProductionQuantityLimitsSharp";
 
-export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngredientsList }) {
-  const [countItem, setCountItem] = useState(ingredient.recipeQuantity);
+export function StockListRecipeIngredient({
+  ingredient,
+  stock,
+  stockItem,
+  isInStock,
+  isStockWarning,
+  onUpdateIngredientsList,
+}) {
+  const [countItem, setCountItem] = useState(ingredient.quantity);
+  // console.log(stock);
+  // console.log(isInStock);
+  // console.log(isStockWarning);
+  // return array.some(obj => obj.id === id);
+  // console.log(stock?.some((obj) => obj.ingredient._id === ingredient._id));
+  // stock?.map((item) => {
+  //   if (item.ingredient._id !== ingredient._id) {
+  //     console.log(item);
+  //   }
+  // });
+  const getQuantityFromStockIngredient = stockItem?.map((item) => {
+    return item && item.quantity;
+  });
+
+  const stockIngredientQuantity = getQuantityFromStockIngredient?.filter(
+    (item) => typeof item === "number"
+  )[0];
 
   const stockWarning = (quantity) => {
-    return quantity > 0 && quantity >= ingredient.stockQuantity ? true : false;
+    return quantity > 0 && quantity >= stockIngredientQuantity ? true : false;
   };
 
   return (
@@ -32,7 +56,7 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
         pl={3}
         sx={
           isInStock
-            ? stockWarning(ingredient.recipeQuantity)
+            ? stockWarning(ingredient.quantity)
               ? { border: deepOrange[100], backgroundColor: deepOrange[100] }
               : { border: lightGreen[200], backgroundColor: lightGreen[200] }
             : { border: orange[100], backgroundColor: orange[100] }
@@ -48,11 +72,11 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
             <Grid width={50}>
               {isInStock ? (
                 <Box textAlign="right" pr={1}>
-                  {ingredient.stockQuantity}
+                  {stockIngredientQuantity}
                 </Box>
               ) : (
                 <Box textAlign="right" pr={1}>
-                  {ingredient.recipeQuantity}
+                  {ingredient.quantity}
                 </Box>
               )}
             </Grid>
@@ -62,11 +86,11 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
         <Box>
           <Grid container spacing={0}>
             <Grid width={50}>
-              {isInStock && ingredient.recipeQuantity > 0 ? "- " + ingredient.recipeQuantity : ""}
-              {!isInStock && ingredient.recipeQuantity > 0 ? "+ " + ingredient.recipeQuantity : ""}
+              {isInStock && ingredient.quantity > 0 ? "- " + ingredient.quantity : ""}
+              {!isInStock && ingredient.quantity > 0 ? "+ " + ingredient.quantity : ""}
             </Grid>
             <Grid width={50}>
-              {isInStock && stockWarning(ingredient.recipeQuantity) ? (
+              {isInStock && stockWarning(ingredient.quantity) ? (
                 <ProductionQuantityLimitsSharpIcon fontSize="small" />
               ) : (
                 ""
@@ -75,7 +99,7 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
           </Grid>
         </Box>
       </Box>
-      {isInStock && stockWarning(ingredient.recipeQuantity) && (
+      {isInStock && stockWarning(ingredient.quantity) && (
         <>
           <Stack spacing={3} direction="row">
             <Button
