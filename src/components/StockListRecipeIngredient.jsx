@@ -18,10 +18,18 @@ import { lightGreen, grey, red, orange, deepOrange } from "@mui/material/colors"
 import SendIcon from "@mui/icons-material/Send";
 import ProductionQuantityLimitsSharpIcon from "@mui/icons-material/ProductionQuantityLimitsSharp";
 
-export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInStock }) {
+export function StockListRecipeIngredient({
+  ingredient,
+  stock,
+  stockItem,
+  isInStock,
+  isStockWarning,
+  onUpdateIngredientsList,
+}) {
   const [countItem, setCountItem] = useState(ingredient.quantity);
   // console.log(stock);
   // console.log(isInStock);
+  // console.log(isStockWarning);
   // return array.some(obj => obj.id === id);
   // console.log(stock?.some((obj) => obj.ingredient._id === ingredient._id));
   // stock?.map((item) => {
@@ -49,9 +57,9 @@ export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInSt
         sx={
           isInStock
             ? stockWarning(ingredient.quantity)
-              ? { border: grey[200], backgroundColor: deepOrange[100] }
-              : { border: grey[200], backgroundColor: lightGreen[200] }
-            : { border: grey[200], backgroundColor: orange[100] }
+              ? { border: deepOrange[100], backgroundColor: deepOrange[100] }
+              : { border: lightGreen[200], backgroundColor: lightGreen[200] }
+            : { border: orange[100], backgroundColor: orange[100] }
         }
         borderRadius={1}
         width="60%"
@@ -102,7 +110,7 @@ export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInSt
             >
               -
             </Button>
-            <Box p={1} width={50} textAlign="right">
+            <Box p={1} width={40} textAlign="right">
               {countItem}
             </Box>
             <Button
@@ -115,7 +123,12 @@ export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInSt
             </Button>
           </Stack>
           <Tooltip title="Der Einkaufsliste hinzufügen" placement="right-end">
-            <Button variant="outlined">
+            <Button
+              onClick={() => {
+                onUpdateIngredientsList(ingredient._id, countItem);
+              }}
+              variant="outlined"
+            >
               <SendIcon />
             </Button>
           </Tooltip>
@@ -132,7 +145,7 @@ export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInSt
             >
               -
             </Button>
-            <Box p={1} width={50} textAlign="right">
+            <Box p={1} width={40} textAlign="right">
               {countItem}
             </Box>
             <Button
@@ -145,7 +158,12 @@ export function StockListRecipeIngredient({ ingredient, stock, stockItem, isInSt
             </Button>
           </Stack>
           <Tooltip title="Der Einkaufsliste hinzufügen" placement="right-end">
-            <Button variant="outlined">
+            <Button
+              onClick={() => {
+                onUpdateIngredientsList(ingredient._id, countItem);
+              }}
+              variant="outlined"
+            >
               <SendIcon />
             </Button>
           </Tooltip>
