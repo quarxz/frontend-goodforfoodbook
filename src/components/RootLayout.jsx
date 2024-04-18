@@ -4,7 +4,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import { useState, useContext, useEffect, useMemo, createContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext";
+import { MessageContext } from "../context/MessageContext";
+// import { SnackbarProvider, useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
@@ -34,11 +37,15 @@ const ColorModeContext = createContext({
 });
 
 export function RootLayout() {
+  // const { enqueueSnackbar } = useSnackbar();
   //   const theme = useTheme();
   // const colorMode = useContext(ColorModeContext);
 
   const [userTheme, setUserTheme] = useState();
   const { user, logout } = useContext(UserContext);
+
+  const { message } = useContext(MessageContext);
+
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
 
   const prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -107,6 +114,7 @@ export function RootLayout() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          {/* <SnackbarProvider maxSnack={3}> */}
           <Box
             component="nav"
             sx={{
@@ -251,6 +259,7 @@ export function RootLayout() {
           <Box component="footer" sx={{ p: 2, borderTop: "1px dashed grey" }}>
             <p>&copy; 2024 - falkking soft</p>
           </Box>
+          {/* </SnackbarProvider> */}
         </ThemeProvider>
       </ColorModeContext.Provider>
     </>

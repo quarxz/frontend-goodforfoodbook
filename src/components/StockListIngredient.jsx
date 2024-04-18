@@ -26,7 +26,7 @@ export function StockListIngredient({ ingredient, onUpdateIngredientsList }) {
   return (
     <Stack spacing={2} direction="row">
       <Box
-        p={1.5}
+        p={2}
         pl={3}
         sx={{ border: "1px solid #fff", display: "flex", justifyContent: "space-between" }}
         borderRadius={1}

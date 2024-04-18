@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { UserProvider } from "./context/UserContext";
 import { IngredientProvider } from "./context/IngredientContext";
+import { MessageProvider } from "./context/MessageContext";
 
 import { RootLayout } from "./components/RootLayout.jsx";
 import { Home } from "./components/Home.jsx";
@@ -51,11 +52,13 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
 
-  <IngredientProvider>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
-  </IngredientProvider>
+  <MessageProvider>
+    <IngredientProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </IngredientProvider>
+  </MessageProvider>
 
   // </React.StrictMode>,
 );

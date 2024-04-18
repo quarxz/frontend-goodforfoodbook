@@ -3,6 +3,8 @@ import { useContext, useState, useEffect, useCallback, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
+import { MessageContext } from "../context/MessageContext";
+// import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { AddIngredientPanel } from "./AddIngredientPanel";
 import { StockListRecipeIngredient } from "./StockListRecipeIngredient";
@@ -25,6 +27,8 @@ export function StockList() {
   if (ingredientsFromRecipe) {
     console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
+  const { addMessage } = useContext(MessageContext);
+  // const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
@@ -62,6 +66,8 @@ export function StockList() {
         });
         console.log(data);
         console.log(data.message);
+        // addMessage(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
@@ -90,6 +96,32 @@ export function StockList() {
     }
   }, [url, user_id]);
 
+  const deleteIngredientFromShoppingList = useCallback(
+    async (ingredientObjId, quantity) => {
+      try {
+        setIsLoading(true);
+        // const user = "65e5a98c3fd0f135269eabac";
+        const { data } = await axios.post(
+          `${url}/users/${user_id}/deleteIngredientFromSchoppingList`,
+          {
+            ingredientObjId: ingredientObjId,
+            quantity: quantity,
+          }
+        );
+        console.log(data);
+        console.log(data.message);
+        loadIngredientsFromShoppingList();
+        loadIngredientsFromStock();
+      } catch (err) {
+        console.log(err);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [url, user_id]
+  );
+
   const addIngredientToShoppingList = useCallback(
     async (ingredientObjId, quantity) => {
       try {
@@ -102,6 +134,7 @@ export function StockList() {
         console.log(data);
         console.log(data.message);
         loadIngredientsFromShoppingList();
+        loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
         setIsError(true);
@@ -133,13 +166,13 @@ export function StockList() {
     loadIngredientsFromShoppingList();
   }, [url, user_id, loadIngredientsFromStock, loadIngredientsFromShoppingList]);
 
-  const merge = useCallback(() => {
+  const mergeIngredientsQuantities = useCallback(() => {
     console.log("merge");
     let ingredientsShoppingList = [];
     let ingredientsRecipe = [];
     let ingredientsStock = [];
     let merged = [];
-    ingredientsFromRecipe?.map(async (item) => {
+    shoppingList?.map(async (item) => {
       // console.log(item.ingredient.name);
       ingredientsShoppingList.push({
         _id: item.ingredient._id,
@@ -203,8 +236,8 @@ export function StockList() {
   }, [stock]);
 
   useEffect(() => {
-    ingredientsFromRecipe && merge();
-  }, [stock, merge]);
+    ingredientsFromRecipe && mergeIngredientsQuantities();
+  }, [stock, mergeIngredientsQuantities]);
 
   return (
     <>
@@ -239,7 +272,7 @@ export function StockList() {
                         key={ingredient._id}
                         isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
                         ingredient={ingredient}
-                        onUpdateIngredientsList={(ingredientObjId, quantity) => {
+                        onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
                           addIngredientToShoppingList(ingredientObjId, quantity);
                         }}
                       />
@@ -255,8 +288,11 @@ export function StockList() {
                         key={ingredient._id}
                         isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
                         ingredient={ingredient}
-                        onUpdateIngredientsList={(ingredientObjId, quantity) => {
+                        onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
                           addIngredientToShoppingList(ingredientObjId, quantity);
+                        }}
+                        onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                          deleteIngredientFromShoppingList(ingredientObjId, quantity);
                         }}
                       />
                     )}

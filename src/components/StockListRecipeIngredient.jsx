@@ -6,29 +6,42 @@ import { IngredientContext } from "../context/IngredientContext";
 import { AddIngredientPanel } from "./AddIngredientPanel";
 
 import { Box, Button, Stack } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import TextField, { textFieldClasses } from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
+import Fade from "@mui/material/Fade";
 
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 
-import { lightGreen, grey, red, orange, deepOrange } from "@mui/material/colors";
+import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 import SendIcon from "@mui/icons-material/Send";
 import ProductionQuantityLimitsSharpIcon from "@mui/icons-material/ProductionQuantityLimitsSharp";
 
-export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngredientsList }) {
-  const [countItem, setCountItem] = useState(ingredient.recipeQuantity);
+export function StockListRecipeIngredient({
+  ingredient,
+  isInStock,
+  onAddIngredientToShoppingList,
+  onDeleteIngredientFromShoppingList,
+}) {
+  const [countItem, setCountItem] = useState(
+    ingredient.recipeQuantity === 0 ? 1 : ingredient.recipeQuantity
+  );
+  const [errorMessageTextfield, setErrorMessageTextfield] = useState("");
 
   const stockWarning = (quantity) => {
     return quantity > 0 && quantity >= ingredient.stockQuantity ? true : false;
   };
 
+  const MIN_LENGTH = 1;
+
   return (
     <Stack spacing={2} direction="row">
       <Box
-        p={1.5}
+        p={2}
         pl={3}
         sx={
           isInStock
@@ -45,17 +58,25 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
         <Box>
           <Grid container spacing={0}>
             <Grid width={180}>{ingredient.name}</Grid>
-            <Grid width={50}>
-              {isInStock ? (
-                <Box textAlign="right" pr={1}>
-                  {ingredient.stockQuantity}
-                </Box>
-              ) : (
-                <Box textAlign="right" pr={1}>
-                  {ingredient.recipeQuantity}
-                </Box>
-              )}
-            </Grid>
+            {ingredient.category === "gewuerze" ? (
+              ""
+            ) : (
+              <>
+                <Grid width={10}>{isInStock ? "Bestand:" : ""}</Grid>
+                <Grid width={120}>
+                  {isInStock ? (
+                    <Box textAlign="right" pr={1}>
+                      {ingredient.stockQuantity}
+                    </Box>
+                  ) : (
+                    <Box textAlign="right" pr={1}>
+                      {ingredient.recipeQuantity}
+                    </Box>
+                  )}
+                </Grid>
+              </>
+            )}
+
             <Grid width={180}>{ingredient.unit}</Grid>
           </Grid>
         </Box>
@@ -77,7 +98,7 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
       </Box>
       {isInStock && stockWarning(ingredient.recipeQuantity) && (
         <>
-          <Stack spacing={3} direction="row">
+          <Stack spacing={2} direction="row">
             <Button
               variant="outlined"
               onClick={() => {
@@ -86,8 +107,31 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
             >
               -
             </Button>
-            <Box p={1} width={40} textAlign="right">
-              {countItem}
+            <Box width={60}>
+              <TextField
+                error={errorMessageTextfield.length !== 0}
+                id="outlined-basic"
+                variant="outlined"
+                sx={{ width: "60px" }}
+                inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
+                value={countItem}
+                onChange={(event) => {
+                  const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
+                  console.log(event.target.value.length);
+                  if (isNaN(parseInt(onlyNumb))) {
+                    setCountItem(0);
+                  } else {
+                    setCountItem(parseInt(onlyNumb));
+                  }
+
+                  // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
+
+                  event.target.value === ""
+                    ? setErrorMessageTextfield("Error!")
+                    : setErrorMessageTextfield("");
+                }}
+                label={errorMessageTextfield}
+              />
             </Box>
             <Button
               variant="outlined"
@@ -98,10 +142,15 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
               +
             </Button>
           </Stack>
-          <Tooltip title="Der Einkaufsliste hinzufügen" placement="right-end">
+          <Tooltip
+            title="Der Einkaufsliste hinzufügen"
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 700 }}
+            placement="top"
+          >
             <Button
               onClick={() => {
-                onUpdateIngredientsList(ingredient._id, countItem);
+                onAddIngredientToShoppingList(ingredient._id, countItem);
               }}
               variant="outlined"
             >
@@ -112,7 +161,7 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
       )}
       {!isInStock && (
         <>
-          <Stack spacing={3} direction="row">
+          <Stack spacing={2} direction="row">
             <Button
               variant="outlined"
               onClick={() => {
@@ -121,8 +170,31 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
             >
               -
             </Button>
-            <Box p={1} width={40} textAlign="right">
-              {countItem}
+            <Box width={60}>
+              <TextField
+                error={errorMessageTextfield.length !== 0}
+                id="outlined-basic"
+                variant="outlined"
+                sx={{ width: "60px" }}
+                inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
+                value={countItem}
+                onChange={(event) => {
+                  const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
+                  console.log(event.target.value.length);
+                  if (isNaN(parseInt(onlyNumb))) {
+                    setCountItem(0);
+                  } else {
+                    setCountItem(parseInt(onlyNumb));
+                  }
+
+                  // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
+
+                  event.target.value === ""
+                    ? setErrorMessageTextfield("Error!")
+                    : setErrorMessageTextfield("");
+                }}
+                label={errorMessageTextfield}
+              />
             </Box>
             <Button
               variant="outlined"
@@ -133,16 +205,48 @@ export function StockListRecipeIngredient({ ingredient, isInStock, onUpdateIngre
               +
             </Button>
           </Stack>
-          <Tooltip title="Der Einkaufsliste hinzufügen" placement="right-end">
+
+          <Tooltip
+            title="Der Einkaufsliste hinzufügen"
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 700 }}
+            placement="top"
+          >
             <Button
               onClick={() => {
-                onUpdateIngredientsList(ingredient._id, countItem);
+                onAddIngredientToShoppingList(ingredient._id, countItem);
               }}
               variant="outlined"
             >
               <SendIcon />
             </Button>
           </Tooltip>
+
+          {ingredient.shoppingListQuantity !== null && (
+            <Tooltip
+              title="Aus Shopping List entfernen"
+              TransitionComponent={Fade}
+              TransitionProps={{ timeout: 700 }}
+              placement="left"
+            >
+              <Fab
+                aria-label="delete"
+                sx={{
+                  "&:hover": {
+                    bgcolor: red[600],
+                  },
+                }}
+                onClick={() => {
+                  onDeleteIngredientFromShoppingList(
+                    ingredient._id,
+                    ingredient.shoppingListQuantity
+                  );
+                }}
+              >
+                {ingredient.shoppingListQuantity}
+              </Fab>
+            </Tooltip>
+          )}
         </>
       )}
     </Stack>

@@ -24,6 +24,8 @@ export function AddIngredientPanel({ onUpdateIngredientsList }) {
   const [isAddButtonDisabled, setAddButtonDisabled] = useState(true);
   const [isAutocompleteDisabled, setAutocompleteDisabled] = useState(true);
 
+  const [errorMessageTextfield, setErrorMessageTextfield] = useState("");
+
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
 
@@ -125,8 +127,32 @@ export function AddIngredientPanel({ onUpdateIngredientsList }) {
           >
             -
           </Button>
-          <Box p={2} width={50} textAlign="center">
-            {countItem}
+          <Box width={60}>
+            <TextField
+              disabled={isAutocompleteDisabled}
+              error={errorMessageTextfield.length !== 0}
+              id="outlined-basic"
+              variant="outlined"
+              sx={{ width: "60px" }}
+              inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
+              value={countItem}
+              onChange={(event) => {
+                const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
+                console.log(event.target.value.length);
+                if (isNaN(parseInt(onlyNumb))) {
+                  setCountItem(0);
+                } else {
+                  setCountItem(parseInt(onlyNumb));
+                }
+
+                // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
+
+                event.target.value === ""
+                  ? setErrorMessageTextfield("Error!")
+                  : setErrorMessageTextfield("");
+              }}
+              label={errorMessageTextfield}
+            />
           </Box>
           <Button
             disabled={isAutocompleteDisabled}
