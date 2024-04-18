@@ -7,7 +7,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { MessageContext } from "../context/MessageContext";
-// import { SnackbarProvider, useSnackbar } from "notistack";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
@@ -37,7 +37,6 @@ const ColorModeContext = createContext({
 });
 
 export function RootLayout() {
-  // const { enqueueSnackbar } = useSnackbar();
   //   const theme = useTheme();
   // const colorMode = useContext(ColorModeContext);
 
@@ -114,20 +113,123 @@ export function RootLayout() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {/* <SnackbarProvider maxSnack={3}> */}
-          <Box
-            component="nav"
-            sx={{
-              pt: 4,
-              borderBottom: "0px dashed grey",
-            }}
-          >
+          <SnackbarProvider maxSnack={6}>
             <Box
-              component="div"
+              component="nav"
               sx={{
-                margin: "0 auto",
-                border: "0px dashed grey",
+                pt: 4,
+                borderBottom: "0px dashed grey",
+              }}
+            >
+              <Box
+                component="div"
+                sx={{
+                  margin: "0 auto",
+                  border: "0px dashed grey",
 
+                  maxWidth: "100%", // Default maxWidth for all breakpoints
+                  "@media (min-width:640px)": {
+                    maxWidth: "600px",
+                  },
+                  "@media (min-width:960px)": {
+                    maxWidth: "960px",
+                  },
+                  "@media (min-width:1280px)": {
+                    maxWidth: "1280px",
+                  },
+                  "@media (min-width:1920px)": {
+                    maxWidth: "1280px",
+                  },
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box component="div" className={styles.logo}>
+                  <NavLink className={getNavClass} to="/">
+                    Good-for-FoodBook
+                  </NavLink>
+                </Box>
+
+                <Box
+                  sx={{
+                    "@media (min-width:640px)": {
+                      display: "inline",
+                    },
+                    "@media (min-width:960px)": {
+                      display: "inline",
+                    },
+                    "@media (min-width:1280px)": {
+                      display: "none",
+                    },
+                  }}
+                >
+                  <IconButton aria-label="delete" size="large" onClick={handleBurgerMenu}>
+                    <MenuSharpIcon fontSize="inherit" />
+                  </IconButton>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1em",
+                    "@media (min-width:640px)": {
+                      display: "none",
+                    },
+                    "@media (min-width:960px)": {
+                      display: "none",
+                    },
+                    "@media (min-width:1280px)": {
+                      display: "inline",
+                    },
+                  }}
+                  className="boxUserNav"
+                >
+                  <Box
+                    className="loginBtnCon"
+                    pb={2}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <Stack spacing={2} direction="row" sx={{ padding: ".5em 0 " }}>
+                      {user ? (
+                        <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
+                      ) : (
+                        ""
+                      )}
+                      <Box sx={{ border: "0px solid red" }}>
+                        {theme.palette.mode} mode
+                        <IconButton
+                          sx={{ ml: 1, mr: 1 }}
+                          onClick={colorMode.toggleColorMode}
+                          color="inherit"
+                        >
+                          {theme.palette.mode === "dark" ? (
+                            <Brightness7Icon />
+                          ) : (
+                            <Brightness4Icon />
+                          )}
+                        </IconButton>
+                        {user ? (
+                          <NavLink className={getNavClass} to="/login" onClick={logout}>
+                            Logout
+                          </NavLink>
+                        ) : (
+                          <NavLink className={getNavClass} to="/login">
+                            Login
+                          </NavLink>
+                        )}
+                      </Box>
+                    </Stack>
+                  </Box>
+                  <Box component="div">
+                    <UserListsNav />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              component="main"
+              sx={{
                 maxWidth: "100%", // Default maxWidth for all breakpoints
                 "@media (min-width:640px)": {
                   maxWidth: "600px",
@@ -141,125 +243,26 @@ export function RootLayout() {
                 "@media (min-width:1920px)": {
                   maxWidth: "1280px",
                 },
-                display: "flex",
-                justifyContent: "space-between",
               }}
             >
-              <Box component="div" className={styles.logo}>
-                <NavLink className={getNavClass} to="/">
-                  Good-for-FoodBook
-                </NavLink>
-              </Box>
-
-              <Box
+              <Container
                 sx={{
-                  "@media (min-width:640px)": {
-                    display: "inline",
-                  },
-                  "@media (min-width:960px)": {
-                    display: "inline",
-                  },
-                  "@media (min-width:1280px)": {
-                    display: "none",
-                  },
+                  pl: 10,
+                  pr: 10,
+                  border: "0px dashed  rgba(116, 123, 255, .5)",
+                  position: "relative",
                 }}
               >
-                <IconButton aria-label="delete" size="large" onClick={handleBurgerMenu}>
-                  <MenuSharpIcon fontSize="inherit" />
-                </IconButton>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1em",
-                  "@media (min-width:640px)": {
-                    display: "none",
-                  },
-                  "@media (min-width:960px)": {
-                    display: "none",
-                  },
-                  "@media (min-width:1280px)": {
-                    display: "inline",
-                  },
-                }}
-                className="boxUserNav"
-              >
-                <Box
-                  className="loginBtnCon"
-                  pb={2}
-                  sx={{ display: "flex", justifyContent: "flex-end" }}
-                >
-                  <Stack spacing={2} direction="row" sx={{ padding: ".5em 0 " }}>
-                    {user ? (
-                      <p>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</p>
-                    ) : (
-                      ""
-                    )}
-                    <Box sx={{ border: "0px solid red" }}>
-                      {theme.palette.mode} mode
-                      <IconButton
-                        sx={{ ml: 1, mr: 1 }}
-                        onClick={colorMode.toggleColorMode}
-                        color="inherit"
-                      >
-                        {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-                      </IconButton>
-                      {user ? (
-                        <NavLink className={getNavClass} to="/login" onClick={logout}>
-                          Logout
-                        </NavLink>
-                      ) : (
-                        <NavLink className={getNavClass} to="/login">
-                          Login
-                        </NavLink>
-                      )}
-                    </Box>
-                  </Stack>
+                <Box sx={{ marginTop: 0 }}>
+                  <h1>Good-for-FoodBook</h1>
+                  <Outlet />
                 </Box>
-                <Box component="div">
-                  <UserListsNav />
-                </Box>
-              </Box>
+              </Container>
             </Box>
-          </Box>
-          <Box
-            component="main"
-            sx={{
-              maxWidth: "100%", // Default maxWidth for all breakpoints
-              "@media (min-width:640px)": {
-                maxWidth: "600px",
-              },
-              "@media (min-width:960px)": {
-                maxWidth: "960px",
-              },
-              "@media (min-width:1280px)": {
-                maxWidth: "1280px",
-              },
-              "@media (min-width:1920px)": {
-                maxWidth: "1280px",
-              },
-            }}
-          >
-            <Container
-              sx={{
-                pl: 10,
-                pr: 10,
-                border: "0px dashed  rgba(116, 123, 255, .5)",
-                position: "relative",
-              }}
-            >
-              <Box sx={{ marginTop: 0 }}>
-                <h1>Good-for-FoodBook</h1>
-                <Outlet />
-              </Box>
-            </Container>
-          </Box>
-          <Box component="footer" sx={{ p: 2, borderTop: "1px dashed grey" }}>
-            <p>&copy; 2024 - falkking soft</p>
-          </Box>
-          {/* </SnackbarProvider> */}
+            <Box component="footer" sx={{ p: 2, borderTop: "1px dashed grey" }}>
+              <p>&copy; 2024 - falkking soft</p>
+            </Box>
+          </SnackbarProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </>

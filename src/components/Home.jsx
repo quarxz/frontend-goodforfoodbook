@@ -1,7 +1,9 @@
 import styles from "./Home.module.css";
 import { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import axios from "axios";
 import { Box, Stack } from "@mui/material";
@@ -21,8 +23,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 
 export function Home() {
-  const theme = useTheme();
-  const location = useLocation();
   const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
   const [filterRecipeType, setFilterRecipeType] = useState({ name: [], type: "" });
   const [recipes, setRecipes] = useState([]);
@@ -30,6 +30,9 @@ export function Home() {
   const [isError, setIsError] = useState(false);
 
   const { user } = useContext(UserContext);
+  const theme = useTheme();
+  const location = useLocation();
+  const { enqueueSnackbar } = useSnackbar();
 
   const matches_max_640 = useMediaQuery("(max-width:640px)");
   const matches_max_960 = useMediaQuery("(max-width:960px)");
@@ -60,10 +63,13 @@ export function Home() {
         console.log(data.recipes);
         console.log(status);
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "info" });
         setRecipes(data.recipes);
       } catch (err) {
-        setIsError(true);
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        setIsError(true);
       } finally {
         setIsLoading(false);
       }

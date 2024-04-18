@@ -1,7 +1,9 @@
 import styles from "./RecipeDetails.module.css";
 import { useContext, useState, useEffect, useCallback } from "react";
-import { UserContext } from "../context/UserContext";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+
+import { UserContext } from "../context/UserContext";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import axios from "axios";
 
@@ -27,6 +29,7 @@ export function RecipeDetails() {
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { id } = useParams();
 
@@ -63,10 +66,14 @@ export function RecipeDetails() {
 
       // console.log(status);
       console.log(data.message);
+
+      enqueueSnackbar(data.message, { variant: "info" });
       setRecipe(data.recipe);
       setCategory(data.recipe.category);
     } catch (err) {
       console.log(err);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
       setIsError(true);
     } finally {
       setIsLoading(false);

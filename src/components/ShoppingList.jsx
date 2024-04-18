@@ -2,7 +2,9 @@ import styles from "./ShoppingList.module.css";
 
 import { useContext, useState, useEffect, useCallback, Fragment } from "react";
 import { Link } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { AddIngredientPanel } from "./AddIngredientPanel";
 import { ShoppingListIngredient } from "./ShoppingListIngredient";
@@ -17,6 +19,7 @@ export function ShoppingList() {
   const [shoppingList, setShoppingList] = useState(null);
 
   const { user } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
@@ -32,9 +35,12 @@ export function ShoppingList() {
         });
         console.log(data);
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "info" });
         loadIngredientsFromShoppingList();
       } catch (err) {
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -48,11 +54,14 @@ export function ShoppingList() {
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromShoppingList`);
       console.log(data.shoppingList);
       console.log(data.message);
+
+      enqueueSnackbar(data.message, { variant: "success" });
       setShoppingList(data.shoppingList);
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);
       console.log(err.response.status);
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
       setIsError(true);
     } finally {
       setIsLoading(false);
