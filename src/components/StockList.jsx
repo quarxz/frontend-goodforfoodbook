@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
 import { MessageContext } from "../context/MessageContext";
-// import { SnackbarProvider, useSnackbar } from "notistack";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { AddIngredientPanel } from "./AddIngredientPanel";
 import { StockListRecipeIngredient } from "./StockListRecipeIngredient";
@@ -28,7 +28,7 @@ export function StockList() {
     console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
   const { addMessage } = useContext(MessageContext);
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
@@ -44,9 +44,12 @@ export function StockList() {
         });
         console.log(data);
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -66,11 +69,13 @@ export function StockList() {
         });
         console.log(data);
         console.log(data.message);
-        // addMessage(data.message);
+        addMessage(data.message);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -85,11 +90,14 @@ export function StockList() {
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromStock`);
       // console.log(data.stock);
       console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "info" });
       setStock(data.stock);
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);
       console.log(err.response.status);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -110,10 +118,13 @@ export function StockList() {
         );
         console.log(data);
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromShoppingList();
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -133,10 +144,13 @@ export function StockList() {
         });
         console.log(data);
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromShoppingList();
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -150,11 +164,14 @@ export function StockList() {
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromShoppingList`);
       console.log(data.shoppingList);
       console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "info" });
       setShoppingList(data.shoppingList);
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);
       console.log(err.response.status);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
       setIsError(true);
     } finally {
       setIsLoading(false);
