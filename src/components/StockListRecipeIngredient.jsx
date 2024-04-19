@@ -235,6 +235,7 @@ export function StockListRecipeIngredient({
                   "&:hover": {
                     bgcolor: red[600],
                   },
+                  bgcolor: green[900],
                 }}
                 onClick={() => {
                   onDeleteIngredientFromShoppingList(

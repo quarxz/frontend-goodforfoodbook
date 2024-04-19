@@ -24,11 +24,37 @@ export function ShoppingList() {
   const { VITE_API_URL: url } = import.meta.env;
   const user_id = "65e5a98c3fd0f135269eabac";
 
+  const deleteIngredientFromShoppingList = useCallback(
+    async (ingredientObjId, quantity) => {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.post(
+          `${url}/users/${user_id}/deleteIngredientFromSchoppingList`,
+          {
+            ingredientObjId: ingredientObjId,
+            quantity: quantity,
+          }
+        );
+        console.log(data);
+        console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
+        loadIngredientsFromShoppingList();
+      } catch (err) {
+        console.log(err);
+        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [url, user_id]
+  );
+
   const addIngredientToShoppingList = useCallback(
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        // const user = "65e5a98c3fd0f135269eabac";
         const { data } = await axios.post(`${url}/users/${user_id}/addIngredientToSchoppingList`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
@@ -103,6 +129,12 @@ export function ShoppingList() {
                       quantity: ingredient.quantity,
                     })
                   }
+                  onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                    deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                  }}
+                  onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                    addIngredientToShoppingList(ingredientObjId, quantity);
+                  }}
                 />
               );
             })}

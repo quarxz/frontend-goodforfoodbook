@@ -139,7 +139,6 @@ export function RootLayout() {
   );
 
   const matches_lg = useMediaQuery(theme.breakpoints.up("lg"));
-  console.log(matches_lg);
 
   // Drawer
   const [open, setOpen] = useState(false);
@@ -272,7 +271,6 @@ export function RootLayout() {
                         <UserFabNav
                           onToggleDrawer={() => {
                             toggleDrawer(false);
-                            console.log("ddd");
                           }}
                         />
                       </Box>
