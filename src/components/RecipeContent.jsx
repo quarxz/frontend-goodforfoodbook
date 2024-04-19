@@ -7,6 +7,7 @@ import axios from "axios";
 
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { Box, Button, Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
@@ -26,7 +27,8 @@ export function RecipeContent({ recipe, isloading, id }) {
   const [countPersons, setCountPersons] = useState(2);
 
   const { user } = useContext(UserContext);
-  const { ingredients, addIngredients } = useContext(IngredientContext);
+  const { addIngredients, addRecipeName } = useContext(IngredientContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -46,6 +48,7 @@ export function RecipeContent({ recipe, isloading, id }) {
           recipeObjectId: id,
         });
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
         setIsChecked(!isChecked);
       }
     } catch (err) {
@@ -53,6 +56,8 @@ export function RecipeContent({ recipe, isloading, id }) {
       console.log(err.response.data.message);
       console.log(err.response.status);
       // setIsChecked(!isChecked);
+      // enqueueSnackbar(err.message, { variant: "info" });
+      enqueueSnackbar(err.response.data.message, { variant: "info" });
       setIsError(true);
     } finally {
       setIsLoadingIntern(false);
@@ -68,13 +73,15 @@ export function RecipeContent({ recipe, isloading, id }) {
           recipeObjectId: id,
         });
         console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "success" });
       }
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);
       console.log(err.response.status);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
       setIsChecked(!isChecked);
-
       setIsError(true);
     } finally {
       setIsLoadingIntern(false);
@@ -102,6 +109,7 @@ export function RecipeContent({ recipe, isloading, id }) {
   useEffect(() => {
     checkRecipeIsInUserRecipeList();
     addIngredients(recipe?.ingredients);
+    addRecipeName(recipe?.name);
   }, [isloading]);
 
   useEffect(() => {

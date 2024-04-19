@@ -58,7 +58,7 @@ export function StockListRecipeIngredient({
         <Box>
           <Grid container spacing={0}>
             <Grid width={180}>{ingredient.name}</Grid>
-            {ingredient.category === "gewuerze" ? (
+            {ingredient.category === "gewuerze" || ingredient.category === "kraeuter" ? (
               ""
             ) : (
               <>

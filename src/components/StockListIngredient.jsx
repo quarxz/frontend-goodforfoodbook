@@ -40,7 +40,11 @@ export function StockListIngredient({ ingredient, onUpdateIngredientsList }) {
                 {ingredient.quantity}
               </Box>
             </Grid>
-            <Grid>{ingredient.unit}</Grid>
+            <Grid>
+              {ingredient.category === "gewuerze" || ingredient.category === "kraeuter"
+                ? ""
+                : ingredient.unit}
+            </Grid>
           </Grid>
         </Stack>
       </Box>

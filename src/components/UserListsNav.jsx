@@ -5,10 +5,13 @@ import { UserContext } from "../context/UserContext";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
 import Typography from "@mui/material/Box";
-
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { Breadcrumbs } from "@mui/material";
+import Fab from "@mui/material/Fab";
+
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function UserListsNav(params) {
   const { user, logout } = useContext(UserContext);
@@ -16,22 +19,40 @@ export function UserListsNav(params) {
 
   return (
     <>
-      <Stack spacing={2} direction="row" sx={{ padding: "0 0 2em 0" }}>
-        <Button
-          variant="outlined"
-          component={NavLink}
-          to="/stocklist"
-          sx={{ "color:active": "red" }}
-        >
-          Bestand
-        </Button>
-        <Button variant="outlined" component={NavLink} to="/shoppinglist">
-          Shopping List
-        </Button>
-        <Button variant="outlined" component={NavLink} to="/shoppingbasket">
-          Basket
-        </Button>
-      </Stack>
+      <Grid
+        container
+        // direction="row"
+        spacing={2}
+        sx={{
+          flexDirection: { xs: "column", lg: "row" },
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+        // sx={{
+        //   padding: "0 0 2em 0",
+        // }}
+      >
+        <Grid>
+          <Button
+            variant="outlined"
+            component={NavLink}
+            to="/stocklist"
+            sx={{ "color:active": "red", display: { xs: "none", lg: "inline-block" } }}
+          >
+            Bestand
+          </Button>
+        </Grid>
+        <Grid>
+          <Button variant="outlined" component={NavLink} to="/shoppinglist">
+            Shopping List
+          </Button>
+        </Grid>
+        <Grid>
+          <Button variant="outlined" component={NavLink} to="/shoppingbasket">
+            Basket
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

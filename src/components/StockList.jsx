@@ -1,8 +1,10 @@
 import styles from "./StockList.module.css";
 import { useContext, useState, useEffect, useCallback, Fragment } from "react";
 import { Link } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
+
 import { MessageContext } from "../context/MessageContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
@@ -23,7 +25,7 @@ export function StockList() {
   const [merged, setMerged] = useState(null);
 
   const { user } = useContext(UserContext);
-  const { ingredients: ingredientsFromRecipe } = useContext(IngredientContext);
+  const { ingredients: ingredientsFromRecipe, recipeName } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
     console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
@@ -90,7 +92,7 @@ export function StockList() {
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromStock`);
       // console.log(data.stock);
       console.log(data.message);
-      enqueueSnackbar(data.message, { variant: "info" });
+      // enqueueSnackbar(data.message, { variant: "info" });
       setStock(data.stock);
     } catch (err) {
       console.log(err);
@@ -164,7 +166,7 @@ export function StockList() {
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromShoppingList`);
       console.log(data.shoppingList);
       console.log(data.message);
-      enqueueSnackbar(data.message, { variant: "info" });
+      // enqueueSnackbar(data.message, { variant: "info" });
       setShoppingList(data.shoppingList);
     } catch (err) {
       console.log(err);
@@ -279,7 +281,7 @@ export function StockList() {
           <Box>
             <Stack spacing={2} direction="column">
               <Box pb={2}>
-                <h4>Zutatenliste für das Rezept: [Rezeptname]</h4>
+                <h4>Zutatenliste für {recipeName}</h4>
               </Box>
               {merged?.map((ingredient) => {
                 return (
