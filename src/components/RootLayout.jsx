@@ -161,26 +161,13 @@ export function RootLayout() {
               }}
             >
               <Box
-                style={{ marginTop: sticky.offset }}
+                style={{ marginTop: 0 }}
                 sx={{
                   margin: "0 auto",
                   border: "0px dashed grey",
-                  padding: "0 0 10px 0",
+                  padding: "10px 0 20px 0",
                   maxWidth: "100%", // Default maxWidth for all breakpoints
-                  // "@media (min-width:640px)": {
-                  //   maxWidth: "600px",
-                  // },
-                  // "@media (min-width:960px)": {
-                  //   maxWidth: "960px",
-                  // },
-                  // "@media (min-width:1280px)": {
-                  //   maxWidth: "1280px",
-                  // },
-                  // "@media (min-width:1920px)": {
-                  //   maxWidth: "1280px",
-                  // },
                   maxWidth: { xs: "640px", sm: "960px", md: "960px", lg: "1200px", xl: "1500px" },
-
                   display: "flex",
                   justifyContent: "space-between",
                 }}
@@ -216,11 +203,19 @@ export function RootLayout() {
 
                 {matches_lg && (
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1em",
-                    }}
+                    sx={
+                      sticky.isSticky
+                        ? {
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0",
+                          }
+                        : {
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "12px",
+                          }
+                    }
                     className="boxUserNav"
                   >
                     <Box
