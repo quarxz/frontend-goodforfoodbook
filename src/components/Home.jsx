@@ -4,9 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
+import { SelectBoxCategory } from "./SelectBoxCategory";
 
 import axios from "axios";
 import { Box, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 import { RecipesFilter } from "./RecipesFilter";
 import { HomeRecipeItem } from "./HomeRecipeItem";
@@ -21,10 +23,11 @@ import ListSubheader from "@mui/material/ListSubheader";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import { Category } from "@mui/icons-material";
+import { SelectBoxRecipeType } from "./SelectBoxRecipeType";
+import { SelectBoxNutrationType } from "./SelectBoxNutrationType";
 
 export function Home() {
-  const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
-  const [filterRecipeType, setFilterRecipeType] = useState({ name: [], type: "" });
   const [recipes, setRecipes] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -77,36 +80,91 @@ export function Home() {
     loadProducts();
   }, []);
 
-  const handleFilter = (e, isActive) => {
-    const id = e.target.id;
+  const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
+  const [filterRecipeTypeEasy, setFilterRecipeTypeEasy] = useState({ name: "", type: "" });
+  const [filterRecipeTypeFast, setFilterRecipeTypeFast] = useState({ name: "", type: "" });
 
-    if (id === "vegetarisch") {
-      setFilterNutrationType({ name: id, type: "nutrationType" });
-      if (id === "vegetarisch" && filterNutrationType.name != "") {
+  const [filterCategory, setFilterCategory] = useState([]);
+  const [filterRecipeType, setFilterRecipeType] = useState([]);
+  const [filterNutrationTypeX, setFilterNutrationTypeX] = useState([]);
+
+  const handleChangeCategory = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setFilterCategory(typeof value === "string" ? value.split(",") : value);
+  };
+  const handleChangeRecipeType = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setFilterRecipeType(typeof value === "string" ? value.split(",") : value);
+  };
+  const handleChangeNutrationType = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setFilterNutrationTypeX(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const handleFilter = (e) => {
+    const filter = e.target.id;
+
+    if (filter === "vegetarisch") {
+      console.log(filter);
+      setFilterNutrationType({ name: filter, type: "nutrationType" });
+      if (filterNutrationType.name === "vegetarisch") {
         setFilterNutrationType({ name: "", type: "" });
       }
     }
-    if (id === "einfach" || id === "schnell") {
-      setFilterRecipeType({ name: id, type: "recipeType" });
-      if (
-        (id === "einfach" && filterRecipeType.name != "") ||
-        (id === "schnell" && filterRecipeType.name != "")
-      ) {
-        setFilterRecipeType({ name: "", type: "" });
+    if (filter === "einfach") {
+      console.log(filter);
+      const obj1 = { name: filter, type: "recipeType" };
+      setFilterRecipeTypeEasy(obj1);
+      if (filterRecipeTypeEasy.name === "einfach") {
+        setFilterRecipeTypeEasy({ name: "", type: "" });
       }
     }
-
-    if (id === "schnell") {
+    if (filter === "schnell") {
+      console.log(filter);
+      const obj2 = { name: filter, type: "recipeType" };
+      setFilterRecipeTypeFast(obj2);
+      if (filterRecipeTypeFast.name === "schnell") {
+        setFilterRecipeTypeFast({ name: "", type: "" });
+      }
     }
   };
 
   return (
-    <>
-      <RecipesFilter
-        onClickFilter={(e, isActive) => {
-          handleFilter(e, isActive);
-        }}
-      />
+    <Grid>
+      <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}>
+        <SelectBoxRecipeType
+          onhandleChangeRecipeType={(e) => {
+            handleChangeRecipeType(e);
+          }}
+          filterRecipeType={filterRecipeType}
+        />
+        <SelectBoxCategory
+          onhandleChangeCategory={(e) => {
+            handleChangeCategory(e);
+          }}
+          filterCategory={filterCategory}
+        />
+        <SelectBoxNutrationType
+          onhandleChangeNutrationType={(e) => {
+            handleChangeNutrationType(e);
+          }}
+          filterNutrationTypeX={filterNutrationTypeX}
+        />
+        <RecipesFilter
+          onClickFilter={(e) => {
+            handleFilter(e);
+          }}
+        />
+      </Grid>
 
       <h2>Home</h2>
 
@@ -151,21 +209,62 @@ export function Home() {
           ></ImageListItem>
           {recipes
             .filter((recipes) => {
+              const isType = filterRecipeType.includes(recipes.recipeType);
+              if (filterRecipeType.length === 0) {
+                return true;
+              }
+              if (isType && filterRecipeType.length !== 0) {
+                if (!isType) {
+                  return false;
+                }
+                return true;
+              }
+            })
+            .filter((recipes) => {
+              const isType = filterNutrationTypeX.includes(recipes.nutrationType);
+              if (filterNutrationTypeX.length === 0) {
+                return true;
+              }
+              if (isType && filterNutrationTypeX.length !== 0) {
+                if (!isType) {
+                  return false;
+                }
+                return true;
+              }
+            })
+            .filter((recipes) => {
+              const isType = filterCategory.includes(recipes.category.name);
+              if (filterCategory.length === 0) {
+                return true;
+              }
+              if (isType && filterCategory.length !== 0) {
+                if (!isType) {
+                  return false;
+                }
+                return true;
+              }
+            })
+
+            .filter((recipes) => {
               if (
-                filterNutrationType.type === "nutrationType" &&
-                filterNutrationType.name === recipes.nutrationType
+                (filterNutrationType.type === "nutrationType" &&
+                  filterNutrationType.name === recipes.nutrationType) ||
+                (filterRecipeTypeEasy.type === "recipeType" &&
+                  filterRecipeTypeEasy.name === recipes.recipeType) ||
+                (filterRecipeTypeFast.type === "recipeType" &&
+                  filterRecipeTypeFast.name === recipes.recipeType)
               ) {
                 return true;
               }
               if (
-                filterRecipeType.type === "recipeType" &&
-                filterRecipeType.name === recipes.recipeType
+                filterNutrationType.name !== "" ||
+                filterRecipeTypeEasy.name !== "" ||
+                filterRecipeTypeFast.name !== ""
               ) {
-                return true;
+                return false;
               }
-              if (filterNutrationType.name === "" || filterRecipeType.name === "") {
-                return true;
-              }
+
+              return true;
             })
             .map((recipe) => {
               // return <HomeRecipeItem recipe={recipe} />;
@@ -185,6 +284,6 @@ export function Home() {
             })}
         </ImageList>
       )}
-    </>
+    </Grid>
   );
 }

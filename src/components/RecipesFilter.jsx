@@ -7,90 +7,82 @@ import { UserContext } from "../context/UserContext";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
 import Typography from "@mui/material/Box";
+
+import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = ["salate", "pizza", "pasta", "linsen"];
 
 export function RecipesFilter({ onClickFilter }) {
   const [isActiveFilterVegan, setIsActivFilterVegan] = useState(false);
   const [isActiveFilterEasy, setIsActiveFilterEasy] = useState(false);
   const [isActiveFilterFast, setIsActiveFilterFast] = useState(false);
 
-  const { user, logout } = useContext(UserContext);
-
-  const handleFilterButtonClick = (e) => {
-    const filter = e.target.id;
-    if (filter === "vegetarisch") {
-      setIsActivFilterVegan(!isActiveFilterVegan);
-    }
-    if (filter === "einfach") {
-      setIsActiveFilterEasy(!isActiveFilterEasy);
-    }
-    if (filter === "schnell") {
-      setIsActiveFilterFast(!isActiveFilterFast);
-    }
-  };
-
   return (
     <>
-      <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}>
+      {/* <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}> */}
+      <Grid container>
         <Grid>
-          <Button variant="outlined">Rezeptart</Button>
+          <Button
+            variant="text"
+            id="vegetarisch"
+            onClick={(e) => {
+              setIsActivFilterVegan((isActiveFilterVegan) => !isActiveFilterVegan);
+              onClickFilter(e);
+            }}
+            style={isActiveFilterVegan ? { fontWeight: 900 } : undefined}
+          >
+            Vegetarisch
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="outlined">Kategorie</Button>
+          <Button
+            variant="text"
+            id="einfach"
+            onClick={(e) => {
+              setIsActiveFilterEasy((isActiveFilterEasy) => !isActiveFilterEasy);
+              onClickFilter(e);
+            }}
+            style={isActiveFilterEasy ? { fontWeight: 900 } : undefined}
+          >
+            Einfach
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="outlined">Ernährung</Button>
-        </Grid>
-
-        <Grid container>
-          <Grid>
-            <Button
-              variant="text"
-              id="vegetarisch"
-              onClick={(e) => {
-                onClickFilter(e);
-                handleFilterButtonClick(e);
-              }}
-              style={isActiveFilterVegan ? { fontWeight: 900 } : undefined}
-            >
-              Vegetarisch
-            </Button>
-          </Grid>
-          <Grid>
-            <Button
-              variant="text"
-              id="einfach"
-              onClick={(e) => {
-                onClickFilter(e, isActiveFilterEasy);
-                handleFilterButtonClick(e);
-              }}
-              style={isActiveFilterEasy ? { fontWeight: 900 } : undefined}
-            >
-              Einach
-            </Button>
-          </Grid>
-          <Grid>
-            <Button
-              variant="text"
-              id="schnell"
-              onClick={(e) => {
-                onClickFilter(e, isActiveFilterFast);
-                handleFilterButtonClick(e);
-              }}
-              style={isActiveFilterFast ? { fontWeight: 900 } : undefined}
-            >
-              Schnell
-            </Button>
-          </Grid>
+          <Button
+            variant="text"
+            id="schnell"
+            onClick={(e) => {
+              setIsActiveFilterFast((isActiveFilterFast) => !isActiveFilterFast);
+              onClickFilter(e);
+            }}
+            style={isActiveFilterFast ? { fontWeight: 900 } : undefined}
+          >
+            Schnell
+          </Button>
         </Grid>
       </Grid>
+      {/* </Grid> */}
     </>
   );
 }
