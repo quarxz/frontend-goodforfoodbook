@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
+import { AlertDialog } from "./AlertDialog";
+
 import { AddIngredientPanel } from "./AddIngredientPanel";
 import { ShoppingListIngredient } from "./ShoppingListIngredient";
 
@@ -17,6 +19,10 @@ export function ShoppingList() {
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [shoppingList, setShoppingList] = useState(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [idToDeleteIngredient, setIdToDeleteIngredient] = useState();
+  const [amountToDelete, setAmountToDelete] = useState();
 
   const { user } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -98,9 +104,32 @@ export function ShoppingList() {
     loadIngredientsFromShoppingList();
   }, [url, user_id, loadIngredientsFromShoppingList]);
 
+  const handleClickOpenDialog = (id, amount, val) => {
+    console.log(id);
+    console.log(amount);
+    setIdToDeleteIngredient(id);
+    setAmountToDelete(amount);
+    setOpenDialog(val);
+  };
+
+  const handleClickDecition = (bool, val, decition) => {
+    console.log(val, decition, idToDeleteIngredient);
+    setOpenDialog(bool);
+    if (decition === "AGREE") {
+      deleteIngredientFromShoppingList(idToDeleteIngredient, amountToDelete);
+    }
+  };
+
   return (
     <>
       <h2>Shopping List</h2>
+
+      <AlertDialog
+        openDialog={openDialog}
+        onHandleDecition={(val, decition) => {
+          handleClickDecition(false, val, decition);
+        }}
+      />
 
       <Stack spacing={5} direction="column" pb={10}>
         <Box>
@@ -119,26 +148,33 @@ export function ShoppingList() {
             <Box pb={2}>
               <h4>Aktueller Bestand</h4>
             </Box>
-            {shoppingList?.map((ingredient) => {
-              return (
-                <ShoppingListIngredient
-                  key={ingredient._id}
-                  ingredient={
-                    (ingredient = {
-                      ...ingredient.ingredient,
-                      quantity: ingredient.quantity,
-                    })
-                  }
-                  onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
-                    deleteIngredientFromShoppingList(ingredientObjId, quantity);
-                  }}
-                  onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
-                    addIngredientToShoppingList(ingredientObjId, quantity);
-                  }}
-                />
-              );
-            })}
-            {}
+            {shoppingList
+              ?.slice()
+              .sort((a, b) => {
+                return a.ingredient.name.localeCompare(b.ingredient.name);
+              })
+              .map((ingredient) => {
+                return (
+                  <ShoppingListIngredient
+                    key={ingredient._id}
+                    ingredient={
+                      (ingredient = {
+                        ...ingredient.ingredient,
+                        quantity: ingredient.quantity,
+                      })
+                    }
+                    onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                      deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                    }}
+                    onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                      addIngredientToShoppingList(ingredientObjId, quantity);
+                    }}
+                    onOpenDialog={(id, amount, val) => {
+                      handleClickOpenDialog(id, amount, val);
+                    }}
+                  />
+                );
+              })}
           </Stack>
         </Box>
       </Stack>

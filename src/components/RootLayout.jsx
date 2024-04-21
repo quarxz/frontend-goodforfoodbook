@@ -35,6 +35,7 @@ import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { UserTopNav } from "./UserTopNav";
+import { Footer } from "./Footer";
 
 const ColorModeContext = createContext({
   toggleColorMode: () => {},
@@ -280,9 +281,7 @@ export function RootLayout() {
               </Container>
             </Box>
 
-            <Box component="footer" sx={{ p: 2, borderTop: "1px dashed grey" }}>
-              <p>&copy; 2024 - falkking soft</p>
-            </Box>
+            <Footer />
           </SnackbarProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>

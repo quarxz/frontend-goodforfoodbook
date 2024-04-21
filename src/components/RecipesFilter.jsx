@@ -40,8 +40,7 @@ export function RecipesFilter({ onClickFilter }) {
 
   return (
     <>
-      {/* <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}> */}
-      <Grid container>
+      <Grid container p={2}>
         <Grid>
           <Button
             variant="text"
@@ -82,7 +81,6 @@ export function RecipesFilter({ onClickFilter }) {
           </Button>
         </Grid>
       </Grid>
-      {/* </Grid> */}
     </>
   );
 }

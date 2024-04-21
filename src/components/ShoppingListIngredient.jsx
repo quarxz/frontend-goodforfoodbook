@@ -146,7 +146,11 @@ export function ShoppingListIngredient({
         <Tooltip title="Aus der Bestandliste löschen" placement="right-end">
           <Button
             onClick={() => {
-              onDeleteIngredientFromShoppingList(ingredient._id, countItem);
+              if (countItem === ingredient.quantity) {
+                onOpenDialog(ingredient._id, countItem, true);
+              } else {
+                onDeleteIngredientFromShoppingList(ingredient._id, countItem);
+              }
             }}
             variant="outlined"
             size="small"

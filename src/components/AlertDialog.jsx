@@ -25,21 +25,20 @@ export function AlertDialog({ openDialog, onHandleDecition }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Die Zutat wird vollständig aus dem Bestand gelöscht. Kann aber jeder Zeit, über das Add
-            Ingredient Panel, angelegt werden.
+            Die Zutat wird vollständig aus der Liste entfernt!
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              onHandleDecition("DISAGREE");
+              onHandleDecition(false, "DISAGREE");
             }}
           >
             Disagree
           </Button>
           <Button
             onClick={() => {
-              onHandleDecition("AGREE");
+              onHandleDecition(true, "AGREE");
             }}
             autoFocus
           >

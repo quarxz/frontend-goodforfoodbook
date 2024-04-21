@@ -34,7 +34,6 @@ const names = ["vegan", "vegetarisch", "low carb", "laktosefrei", "glutenfrei"];
 export function SelectBoxNutrationType({ onhandleChangeNutrationType, filterNutrationTypeX }) {
   return (
     <>
-      {/* <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}> */}
       <Grid>
         <FormControl sx={{ m: 1, width: 250 }}>
           <InputLabel id="demo-multiple-checkbox-label">Ernährung</InputLabel>
@@ -57,7 +56,6 @@ export function SelectBoxNutrationType({ onhandleChangeNutrationType, filterNutr
           </Select>
         </FormControl>
       </Grid>
-      {/* </Grid> */}
     </>
   );
 }

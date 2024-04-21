@@ -26,6 +26,10 @@ export function StockList() {
 
   const [merged, setMerged] = useState(null);
 
+  const [openDialog, setOpenDialog] = useState(false);
+  const [idToDeleteIngredient, setIdToDeleteIngredient] = useState();
+  const [amountToDelete, setAmountToDelete] = useState();
+
   const { user } = useContext(UserContext);
   const { ingredients: ingredientsFromRecipe, recipeName } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
@@ -260,16 +264,19 @@ export function StockList() {
     ingredientsFromRecipe && mergeIngredientsQuantities();
   }, [stock, mergeIngredientsQuantities]);
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [decition, setDecition] = useState(false);
-
-  const handleClickOpenDialog = (x) => {
-    setOpenDialog(x);
+  const handleClickOpenDialog = (id, amount, val) => {
+    console.log(id);
+    console.log(amount);
+    setIdToDeleteIngredient(id);
+    setAmountToDelete(amount);
+    setOpenDialog(val);
   };
-  const handleClickDecition = (bool, decition) => {
-    console.log(decition);
-    setDecition(decition);
+  const handleClickDecition = (bool, val, decition) => {
+    console.log(val, decition, idToDeleteIngredient);
     setOpenDialog(bool);
+    if (decition === "AGREE") {
+      deleteIngredientFromStockList(idToDeleteIngredient, amountToDelete);
+    }
   };
 
   return (
@@ -282,8 +289,8 @@ export function StockList() {
 
       <AlertDialog
         openDialog={openDialog}
-        onHandleDecition={(decition) => {
-          handleClickDecition(false, decition);
+        onHandleDecition={(val, decition) => {
+          handleClickDecition(false, val, decition);
         }}
       />
 
@@ -409,13 +416,12 @@ export function StockList() {
                     onAddIngredientToStockList={(ingredientObjId, quantity) => {
                       addIngredientToStockList(ingredientObjId, quantity);
                     }}
-                    onOpenDialog={() => {
-                      handleClickOpenDialog(true);
+                    onOpenDialog={(id, amount, val) => {
+                      handleClickOpenDialog(id, amount, val);
                     }}
                   />
                 );
               })}
-            {}
           </Stack>
         </Box>
       </Stack>

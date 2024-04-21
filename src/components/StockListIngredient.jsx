@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback, decition } from "react";
 import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
@@ -39,9 +39,6 @@ export function StockListIngredient({
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // console.log(decition);
-  // decition === "AGREE" && onDeleteIngredientFromStockList(ingredient._id, countItem);
-
   return (
     <Stack spacing={2} direction="row">
       <Box
@@ -68,7 +65,7 @@ export function StockListIngredient({
         </Stack>
       </Box>
       <Stack spacing={2} direction="row">
-        <Tooltip title="Zutat bearbeiten" placement="top">
+        <Tooltip title="Zutat bearbeiten" placement="left">
           <Button
             onClick={() => {
               setCountElement((isElementOpen) => !isElementOpen);
@@ -152,7 +149,7 @@ export function StockListIngredient({
           <Button
             onClick={() => {
               if (countItem === ingredient.quantity) {
-                onOpenDialog(true);
+                onOpenDialog(ingredient._id, countItem, true);
               } else {
                 onDeleteIngredientFromStockList(ingredient._id, countItem);
               }

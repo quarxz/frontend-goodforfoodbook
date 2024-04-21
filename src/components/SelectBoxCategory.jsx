@@ -34,7 +34,6 @@ const names = ["salate", "pizza", "pasta", "linsen"];
 export function SelectBoxCategory({ onhandleChangeCategory, filterCategory }) {
   return (
     <>
-      {/* <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}> */}
       <Grid>
         <FormControl sx={{ m: 1, width: 250 }}>
           <InputLabel id="demo-multiple-checkbox-label">Kategorie</InputLabel>
@@ -57,7 +56,6 @@ export function SelectBoxCategory({ onhandleChangeCategory, filterCategory }) {
           </Select>
         </FormControl>
       </Grid>
-      {/* </Grid> */}
     </>
   );
 }

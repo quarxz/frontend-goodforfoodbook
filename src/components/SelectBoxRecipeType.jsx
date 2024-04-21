@@ -34,7 +34,6 @@ const names = ["einfach", "schnell", "gesund", "günstig", "klassisch"];
 export function SelectBoxRecipeType({ onhandleChangeRecipeType, filterRecipeType }) {
   return (
     <>
-      {/* <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}> */}
       <Grid>
         <FormControl sx={{ m: 1, width: 250 }}>
           <InputLabel id="demo-multiple-checkbox-label">Rezeptart</InputLabel>
@@ -57,7 +56,6 @@ export function SelectBoxRecipeType({ onhandleChangeRecipeType, filterRecipeType
           </Select>
         </FormControl>
       </Grid>
-      {/* </Grid> */}
     </>
   );
 }
