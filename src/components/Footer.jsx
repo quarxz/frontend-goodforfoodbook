@@ -35,7 +35,7 @@ export function Footer() {
   return (
     <>
       <Box component="footer" sx={{ p: 3, borderTop: "0px dashed grey" }}>
-        <Grid container spacing={3} direction="column" pt={10} pb={15} bgcolor={grey[900]}>
+        <Grid container spacing={3} direction="column" pt={10} pb={10} bgcolor={grey[900]}>
           <Grid>&copy; 2024 - falkking soft</Grid>
           <Grid container direction="column">
             <Grid>Follow us!</Grid>
