@@ -26,6 +26,8 @@ export function RecipeDetails() {
   const [isError, setIsError] = useState(false);
   const [recipe, setRecipe] = useState();
 
+  const [recipeId, setRecipeId] = useState(null);
+
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,7 +84,8 @@ export function RecipeDetails() {
 
   useEffect(() => {
     loadRecipes();
-  }, []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
 
   return (
     <>

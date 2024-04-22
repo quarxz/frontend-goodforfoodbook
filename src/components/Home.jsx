@@ -20,12 +20,15 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
+import IconButton from "@mui/material/IconButton";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 import { Category } from "@mui/icons-material";
 import { SelectBoxRecipeType } from "./SelectBoxRecipeType";
 import { SelectBoxNutrationType } from "./SelectBoxNutrationType";
+
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
 export function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -276,7 +279,15 @@ export function Home() {
                     <ImageListItemBar
                       id={recipe._id}
                       title={recipe.name}
-                      subtitle={recipe.categorie}
+                      subtitle={recipe.category.name}
+                      actionIcon={
+                        <IconButton
+                          sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+                          aria-label={`info about ${recipe.name}`}
+                        >
+                          <ArrowCircleRightIcon />
+                        </IconButton>
+                      }
                     />
                   </ImageListItem>
                 </Link>

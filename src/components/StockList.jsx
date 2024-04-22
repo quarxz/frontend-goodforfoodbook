@@ -191,6 +191,10 @@ export function StockList() {
     loadIngredientsFromShoppingList();
   }, [url, user_id, loadIngredientsFromStock, loadIngredientsFromShoppingList]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const mergeIngredientsQuantities = useCallback(() => {
     console.log("merge");
     let ingredientsShoppingList = [];
@@ -311,6 +315,9 @@ export function StockList() {
               <Box pb={2}>
                 <h4>Zutatenliste für {recipeName}</h4>
               </Box>
+              {/* /** 
+                IS In STOCK
+              */}
               {merged
                 ?.slice()
                 .sort((a, b) => {
@@ -335,6 +342,9 @@ export function StockList() {
                     </Fragment>
                   );
                 })}
+              {/* /** 
+                 IS NOT IN STOCK && STOCK EQUAL RECIPE QUANTITY
+                */}
               {merged
                 ?.slice()
                 .sort((a, b) => {
@@ -354,11 +364,17 @@ export function StockList() {
                           onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
                             addIngredientToShoppingList(ingredientObjId, quantity);
                           }}
+                          onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                            deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                          }}
                         />
                       )}
                     </Fragment>
                   );
                 })}
+              {/* /** 
+                 IS NOT IN STOCK
+                */}
               {merged
                 ?.slice()
                 .sort((a, b) => {

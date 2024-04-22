@@ -8,11 +8,13 @@ import { Outlet, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { MessageContext } from "../context/MessageContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
+
 import Drawer from "@mui/material/Drawer";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
 import Typography from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -31,9 +33,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mui/material/colors";
 
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
+import KeyboardArrowUpSharpIcon from "@mui/icons-material/KeyboardArrowUpSharp";
+// import ArrowCircleUpSharpIcon from "@mui/icons-material/ArrowCircleUpSharp";
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import ShoppingCartCheckoutSharpIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
 
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { UserTopNav } from "./UserTopNav";
 import { Footer } from "./Footer";
 
@@ -45,11 +49,28 @@ export function RootLayout() {
   //   const theme = useTheme();
   // const colorMode = useContext(ColorModeContext);
 
+  /** To Top Button */
+
+  const [showButton, setShowButton] = useState(false);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const handleScrollButton = () => {
+      window.pageYOffset > 300 ? setShowButton(true) : setShowButton(false);
+    };
+    window.addEventListener("scroll", handleScrollButton);
+    return () => {
+      window.addEventListener("scroll", handleScrollButton);
+    };
+  }, []);
+
   /** */
 
   const [sticky, setSticky] = useState({ isSticky: false, offset: 0 });
   const headerRef = useRef(null);
-
   // handle scroll event
   const handleScroll = (elTopOffset, elHeight) => {
     if (window.pageYOffset > elTopOffset + elHeight) {
@@ -58,21 +79,17 @@ export function RootLayout() {
       setSticky({ isSticky: false, offset: 0 });
     }
   };
-
   // add/remove scroll event listener
   useEffect(() => {
     const header = headerRef.current.getBoundingClientRect();
     const handleScrollEvent = () => {
       handleScroll(header.top, header.height);
     };
-
     window.addEventListener("scroll", handleScrollEvent);
-
     return () => {
       window.removeEventListener("scroll", handleScrollEvent);
     };
   }, []);
-
   /** */
 
   const [userTheme, setUserTheme] = useState();
@@ -103,7 +120,6 @@ export function RootLayout() {
         palette: {
           mode,
           primary: {
-            ...amber,
             ...(mode === "dark"
               ? {
                   main: blue[300],
@@ -152,7 +168,7 @@ export function RootLayout() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <SnackbarProvider maxSnack={6}>
+          <SnackbarProvider maxSnack={3}>
             <Box
               component="nav"
               sx={{
@@ -261,6 +277,7 @@ export function RootLayout() {
                   pr: 10,
                   border: "0px dashed  rgba(116, 123, 255, .5)",
                   position: "relative",
+                  scrollBehavior: "smooth",
                 }}
               >
                 <Box sx={{ marginTop: 0 }}>
@@ -278,6 +295,16 @@ export function RootLayout() {
                     </Drawer>
                   )}
                 </Box>
+                {showButton && (
+                  <Box
+                    className={"scrolltotop"}
+                    sx={{ position: "absolute", right: "20px", bottom: "-120px" }}
+                  >
+                    <Fab color="secondary" aria-label="edit" onClick={handleScrollToTop}>
+                      <KeyboardArrowUpSharpIcon />
+                    </Fab>
+                  </Box>
+                )}
               </Container>
             </Box>
 

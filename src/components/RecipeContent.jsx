@@ -13,6 +13,8 @@ import { Box, Button, Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import { Gauge } from "@mui/x-charts/Gauge";
 import Grid from "@mui/material/Unstable_Grid2";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -20,11 +22,14 @@ import Checkbox from "@mui/material/Checkbox";
 
 import SendIcon from "@mui/icons-material/Send";
 
+import { grey } from "@mui/material/colors";
+
 export function RecipeContent({ recipe, isloading, id }) {
   const [isloadingIntern, setIsLoadingIntern] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [countPersons, setCountPersons] = useState(2);
+  const [rating, setRating] = useState(recipe?.rating === undefined ? 0 : recipe?.rating);
 
   const { user } = useContext(UserContext);
   const { addIngredients, addRecipeName } = useContext(IngredientContext);
@@ -148,25 +153,55 @@ export function RecipeContent({ recipe, isloading, id }) {
     <>
       {recipe?.image ? (
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid>
-              <img
-                src={`${recipe?.image}`}
-                alt={`Bild für rezipe ${recipe?.name}`}
-                loading="lazy"
-                width={600}
-              />
-            </Grid>
-            <Grid>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="Rezept Merken"
-                  onChange={handleRecipeCheck}
-                  checked={isChecked}
-                  sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+          <Grid container spacing={{ xs: 2, lg: 10 }}>
+            <Grid container spacing={2} direction="column">
+              <Grid>
+                <img
+                  src={`${recipe?.image}`}
+                  alt={`Bild für rezipe ${recipe?.name}`}
+                  loading="lazy"
+                  width={600}
                 />
-              </FormGroup>
+              </Grid>
+              <Grid>
+                {recipe?.rating && (
+                  <Grid
+                    container
+                    display="flex"
+                    justifyContent="start"
+                    flexDirection="row-reverse"
+                    spacing={3}
+                  >
+                    <Grid p={2}>
+                      <Typography component="legend">Jetzt Bewerten</Typography>
+                    </Grid>
+                    <Grid>
+                      <Rating
+                        name="simple-controlled"
+                        value={recipe?.rating}
+                        onChange={(event, newValue) => {
+                          setRating(newValue);
+                        }}
+                        precision={0.5}
+                        size="large"
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container spacing={5} direction="column">
+              <Grid>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label="Rezept Merken"
+                    onChange={handleRecipeCheck}
+                    checked={isChecked}
+                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                  />
+                </FormGroup>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
@@ -190,12 +225,13 @@ export function RecipeContent({ recipe, isloading, id }) {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid sm={12} md={12} lg={6}>
-                <Box>
+                {/* <Box>
                   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
                   tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
                   vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
                   no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </Box>
+                </Box> */}
+                <Box>{recipe?.preparing}</Box>
               </Grid>
               <Grid sm={12} md={12} lg={6}>
                 <Stack
@@ -291,14 +327,18 @@ export function RecipeContent({ recipe, isloading, id }) {
       ) : (
         <Box
           sx={{
-            padding: "2em 0 0 0",
+            padding: "0 0 0 0",
             border: "0px dashed grey",
             display: "flex",
             justifyContent: "center",
             flexGrow: 1,
           }}
+          bgcolor={grey[100]}
         >
-          <Box sx={{ padding: "2em 0 " }}>
+          <Grid
+            component="ul"
+            sx={{ padding: "2em 0 ", "li:not(:first-of-type)": { borderTop: "1px solid #eee" } }}
+          >
             {recipe?.ingredients.map((ingredient) => {
               return (
                 <RecipeContentIngredients
@@ -313,7 +353,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                 />
               );
             })}
-          </Box>
+          </Grid>
         </Box>
       )}
       {isloading ? (
@@ -328,15 +368,15 @@ export function RecipeContent({ recipe, isloading, id }) {
             flexGrow: 1,
           }}
         >
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              <Grid>
+          {/* <Box sx={{ flexGrow: 1, border: "0px solid red" }}>
+            <Grid container spacing={2} sx={{ border: "0px solid red" }}>
+              <Grid xs={12} lg={6}>
                 <h2>Zubereitung</h2>
                 {recipe?.preparing}
               </Grid>
-              <Grid></Grid>
+              <Grid xs={12} lg={6}></Grid>
             </Grid>
-          </Box>
+          </Box> */}
         </Box>
       )}
 

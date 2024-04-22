@@ -120,6 +120,10 @@ export function ShoppingList() {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <h2>Shopping List</h2>
