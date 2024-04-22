@@ -129,8 +129,8 @@ export function RootLayout() {
           ...(mode === "dark"
             ? {
                 background: {
-                  default: "#242424",
-                  paper: "#242424",
+                  default: grey[900],
+                  paper: pink[100],
                 },
               }
             : {
@@ -140,14 +140,14 @@ export function RootLayout() {
                 },
               }),
           text: {
-            ...(mode === "light"
+            ...(mode === "dark"
               ? {
-                  primary: grey[900],
-                  secondary: grey[900],
-                }
-              : {
                   primary: grey[200],
                   secondary: grey[200],
+                }
+              : {
+                  primary: grey[900],
+                  secondary: grey[900],
                 }),
           },
         },

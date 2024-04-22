@@ -16,14 +16,7 @@ import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/
 
 export function RecipeContentIngredients({ ingredient, countPersons }) {
   return (
-    <Grid
-      component="li"
-      container
-      spacing={2}
-      direction="row"
-      sx={{ padding: ".5em 0 " }}
-      bgcolor={grey[100]}
-    >
+    <Grid component="li" container spacing={2} direction="row" sx={{ padding: ".5em 0 " }}>
       <Grid width={40} textAlign="right">
         {ingredient.quantity === 0
           ? ""

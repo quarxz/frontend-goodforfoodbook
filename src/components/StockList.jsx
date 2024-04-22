@@ -16,6 +16,8 @@ import { StockListIngredient } from "./StockListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
 
+import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
+
 import axios from "axios";
 
 export function StockList() {
@@ -30,6 +32,7 @@ export function StockList() {
   const [idToDeleteIngredient, setIdToDeleteIngredient] = useState();
   const [amountToDelete, setAmountToDelete] = useState();
 
+  const [isLoadingFromStock, setIsLoadingFromStock] = useState(false);
   const { user } = useContext(UserContext);
   const { ingredients: ingredientsFromRecipe, recipeName } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
@@ -95,6 +98,7 @@ export function StockList() {
   const loadIngredientsFromStock = useCallback(async () => {
     try {
       setIsLoading(true);
+      setIsLoadingFromStock(true);
       const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromStock`);
       console.log(data.stock);
       console.log(data.message);
@@ -109,6 +113,7 @@ export function StockList() {
       setIsError(true);
     } finally {
       setIsLoading(false);
+      setIsLoadingFromStock(false);
     }
   }, [url, user_id]);
 
@@ -302,7 +307,11 @@ export function StockList() {
         <Box>
           <h4> Bestandsliste Artikel hinzufügen</h4>
         </Box>
-        <Box p={2} sx={{ border: "1px solid #eee" }}>
+        <Box
+          p={2}
+          sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
+          borderRadius={1}
+        >
           <AddIngredientPanel
             onUpdateIngredientsList={(ingredientObjId, quantity) => {
               addIngredientToStockList(ingredientObjId, quantity);
@@ -435,6 +444,7 @@ export function StockList() {
                     onOpenDialog={(id, amount, val) => {
                       handleClickOpenDialog(id, amount, val);
                     }}
+                    isLoadingFromStock={isLoadingFromStock}
                   />
                 );
               })}

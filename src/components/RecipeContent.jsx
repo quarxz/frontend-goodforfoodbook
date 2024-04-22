@@ -333,7 +333,7 @@ export function RecipeContent({ recipe, isloading, id }) {
             justifyContent: "center",
             flexGrow: 1,
           }}
-          bgcolor={grey[100]}
+          bgcolor={grey[800]}
         >
           <Grid
             component="ul"

@@ -7,7 +7,7 @@ import { SnackbarProvider, useSnackbar } from "notistack";
 import { SelectBoxCategory } from "./SelectBoxCategory";
 
 import axios from "axios";
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Fab, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 import { RecipesFilter } from "./RecipesFilter";
@@ -21,6 +21,9 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
 import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
+import Fade from "@mui/material/Fade";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -29,6 +32,9 @@ import { SelectBoxRecipeType } from "./SelectBoxRecipeType";
 import { SelectBoxNutrationType } from "./SelectBoxNutrationType";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import ClearIcon from "@mui/icons-material/Clear";
+
+import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 
 export function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -113,18 +119,22 @@ export function Home() {
     setFilterNutrationTypeX(typeof value === "string" ? value.split(",") : value);
   };
 
+  const handleClearAllFilter = () => {
+    setFilterCategory([]);
+    setFilterRecipeType([]);
+    setFilterNutrationTypeX([]);
+  };
+
   const handleFilter = (e) => {
     const filter = e.target.id;
 
     if (filter === "vegetarisch") {
-      console.log(filter);
       setFilterNutrationType({ name: filter, type: "nutrationType" });
       if (filterNutrationType.name === "vegetarisch") {
         setFilterNutrationType({ name: "", type: "" });
       }
     }
     if (filter === "einfach") {
-      console.log(filter);
       const obj1 = { name: filter, type: "recipeType" };
       setFilterRecipeTypeEasy(obj1);
       if (filterRecipeTypeEasy.name === "einfach") {
@@ -132,7 +142,6 @@ export function Home() {
       }
     }
     if (filter === "schnell") {
-      console.log(filter);
       const obj2 = { name: filter, type: "recipeType" };
       setFilterRecipeTypeFast(obj2);
       if (filterRecipeTypeFast.name === "schnell") {
@@ -162,6 +171,30 @@ export function Home() {
           }}
           filterNutrationTypeX={filterNutrationTypeX}
         />
+        {filterRecipeType.length || filterCategory.length || filterNutrationTypeX.length ? (
+          <Grid p={1} ml={3} mr={1}>
+            <Tooltip
+              title="Auswahl löschen"
+              TransitionComponent={Fade}
+              TransitionProps={{ timeout: 700 }}
+              placement="top"
+            >
+              <Fab
+                onClick={handleClearAllFilter}
+                aria-label="delete"
+                sx={{
+                  "&:hover": {
+                    bgcolor: red[600],
+                  },
+                }}
+              >
+                <ClearIcon />
+              </Fab>
+            </Tooltip>
+          </Grid>
+        ) : (
+          <Grid></Grid>
+        )}
         <RecipesFilter
           onClickFilter={(e) => {
             handleFilter(e);

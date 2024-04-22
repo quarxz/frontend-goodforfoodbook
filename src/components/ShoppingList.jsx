@@ -13,6 +13,8 @@ import { ShoppingListIngredient } from "./ShoppingListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
 
+import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
+
 import axios from "axios";
 
 export function ShoppingList() {
@@ -139,7 +141,11 @@ export function ShoppingList() {
         <Box>
           <h4> Bestandsliste Artikel hinzufügen</h4>
         </Box>
-        <Box p={2} sx={{ border: "1px solid #eee" }}>
+        <Box
+          p={2}
+          sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
+          borderRadius={1}
+        >
           <AddIngredientPanel
             onUpdateIngredientsList={(ingredientObjId, quantity) => {
               addIngredientToShoppingList(ingredientObjId, quantity);
