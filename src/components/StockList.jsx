@@ -42,14 +42,13 @@ export function StockList() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
-  const user_id = "65e5a98c3fd0f135269eabac";
 
   const deleteIngredientFromStockList = useCallback(
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user_id}/deleteIngredient`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/deleteIngredient`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
@@ -66,7 +65,7 @@ export function StockList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
 
   const addIngredientToStockList = useCallback(
@@ -74,7 +73,7 @@ export function StockList() {
       try {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user_id}/addIngredient`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredient`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
@@ -92,14 +91,14 @@ export function StockList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
 
   const loadIngredientsFromStock = useCallback(async () => {
     try {
       setIsLoading(true);
       setIsLoadingFromStock(true);
-      const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromStock`);
+      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromStock`);
       console.log(data.stock);
       console.log(data.message);
       // enqueueSnackbar(data.message, { variant: "info" });
@@ -115,7 +114,7 @@ export function StockList() {
       setIsLoading(false);
       setIsLoadingFromStock(false);
     }
-  }, [url, user_id]);
+  }, [url, user?.id]);
 
   const deleteIngredientFromShoppingList = useCallback(
     async (ingredientObjId, quantity) => {
@@ -123,7 +122,7 @@ export function StockList() {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
         const { data } = await axios.post(
-          `${url}/users/${user_id}/deleteIngredientFromSchoppingList`,
+          `${url}/users/${user?.id}/deleteIngredientFromSchoppingList`,
           {
             ingredientObjId: ingredientObjId,
             quantity: quantity,
@@ -143,7 +142,7 @@ export function StockList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
 
   const addIngredientToShoppingList = useCallback(
@@ -151,7 +150,7 @@ export function StockList() {
       try {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user_id}/addIngredientToSchoppingList`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredientToSchoppingList`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
@@ -169,12 +168,12 @@ export function StockList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromShoppingList`);
+      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
       console.log(data.shoppingList);
       console.log(data.message);
       // enqueueSnackbar(data.message, { variant: "info" });
@@ -189,12 +188,12 @@ export function StockList() {
     } finally {
       setIsLoading(false);
     }
-  }, [url, user_id]);
+  }, [url, user?.id]);
 
   useEffect(() => {
     loadIngredientsFromStock();
     loadIngredientsFromShoppingList();
-  }, [url, user_id, loadIngredientsFromStock, loadIngredientsFromShoppingList]);
+  }, [url, user?.id, loadIngredientsFromStock, loadIngredientsFromShoppingList]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

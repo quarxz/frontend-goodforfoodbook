@@ -2,7 +2,6 @@ import styles from "./RecipeDetails.module.css";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 
-import { UserContext } from "../context/UserContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 import axios from "axios";
@@ -34,8 +33,6 @@ export function RecipeDetails() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { id } = useParams();
-
-  const { user } = useContext(UserContext);
 
   const matches_max_640 = useMediaQuery("(max-width:640px)");
   const matches_max_960 = useMediaQuery("(max-width:960px)");

@@ -195,30 +195,32 @@ export function StockListRecipeIngredient({
                 </Tooltip>
 
                 {ingredient.shoppingListQuantity !== null && (
-                  <Tooltip
-                    title="Aus Shopping List entfernen"
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 700 }}
-                    placement="left"
-                  >
-                    <Fab
-                      aria-label="delete"
-                      sx={{
-                        "&:hover": {
-                          bgcolor: red[600],
-                        },
-                        bgcolor: green[900],
-                      }}
-                      onClick={() => {
-                        onDeleteIngredientFromShoppingList(
-                          ingredient._id,
-                          ingredient.shoppingListQuantity
-                        );
-                      }}
+                  <Box zIndex={1}>
+                    <Tooltip
+                      title="Aus Shopping List entfernen"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 700 }}
+                      placement="left"
                     >
-                      {ingredient.shoppingListQuantity}
-                    </Fab>
-                  </Tooltip>
+                      <Fab
+                        aria-label="delete"
+                        sx={{
+                          "&:hover": {
+                            bgcolor: red[600],
+                          },
+                          bgcolor: green[900],
+                        }}
+                        onClick={() => {
+                          onDeleteIngredientFromShoppingList(
+                            ingredient._id,
+                            ingredient.shoppingListQuantity
+                          );
+                        }}
+                      >
+                        {ingredient.shoppingListQuantity}
+                      </Fab>
+                    </Tooltip>
+                  </Box>
                 )}
               </>
             )}
@@ -298,30 +300,32 @@ export function StockListRecipeIngredient({
                 </Tooltip>
 
                 {ingredient.shoppingListQuantity !== null && (
-                  <Tooltip
-                    title="Aus Shopping List entfernen"
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 700 }}
-                    placement="left"
-                  >
-                    <Fab
-                      aria-label="delete"
-                      sx={{
-                        "&:hover": {
-                          bgcolor: red[600],
-                        },
-                        bgcolor: green[900],
-                      }}
-                      onClick={() => {
-                        onDeleteIngredientFromShoppingList(
-                          ingredient._id,
-                          ingredient.shoppingListQuantity
-                        );
-                      }}
+                  <Box zIndex={1}>
+                    <Tooltip
+                      title="Aus Shopping List entfernen"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 700 }}
+                      placement="left"
                     >
-                      {ingredient.shoppingListQuantity}
-                    </Fab>
-                  </Tooltip>
+                      <Fab
+                        aria-label="delete"
+                        sx={{
+                          "&:hover": {
+                            bgcolor: red[600],
+                          },
+                          bgcolor: green[900],
+                        }}
+                        onClick={() => {
+                          onDeleteIngredientFromShoppingList(
+                            ingredient._id,
+                            ingredient.shoppingListQuantity
+                          );
+                        }}
+                      >
+                        {ingredient.shoppingListQuantity}
+                      </Fab>
+                    </Tooltip>
+                  </Box>
                 )}
               </>
             )}

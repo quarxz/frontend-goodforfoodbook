@@ -10,6 +10,7 @@ import Typography from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
 
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -17,7 +18,13 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
-export function UserTopNav({ theme, colorMode }) {
+export function UserTopNav({
+  theme,
+  colorMode,
+  onHandleOpenLoginDialog,
+  onHandleClickOpenUserDialog,
+  selectedValue,
+}) {
   const { user, logout } = useContext(UserContext);
 
   const matches_lg = useMediaQuery(theme.breakpoints.up("lg"));
@@ -25,8 +32,13 @@ export function UserTopNav({ theme, colorMode }) {
   return (
     <>
       <Stack spacing={5} direction="row">
+        {/* <Box p={0.8}>Logged in as: {`${selectedValue}`}</Box> */}
         {user ? (
-          <Box p={0.8}>Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}</Box>
+          <Box p={0.1}>
+            <Button onClick={onHandleClickOpenUserDialog}>
+              Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}
+            </Button>
+          </Box>
         ) : (
           ""
         )}
@@ -36,15 +48,16 @@ export function UserTopNav({ theme, colorMode }) {
             {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Box>
-        <Box p={0.8}>
+        <Box p={0.1}>
           {matches_lg && (
             <>
               {user ? (
-                <NavLink to="/login" onClick={logout}>
+                <Button LinkComponent={NavLink} to="/" onClick={logout}>
                   Logout
-                </NavLink>
+                </Button>
               ) : (
-                <NavLink to="/login">Login</NavLink>
+                <Button onClick={onHandleOpenLoginDialog}>Login</Button>
+                // <NavLink to="/login">Login</NavLink>
               )}
             </>
           )}

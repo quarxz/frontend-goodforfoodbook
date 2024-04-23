@@ -32,6 +32,7 @@ export function RecipeContent({ recipe, isloading, id }) {
   const [rating, setRating] = useState(recipe?.rating === undefined ? 0 : recipe?.rating);
 
   const { user } = useContext(UserContext);
+
   const { addIngredients, addRecipeName } = useContext(IngredientContext);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -48,10 +49,12 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user}/checkRecipeIsInUserRecipeList`, {
-          recipeObjectId: id,
-        });
+        const { data } = await axios.post(
+          `${url}/users/${user?.id}/checkRecipeIsInUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
         console.log(data.message);
         enqueueSnackbar(data.message, { variant: "success" });
         setIsChecked(!isChecked);
@@ -73,8 +76,7 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user}/addRecipeToUserRecipeList`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/addRecipeToUserRecipeList`, {
           recipeObjectId: id,
         });
         console.log(data.message);
@@ -97,8 +99,7 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user}/deleteRecipeToUserRecipeList`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/deleteRecipeToUserRecipeList`, {
           recipeObjectId: id,
         });
         console.log(data.message);

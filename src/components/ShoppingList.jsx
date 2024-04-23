@@ -30,14 +30,13 @@ export function ShoppingList() {
   const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
-  const user_id = "65e5a98c3fd0f135269eabac";
 
   const deleteIngredientFromShoppingList = useCallback(
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
         const { data } = await axios.post(
-          `${url}/users/${user_id}/deleteIngredientFromSchoppingList`,
+          `${url}/users/${user?.id}/deleteIngredientFromSchoppingList`,
           {
             ingredientObjId: ingredientObjId,
             quantity: quantity,
@@ -56,14 +55,14 @@ export function ShoppingList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
 
   const addIngredientToShoppingList = useCallback(
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        const { data } = await axios.post(`${url}/users/${user_id}/addIngredientToSchoppingList`, {
+        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredientToSchoppingList`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
@@ -80,12 +79,12 @@ export function ShoppingList() {
         setIsLoading(false);
       }
     },
-    [url, user_id]
+    [url, user?.id]
   );
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user_id}/getIngredientsFromShoppingList`);
+      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
       console.log(data.shoppingList);
       console.log(data.message);
 
@@ -100,11 +99,11 @@ export function ShoppingList() {
     } finally {
       setIsLoading(false);
     }
-  }, [url, user_id]);
+  }, [url, user?.id]);
 
   useEffect(() => {
     loadIngredientsFromShoppingList();
-  }, [url, user_id, loadIngredientsFromShoppingList]);
+  }, [url, user?.id, loadIngredientsFromShoppingList]);
 
   const handleClickOpenDialog = (id, amount, val) => {
     console.log(id);

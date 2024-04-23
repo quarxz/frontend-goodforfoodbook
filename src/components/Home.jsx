@@ -46,24 +46,16 @@ export function Home() {
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
 
-  const matches_max_640 = useMediaQuery("(max-width:640px)");
-  const matches_max_960 = useMediaQuery("(max-width:960px)");
-  const matches_max_1280 = useMediaQuery("(max-width:1280px)");
-  const matches_max_1920 = useMediaQuery("(max-width:1920px)");
+  // const matches_max_640 = useMediaQuery("(max-width:640px)");
+  // const matches_max_960 = useMediaQuery("(max-width:960px)");
+  // const matches_max_1280 = useMediaQuery("(max-width:1280px)");
+  // const matches_max_1920 = useMediaQuery("(max-width:1920px)");
 
-  // const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
-  // const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
-  // const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
-  // const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
-  // const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
-  // console.log("matchDownXS:", matchDownXS);
-  // console.log("matchDownSM:", matchDownSM);
-  // console.log("matchDownMD:", matchDownMD);
-  // console.log("matchDownLG:", matchDownLG);
-  // console.log("matchDownXL:", matchDownXL);
-
-  // console.log(location);
-  // console.log(user);
+  const xs = useMediaQuery(theme.breakpoints.down("xs"));
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
+  const md = useMediaQuery(theme.breakpoints.down("md"));
+  const lg = useMediaQuery(theme.breakpoints.down("lg"));
+  const xl = useMediaQuery(theme.breakpoints.down("xl"));
 
   const { VITE_API_URL: url } = import.meta.env;
 
@@ -215,33 +207,13 @@ export function Home() {
         </Box>
       ) : (
         <ImageList
-          cols={
-            matches_max_640
-              ? 2
-              : matches_max_960
-              ? 2
-              : matches_max_1280
-              ? 3
-              : matches_max_1920
-              ? 4
-              : 5
-          }
+          cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
           // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
           sx={{ mt: 3, width: "100%" }}
         >
           <ImageListItem
             key="Subheader"
-            cols={
-              matches_max_640
-                ? 2
-                : matches_max_960
-                ? 2
-                : matches_max_1280
-                ? 3
-                : matches_max_1920
-                ? 4
-                : 5
-            }
+            cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
           ></ImageListItem>
           {recipes
             .filter((recipes) => {

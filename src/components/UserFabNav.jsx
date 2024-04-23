@@ -19,7 +19,7 @@ import AppsSharpIcon from "@mui/icons-material/AppsSharp";
 import ChecklistSharpIcon from "@mui/icons-material/ChecklistSharp";
 import ShoppingCartCheckoutSharpIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
 
-export function UserFabNav({ onToggleDrawer }) {
+export function UserFabNav({ onToggleDrawer, onHandleOpenLoginDialog }) {
   const { user, logout } = useContext(UserContext);
 
   return (
@@ -44,10 +44,12 @@ export function UserFabNav({ onToggleDrawer }) {
                   bgcolor: red[400],
                 }}
                 component={NavLink}
-                to="/login"
+                to="/"
                 aria-label="logout"
-                onKeyDown={onToggleDrawer}
-                onClick={logout}
+                onClick={() => {
+                  onToggleDrawer();
+                  logout();
+                }}
               >
                 <CloseSharpIcon />
               </Fab>
@@ -62,9 +64,12 @@ export function UserFabNav({ onToggleDrawer }) {
                   bgcolor: green[400],
                 }}
                 component={NavLink}
-                to="/login"
+                to="/"
                 aria-label="login"
-                onKeyDown={onToggleDrawer}
+                onClick={() => {
+                  onHandleOpenLoginDialog();
+                  onToggleDrawer();
+                }}
               >
                 <KeySharpIcon />
               </Fab>
@@ -78,7 +83,9 @@ export function UserFabNav({ onToggleDrawer }) {
               component={NavLink}
               to="/"
               aria-label="go to Start page"
-              onKeyDown={onToggleDrawer}
+              onClick={() => {
+                onToggleDrawer();
+              }}
             >
               <AppsSharpIcon />
             </Fab>
@@ -90,7 +97,9 @@ export function UserFabNav({ onToggleDrawer }) {
               component={NavLink}
               to="/stocklist"
               aria-label="got to stock list"
-              onKeyDown={onToggleDrawer}
+              onClick={() => {
+                onToggleDrawer();
+              }}
             >
               <ChecklistSharpIcon />
             </Fab>
@@ -98,7 +107,14 @@ export function UserFabNav({ onToggleDrawer }) {
         </Grid>
         <Grid>
           <Tooltip title="Shopping Liste" placement="left">
-            <Fab component={NavLink} to="/shoppinglist" aria-label="go to shopping list">
+            <Fab
+              component={NavLink}
+              to="/shoppinglist"
+              aria-label="go to shopping list"
+              onClick={() => {
+                onToggleDrawer();
+              }}
+            >
               <ShoppingCartCheckoutSharpIcon />
             </Fab>
           </Tooltip>
