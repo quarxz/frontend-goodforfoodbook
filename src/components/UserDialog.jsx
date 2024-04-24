@@ -16,12 +16,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
-// const Transition = forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} />;
-// });
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { dark } from "@mui/material/styles/createPalette";
+
+const label = { inputProps: { "aria-label": "Switch demo" } };
 
 export function UserDialog({ open, onHandleCloseUserDialog }) {
   const { user } = useContext(UserContext);
+
+  const [colorTheme, setColorTheme] = useState(user?.colorTheme === "dark" ? true : false);
   console.log(user?.address);
   return (
     <>
@@ -44,7 +49,7 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
               Sound
             </Typography> */}
             <Button autoFocus color="inherit" onClick={onHandleCloseUserDialog}>
-              save
+              close
             </Button>
           </Toolbar>
         </AppBar>
@@ -57,7 +62,7 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
             <ListItemText primary="Default notification ringtone" secondary="Tethys" />
           </ListItemButton>
         </List> */}
-        <Grid spacing={1} direction="column" ml={10} mt={10}>
+        <Grid container spacing={1} direction="column" ml={10} mt={10}>
           <Grid container direction="row">
             <Grid width={100}>Name:</Grid>
             <Grid width={200}>{user?.name?.firstname}</Grid>
@@ -71,10 +76,7 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
             <Grid width={200}>{user?.email}</Grid>
           </Grid>
 
-          <Grid container direction="row">
-            <Grid width={100}>Adresse:</Grid>
-          </Grid>
-          <Grid container direction="row">
+          <Grid container direction="row" mt={3}>
             <Grid width={100}>Strasse:</Grid>
             <Grid width={200}>{`${user?.address?.street} ${user?.address?.number}`}</Grid>
           </Grid>
@@ -82,13 +84,29 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
             <Grid width={100}>PLZ/Ort:</Grid>
             <Grid width={400}>{`${user?.address?.postcode} ${user?.address?.city}`}</Grid>
           </Grid>
-          <Grid container direction="row">
+
+          <Grid container direction="row" mt={3}>
             <Grid width={100}>Ernährung:</Grid>
             <Grid width={200}>{user?.primaryNutrationType}</Grid>
           </Grid>
-          <Grid container direction="row">
+
+          <Grid container direction="row" mt={3}>
             <Grid width={100}>Mitglied:</Grid>
             <Grid width={200}>{user?.activeMember ? "ja" : "nein"}</Grid>
+          </Grid>
+
+          <Grid container direction="row" mt={3}>
+            <Grid width={100}>Theme:</Grid>
+            <Grid width={200}>{user?.colorTheme}</Grid>
+          </Grid>
+
+          <Grid container direction="column" mt={3}>
+            <Grid>
+              <FormControlLabel control={<Switch defaultChecked />} label="Dark Theme" />
+            </Grid>
+            <Grid>
+              <FormControlLabel control={<Switch />} label="Light Theme" />
+            </Grid>
           </Grid>
         </Grid>
       </Dialog>
