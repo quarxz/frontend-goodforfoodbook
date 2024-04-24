@@ -27,7 +27,7 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
   const { user } = useContext(UserContext);
 
   const [colorTheme, setColorTheme] = useState(user?.colorTheme === "dark" ? true : false);
-  console.log(user?.address);
+  //   console.log(user?.address);
   return (
     <>
       {/* <Button variant="outlined" onClick={onHandleClickOpen}>

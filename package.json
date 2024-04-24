@@ -21,7 +21,10 @@
     "@mui/x-charts": "^7.1.1",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "notistack": "^3.0.1",
+    "or": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3"

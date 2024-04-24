@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useRef } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -13,7 +13,7 @@ import Fab from "@mui/material/Fab";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-export function UserListsNav(params) {
+export function UserListsNav() {
   const { user, logout } = useContext(UserContext);
   const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
 
@@ -49,7 +49,8 @@ export function UserListsNav(params) {
         </Grid>
         <Grid>
           <Button variant="outlined" component={NavLink} to="/shoppingbasket">
-            Basket
+            {/* <Button variant="outlined" onClick={onHandleCreatePDF}> */}
+            Kontakt
           </Button>
         </Grid>
       </Grid>

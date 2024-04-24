@@ -191,6 +191,13 @@ export function RootLayout() {
     setOpenUserDialog(val);
   };
 
+  // Create PDF
+  const [createPDF, setCreatePDF] = useState(false);
+  const handleCreatePDF = (val) => {
+    setCreatePDF(val);
+    console.log("create PDF");
+  };
+
   return (
     <>
       <ColorModeContext.Provider value={colorMode}>
