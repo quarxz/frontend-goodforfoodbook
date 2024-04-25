@@ -3,7 +3,6 @@ import { useContext, useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-
 import { ShoppingListContext } from "../context/ShoppingListContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { SelectBoxCategory } from "./SelectBoxCategory";
