@@ -7,7 +7,7 @@ import axios from "axios";
 
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 import { Box, Button, Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
@@ -193,15 +193,19 @@ export function RecipeContent({ recipe, isloading, id }) {
             </Grid>
             <Grid container spacing={5} direction="column">
               <Grid>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Rezept Merken"
-                    onChange={handleRecipeCheck}
-                    checked={isChecked}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </FormGroup>
+                {user ? (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Rezept Merken"
+                      onChange={handleRecipeCheck}
+                      checked={isChecked}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                    />
+                  </FormGroup>
+                ) : (
+                  ""
+                )}
               </Grid>
             </Grid>
           </Grid>
@@ -381,7 +385,7 @@ export function RecipeContent({ recipe, isloading, id }) {
         </Box>
       )}
 
-      {isloading ? (
+      {!user ? (
         ""
       ) : (
         <Box p={5} sx={{ display: "flex", justifyContent: "center" }}>

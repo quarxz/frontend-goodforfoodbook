@@ -4,6 +4,7 @@ import "./index.css";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { ShoppingListProvider } from "./context/ShoppingListContext";
 import { UserProvider } from "./context/UserContext";
 import { IngredientProvider } from "./context/IngredientContext";
 import { MessageProvider } from "./context/MessageContext";
@@ -51,14 +52,15 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-
-  <MessageProvider>
-    <IngredientProvider>
-      <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>
-    </IngredientProvider>
-  </MessageProvider>
+  <ShoppingListProvider>
+    <MessageProvider>
+      <IngredientProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </IngredientProvider>
+    </MessageProvider>
+  </ShoppingListProvider>
 
   // </React.StrictMode>,
 );

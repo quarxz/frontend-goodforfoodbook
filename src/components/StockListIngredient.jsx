@@ -45,7 +45,7 @@ export function StockListIngredient({
 
   const timer = setTimeout(() => {
     setVisibility("visible");
-  }, 2000);
+  }, 1000);
 
   return (
     <>

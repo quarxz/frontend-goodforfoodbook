@@ -1,8 +1,10 @@
 import styles from "./Home.module.css";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
+
+import { ShoppingListContext } from "../context/ShoppingListContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { SelectBoxCategory } from "./SelectBoxCategory";
 
@@ -42,6 +44,7 @@ export function Home() {
   const [isError, setIsError] = useState(false);
 
   const { user } = useContext(UserContext);
+  const { addShoppingListContextIngredients } = useContext(ShoppingListContext);
   const theme = useTheme();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
@@ -59,27 +62,52 @@ export function Home() {
 
   const { VITE_API_URL: url } = import.meta.env;
 
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        setIsLoading(true);
-        const { data, status } = await axios.get(`${url}/recipes`);
-        console.log(data.recipes);
-        console.log(status);
-        console.log(data.message);
-        enqueueSnackbar(data.message, { variant: "info" });
-        setRecipes(data.recipes);
-      } catch (err) {
-        console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
+  const loadIngredientsFromShoppingList = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
+      console.log(data.shoppingList);
+      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "info" });
+      // setShoppingList(data.shoppingList);
+      addShoppingListContextIngredients(data.shoppingList.length);
+    } catch (err) {
+      console.log(err);
+      console.log(err.response.data.message);
+      console.log(err.response.status);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-    loadProducts();
-  }, []);
+  }, [url, user?.id]);
+
+  useEffect(() => {
+    loadIngredientsFromShoppingList();
+  }, [url, user?.id, loadIngredientsFromShoppingList]);
+
+  const loadRecipes = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data, status } = await axios.get(`${url}/recipes`);
+      console.log(data.recipes);
+      console.log(status);
+      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "info" });
+      setRecipes(data.recipes);
+    } catch (err) {
+      console.log(err);
+      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [url, user?.id]);
+  useEffect(() => {
+    loadRecipes();
+  }, [loadRecipes]);
 
   const [filterNutrationType, setFilterNutrationType] = useState({ name: "", type: "" });
   const [filterRecipeTypeEasy, setFilterRecipeTypeEasy] = useState({ name: "", type: "" });

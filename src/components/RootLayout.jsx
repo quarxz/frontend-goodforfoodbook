@@ -289,9 +289,7 @@ export function RootLayout() {
                         selectedValue={selectedValue}
                       />
                     </Box>
-                    <Box>
-                      <UserListsNav />
-                    </Box>
+                    <Box>{user ? <UserListsNav /> : ""}</Box>
                   </Box>
                 )}
               </Box>

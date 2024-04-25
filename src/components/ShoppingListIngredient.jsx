@@ -39,7 +39,7 @@ export function ShoppingListIngredient({
 
   const timer = setTimeout(() => {
     setVisibility("visible");
-  }, 2000);
+  }, 1000);
 
   return (
     <>

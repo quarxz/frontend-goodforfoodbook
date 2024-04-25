@@ -41,7 +41,7 @@ export function StockListRecipeIngredient({
 
   const timer = setTimeout(() => {
     setVisibility("visible");
-  }, 2000);
+  }, 1000);
 
   const MIN_LENGTH = 1;
 
@@ -193,7 +193,6 @@ export function StockListRecipeIngredient({
                     <SendIcon />
                   </Button>
                 </Tooltip>
-
                 {ingredient.shoppingListQuantity !== null && (
                   <Box zIndex={1}>
                     <Tooltip
@@ -298,7 +297,6 @@ export function StockListRecipeIngredient({
                     <SendIcon />
                   </Button>
                 </Tooltip>
-
                 {ingredient.shoppingListQuantity !== null && (
                   <Box zIndex={1}>
                     <Tooltip

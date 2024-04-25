@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
-
 import { MessageContext } from "../context/MessageContext";
+import { ShoppingListContext } from "../context/ShoppingListContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { AlertDialog } from "./AlertDialog";
@@ -39,6 +39,7 @@ export function StockList() {
     console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
   const { addMessage } = useContext(MessageContext);
+  const { addShoppingListContextIngredients } = useContext(ShoppingListContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
@@ -178,6 +179,7 @@ export function StockList() {
       console.log(data.message);
       // enqueueSnackbar(data.message, { variant: "info" });
       setShoppingList(data.shoppingList);
+      addShoppingListContextIngredients(data.shoppingList.length);
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);
@@ -373,6 +375,7 @@ export function StockList() {
                             addIngredientToShoppingList(ingredientObjId, quantity);
                           }}
                           onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                            console.log("delete: isInstock and Equal Res");
                             deleteIngredientFromShoppingList(ingredientObjId, quantity);
                           }}
                         />
@@ -401,6 +404,7 @@ export function StockList() {
                             addIngredientToShoppingList(ingredientObjId, quantity);
                           }}
                           onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                            console.log("delete: isInstock");
                             deleteIngredientFromShoppingList(ingredientObjId, quantity);
                           }}
                         />

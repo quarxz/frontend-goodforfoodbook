@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/x-charts": "^7.1.1",
+    "@react-pdf/renderer": "^3.4.3",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "html2canvas": "^1.4.1",

@@ -1,6 +1,6 @@
 import styles from "./ShoppingList.module.css";
 
-import { useContext, useState, useEffect, useCallback, useRef } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import ReactDOM from "react-dom";
@@ -22,8 +22,6 @@ import PrintSharpIcon from "@mui/icons-material/PrintSharp";
 import axios from "axios";
 
 export function ShoppingList() {
-  const myComponentRef = useRef(null);
-
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [shoppingList, setShoppingList] = useState(null);
@@ -131,22 +129,13 @@ export function ShoppingList() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // Function to trigger myFunction inside MyComponent
-  const triggerFunction = () => {
-    // Accessing the ref and calling myFunction
-    myComponentRef.current.generatePDF();
-  };
-
   return (
     <>
       <h2>Shopping List</h2>
 
-      {shoppingList && (
+      {shoppingList?.length !== 0 && (
         <Box p={3} mb={5}>
-          <Button variant="outlined" onClick={triggerFunction} startIcon={<PrintSharpIcon />}>
-            Print to PDF
-          </Button>
-          <PDFCreator shoppingList={shoppingList} user={user} ref={myComponentRef} />
+          <PDFCreator shoppingList={shoppingList} user={user} />
         </Box>
       )}
 
