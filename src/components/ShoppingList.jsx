@@ -7,6 +7,7 @@ import ReactDOM from "react-dom";
 import PDFCreator from "./PDFCreator";
 
 import { UserContext } from "../context/UserContext";
+import { ShoppingListContext } from "../context/ShoppingListContext";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 import { AlertDialog } from "./AlertDialog";
@@ -31,6 +32,7 @@ export function ShoppingList() {
   const [amountToDelete, setAmountToDelete] = useState();
 
   const { user } = useContext(UserContext);
+  const { addShoppingListContextIngredients } = useContext(ShoppingListContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const { VITE_API_URL: url } = import.meta.env;
@@ -94,6 +96,7 @@ export function ShoppingList() {
 
       enqueueSnackbar(data.message, { variant: "success" });
       setShoppingList(data.shoppingList);
+      addShoppingListContextIngredients(data.shoppingList.length);
     } catch (err) {
       console.log(err);
       console.log(err.response.data.message);

@@ -293,9 +293,10 @@ export function StockList() {
     <>
       <h2>StockList</h2>
 
-      {/* <Box p={10}>
-        <Link onClick={() => navigate(-1)}>Back</Link>
-      </Box> */}
+      {/* <Box p={5}> */}
+      {/* <Link onClick={() => navigate(-1)}>Back</Link> */}
+      {/* Link zurück */}
+      {/* </Box> */}
 
       <AlertDialog
         openDialog={openDialog}

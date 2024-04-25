@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useMemo, createContext } from "react";
 
 import { Outlet, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { IngredientContext } from "../context/IngredientContext";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
@@ -26,6 +27,7 @@ export function UserTopNav({
   selectedValue,
 }) {
   const { user, logout } = useContext(UserContext);
+  const { addIngredients } = useContext(IngredientContext);
 
   const matches_lg = useMediaQuery(theme.breakpoints.up("lg"));
 
@@ -56,7 +58,16 @@ export function UserTopNav({
                   Logout
                 </Button>
               ) : (
-                <Button onClick={onHandleOpenLoginDialog}>Login</Button>
+                <Button
+                  LinkComponent={NavLink}
+                  to="/"
+                  onClick={() => {
+                    onHandleOpenLoginDialog();
+                    addIngredients("");
+                  }}
+                >
+                  Login
+                </Button>
                 // <NavLink to="/login">Login</NavLink>
               )}
             </>
