@@ -2,7 +2,15 @@ import styles from "./RootLayout.module.css";
 import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { useState, useContext, useEffect, useMemo, createContext, useRef } from "react";
+import {
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  createContext,
+  useRef,
+  useCallback,
+} from "react";
 import { Outlet, NavLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
@@ -99,14 +107,12 @@ export function RootLayout() {
 
   const { message } = useContext(MessageContext);
 
-  const getNavClass = ({ isActive }) => (isActive ? styles["nav-active"] : undefined);
+  let prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
-  const prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
   if (prefersDarkTheme.matches) {
     console.log("Dark Theme!", prefersDarkTheme.matches);
   }
   const [mode, setMode] = useState(prefersDarkTheme.matches ? "dark" : "light");
-  // const [mode, setMode] = useState("dark" ? "dark" : "light");
   // console.log(user?.colorTheme);
 
   const colorMode = useMemo(
@@ -118,6 +124,25 @@ export function RootLayout() {
     }),
     []
   );
+
+  useEffect(() => {
+    // console.log(user?.colorTheme, mode, prefersDarkTheme.matches);
+    if (user && user?.colorTheme === "light") {
+      colorMode.toggleColorMode();
+    }
+    if (user && user?.colorTheme === undefined && prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (user && user?.colorTheme !== "" && prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (!user && mode === "light") {
+      colorMode.toggleColorMode();
+    }
+  }, [user]);
 
   const theme = useMemo(
     () =>
@@ -200,8 +225,8 @@ export function RootLayout() {
     <>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <SnackbarProvider maxSnack={1}>
+          <CssBaseline enableColorScheme />
+          <SnackbarProvider maxSnack={3}>
             <Box
               component="nav"
               sx={{
@@ -225,9 +250,7 @@ export function RootLayout() {
                 }}
               >
                 <Box component="div" className={styles.logo}>
-                  <NavLink className={getNavClass} to="/">
-                    Good-for-FoodBook
-                  </NavLink>
+                  <NavLink to="/">Good-for-FoodBook</NavLink>
                 </Box>
 
                 {!matches_lg && (
