@@ -39,6 +39,7 @@ import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/
 
 export function Home() {
   const [recipes, setRecipes] = useState([]);
+  const [usersRecipesList, setUsersRecipesList] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -47,6 +48,8 @@ export function Home() {
   const theme = useTheme();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
+
+  const { VITE_API_URL: url } = import.meta.env;
 
   // const matches_max_640 = useMediaQuery("(max-width:640px)");
   // const matches_max_960 = useMediaQuery("(max-width:960px)");
@@ -58,8 +61,6 @@ export function Home() {
   const md = useMediaQuery(theme.breakpoints.down("md"));
   const lg = useMediaQuery(theme.breakpoints.down("lg"));
   const xl = useMediaQuery(theme.breakpoints.down("xl"));
-
-  const { VITE_API_URL: url } = import.meta.env;
 
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
@@ -85,6 +86,30 @@ export function Home() {
   useEffect(() => {
     loadIngredientsFromShoppingList();
   }, [url, user?.id, loadIngredientsFromShoppingList]);
+
+  const loadRecipesFromUserRecipesList = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`${url}/users/${user?.id}/getRecipesFromUserRecipes`);
+      console.log(data.recipes);
+      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "info" });
+      setUsersRecipesList(data.recipes);
+    } catch (err) {
+      console.log(err);
+      console.log(err.response.data.message);
+      console.log(err.response.status);
+      // enqueueSnackbar(err.message, { variant: "error" });
+      // enqueueSnackbar(err.response.data.message, { variant: "error" });
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [url, user?.id]);
+
+  useEffect(() => {
+    loadRecipesFromUserRecipesList();
+  }, [url, user?.id, loadRecipesFromUserRecipesList]);
 
   const loadRecipes = useCallback(async () => {
     try {
@@ -170,7 +195,7 @@ export function Home() {
   };
 
   return (
-    <Grid>
+    <Grid container>
       <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}>
         <SelectBoxRecipeType
           onhandleChangeRecipeType={(e) => {
@@ -221,92 +246,131 @@ export function Home() {
         />
       </Grid>
 
-      <h2>Home</h2>
+      <Grid container spacing={3}>
+        <h2>Rezepte die Glücklich machen ...</h2>
 
-      {isloading ? (
-        <Box sx={{ width: "100%" }}>
-          {/* <LinearProgress /> */}
-          <Stack spacing={2}>
-            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
-            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
-            <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
-          </Stack>
-        </Box>
-      ) : (
-        <ImageList
-          cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
-          // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
-          sx={{ mt: 3, width: "100%" }}
-        >
-          <ImageListItem
-            key="Subheader"
+        {isloading ? (
+          <Box sx={{ width: "100%" }}>
+            {/* <LinearProgress /> */}
+            <Stack spacing={2}>
+              <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+              <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+              <Skeleton variant="rectangular" animation="wave" width="100%" height={20} />
+            </Stack>
+          </Box>
+        ) : (
+          <ImageList
             cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
-          ></ImageListItem>
-          {recipes
-            .filter((recipes) => {
-              const isType = filterRecipeType.includes(recipes.recipeType);
-              if (filterRecipeType.length === 0) {
-                return true;
-              }
-              if (isType && filterRecipeType.length !== 0) {
-                if (!isType) {
-                  return false;
+            // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
+            sx={{ mt: 3, width: "100%" }}
+          >
+            <ImageListItem
+              key="Subheader"
+              cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
+            ></ImageListItem>
+            {recipes
+              .filter((recipes) => {
+                const isType = filterRecipeType.includes(recipes.recipeType);
+                if (filterRecipeType.length === 0) {
+                  return true;
                 }
-                return true;
-              }
-            })
-            .filter((recipes) => {
-              const isType = filterNutrationTypeX.includes(recipes.nutrationType);
-              if (filterNutrationTypeX.length === 0) {
-                return true;
-              }
-              if (isType && filterNutrationTypeX.length !== 0) {
-                if (!isType) {
-                  return false;
+                if (isType && filterRecipeType.length !== 0) {
+                  if (!isType) {
+                    return false;
+                  }
+                  return true;
                 }
-                return true;
-              }
-            })
-            .filter((recipes) => {
-              const isType = filterCategory.includes(recipes.category.name);
-              if (filterCategory.length === 0) {
-                return true;
-              }
-              if (isType && filterCategory.length !== 0) {
-                if (!isType) {
-                  return false;
+              })
+              .filter((recipes) => {
+                const isType = filterNutrationTypeX.includes(recipes.nutrationType);
+                if (filterNutrationTypeX.length === 0) {
+                  return true;
                 }
-                return true;
-              }
-            })
+                if (isType && filterNutrationTypeX.length !== 0) {
+                  if (!isType) {
+                    return false;
+                  }
+                  return true;
+                }
+              })
+              .filter((recipes) => {
+                const isType = filterCategory.includes(recipes.category.name);
+                if (filterCategory.length === 0) {
+                  return true;
+                }
+                if (isType && filterCategory.length !== 0) {
+                  if (!isType) {
+                    return false;
+                  }
+                  return true;
+                }
+              })
 
-            .filter((recipes) => {
-              if (
-                (filterNutrationType.type === "nutrationType" &&
-                  filterNutrationType.name === recipes.nutrationType) ||
-                (filterRecipeTypeEasy.type === "recipeType" &&
-                  filterRecipeTypeEasy.name === recipes.recipeType) ||
-                (filterRecipeTypeFast.type === "recipeType" &&
-                  filterRecipeTypeFast.name === recipes.recipeType)
-              ) {
-                return true;
-              }
-              if (
-                filterNutrationType.name !== "" ||
-                filterRecipeTypeEasy.name !== "" ||
-                filterRecipeTypeFast.name !== ""
-              ) {
-                return false;
-              }
+              .filter((recipes) => {
+                if (
+                  (filterNutrationType.type === "nutrationType" &&
+                    filterNutrationType.name === recipes.nutrationType) ||
+                  (filterRecipeTypeEasy.type === "recipeType" &&
+                    filterRecipeTypeEasy.name === recipes.recipeType) ||
+                  (filterRecipeTypeFast.type === "recipeType" &&
+                    filterRecipeTypeFast.name === recipes.recipeType)
+                ) {
+                  return true;
+                }
+                if (
+                  filterNutrationType.name !== "" ||
+                  filterRecipeTypeEasy.name !== "" ||
+                  filterRecipeTypeFast.name !== ""
+                ) {
+                  return false;
+                }
 
-              return true;
-            })
-            .map((recipe) => {
-              // return <HomeRecipeItem recipe={recipe} />;
+                return true;
+              })
+              .map((recipe) => {
+                // return <HomeRecipeItem recipe={recipe} />;
+                return (
+                  <Link key={recipe._id} to={"/" + recipe._id}>
+                    <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+                      <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
+
+                      <ImageListItemBar
+                        id={recipe._id}
+                        title={recipe.name}
+                        subtitle={recipe.category.name}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+                            aria-label={`info about ${recipe.name}`}
+                          >
+                            <ArrowCircleRightIcon />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  </Link>
+                );
+              })}
+          </ImageList>
+        )}
+      </Grid>
+      {user ? (
+        <Grid container spacing={3} sx={{ padding: "2em 0 2em 0" }}>
+          <h2>Deine Auswahl an Rezepten ...</h2>
+          <ImageList
+            cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
+            // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
+            sx={{ mt: 3, width: "100%" }}
+          >
+            <ImageListItem
+              key="Subheader"
+              cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
+            ></ImageListItem>
+            {usersRecipesList.map((recipe) => {
               return (
                 <Link key={recipe._id} to={"/" + recipe._id}>
                   <ImageListItem key={recipe._id} sx={{ m: 2 }}>
-                    <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
+                    <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" width={50} />
 
                     <ImageListItemBar
                       id={recipe._id}
@@ -325,7 +389,10 @@ export function Home() {
                 </Link>
               );
             })}
-        </ImageList>
+          </ImageList>
+        </Grid>
+      ) : (
+        ""
       )}
     </Grid>
   );

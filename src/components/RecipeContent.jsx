@@ -21,6 +21,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 import SendIcon from "@mui/icons-material/Send";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 
 import { grey } from "@mui/material/colors";
 
@@ -225,7 +227,7 @@ export function RecipeContent({ recipe, isloading, id }) {
         </Box>
       ) : (
         <Box sx={{ flexGrow: 1 }}>
-          <h2>{recipe?.name}</h2>
+          <h3>Zubereitung</h3>
 
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
@@ -294,29 +296,27 @@ export function RecipeContent({ recipe, isloading, id }) {
               flexGrow: 1,
             }}
           >
-            <Stack spacing={5} direction="row">
+            <Stack spacing={5} direction="row" p={1}>
               <h2>Zutaten</h2>
               <Box>
-                <Stack spacing={5} direction="row">
+                <Stack spacing={5} direction="row" p={1}>
                   <Button
-                    variant="outlined"
                     onClick={() => {
                       countPersons > 1 && setCountPersons((prev) => prev - 1);
                     }}
                   >
-                    -
+                    <RemoveSharpIcon />
                   </Button>
-                  <Stack spacing={1} direction="row">
+                  <Stack spacing={1} direction="row" p={1}>
                     <Box>{countPersons}</Box>
                     <Box>{countPersons > 1 ? "Personen" : "Person"}</Box>
                   </Stack>
                   <Button
-                    variant="outlined"
                     onClick={() => {
                       countPersons < 10 && setCountPersons((prev) => prev + 1);
                     }}
                   >
-                    +
+                    <AddSharpIcon />
                   </Button>
                 </Stack>
               </Box>

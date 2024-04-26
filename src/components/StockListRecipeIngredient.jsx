@@ -207,7 +207,7 @@ export function StockListRecipeIngredient({
                           "&:hover": {
                             bgcolor: red[600],
                           },
-                          bgcolor: green[900],
+                          bgcolor: green[500],
                         }}
                         onClick={() => {
                           onDeleteIngredientFromShoppingList(
@@ -311,7 +311,7 @@ export function StockListRecipeIngredient({
                           "&:hover": {
                             bgcolor: red[600],
                           },
-                          bgcolor: green[900],
+                          bgcolor: green[500],
                         }}
                         onClick={() => {
                           onDeleteIngredientFromShoppingList(
@@ -330,9 +330,6 @@ export function StockListRecipeIngredient({
           </>
         )}
       </Stack>
-
-      {/* </>
-      )} */}
     </>
   );
 }

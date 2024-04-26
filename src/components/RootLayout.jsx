@@ -95,7 +95,7 @@ export function RootLayout() {
   /** */
 
   const [userTheme, setUserTheme] = useState();
-  const { user, logout, login } = useContext(UserContext);
+  const { user, login } = useContext(UserContext);
 
   const { message } = useContext(MessageContext);
 
@@ -106,11 +106,14 @@ export function RootLayout() {
     console.log("Dark Theme!", prefersDarkTheme.matches);
   }
   const [mode, setMode] = useState(prefersDarkTheme.matches ? "dark" : "light");
+  // const [mode, setMode] = useState("dark" ? "dark" : "light");
+  // console.log(user?.colorTheme);
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        console.log("mode mode mode");
       },
     }),
     []
@@ -176,9 +179,11 @@ export function RootLayout() {
   const handleClose = (val) => {
     console.log("handleClose");
     setOpenLoginDialog(false);
-    setSelectedValue(val);
-    login(val);
     setOpenDrawerSideNav(false);
+    if (val !== "") {
+      setSelectedValue(val);
+      login(val);
+    }
   };
 
   // User Dialog
@@ -191,19 +196,12 @@ export function RootLayout() {
     setOpenUserDialog(val);
   };
 
-  // Create PDF
-  const [createPDF, setCreatePDF] = useState(false);
-  const handleCreatePDF = (val) => {
-    setCreatePDF(val);
-    console.log("create PDF");
-  };
-
   return (
     <>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <SnackbarProvider maxSnack={3}>
+          <SnackbarProvider maxSnack={1}>
             <Box
               component="nav"
               sx={{
@@ -311,7 +309,8 @@ export function RootLayout() {
                 }}
               >
                 <Box sx={{ marginTop: 0 }}>
-                  <h1>Good-for-FoodBook</h1>
+                  {/* <h1>Good-for-FoodBook</h1> */}
+
                   <Outlet />
                   <LoginDialog
                     selectedValue={selectedValue}
@@ -346,6 +345,8 @@ export function RootLayout() {
                 <UserDialog
                   open={openUserDialog}
                   onHandleCloseUserDialog={() => handleCloseUserDialog(false)}
+                  theme={theme}
+                  colorMode={colorMode}
                 />
               </Container>
             </Box>

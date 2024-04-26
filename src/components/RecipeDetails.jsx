@@ -86,7 +86,7 @@ export function RecipeDetails() {
 
   return (
     <>
-      <h2>Recipe Details</h2>
+      <h1>{recipe?.name}</h1>
       <RecipeContent recipe={recipe} isloading={isloading} id={id} />
       <RecipeBottomGallery recipe={recipe} trigger={isloading} />
     </>

@@ -15,6 +15,9 @@ import { StockListRecipeIngredient } from "./StockListRecipeIngredient";
 import { StockListIngredient } from "./StockListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+
+import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
 
 import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 
@@ -291,7 +294,7 @@ export function StockList() {
 
   return (
     <>
-      <h2>StockList</h2>
+      <h2>Deine Zutaten Listen</h2>
 
       {/* <Box p={5}> */}
       {/* <Link onClick={() => navigate(-1)}>Back</Link> */}
@@ -305,11 +308,23 @@ export function StockList() {
         }}
       />
 
-      <Stack spacing={5} direction="column" pb={10}>
-        <Box>
-          <h4> Bestandsliste Artikel hinzufügen</h4>
-        </Box>
-        <Box
+      <Grid spacing={2} direction="column">
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid>
+            <h4>Bestandsliste Artikel hinzufügen</h4>
+          </Grid>
+          <Grid pt={2}>
+            <PlaylistAddSharpIcon fontSize="large" />
+          </Grid>
+        </Grid>
+        <Grid
           p={2}
           sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
           borderRadius={1}
@@ -319,142 +334,144 @@ export function StockList() {
               addIngredientToStockList(ingredientObjId, quantity);
             }}
           />
-        </Box>
-        {ingredientsFromRecipe ? (
-          <Box>
-            <Stack spacing={2} direction="column">
-              <Box pb={2}>
-                <h4>Zutatenliste für {recipeName}</h4>
-              </Box>
-              {/* /** 
+        </Grid>
+
+        <Grid direction="column" mt={5}>
+          <Grid>
+            {ingredientsFromRecipe ? (
+              <Stack spacing={2} direction="column">
+                <Box pb={2}>
+                  <h4>Zutatenliste für {recipeName}</h4>
+                </Box>
+                {/* /** 
                 IS In STOCK
               */}
-              {merged
-                ?.slice()
-                .sort((a, b) => {
-                  return a.name.localeCompare(b.name);
-                })
-                .map((ingredient) => {
-                  const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
-                  const stockEqualsrecipeQunatity =
-                    ingredient.stockQuantity === ingredient.recipeQuantity;
-                  return (
-                    <Fragment key={ingredient._id}>
-                      {isInStock && !stockEqualsrecipeQunatity && (
-                        <StockListRecipeIngredient
-                          key={ingredient._id}
-                          isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
-                          ingredient={ingredient}
-                          onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
-                            addIngredientToShoppingList(ingredientObjId, quantity);
-                          }}
-                        />
-                      )}
-                    </Fragment>
-                  );
-                })}
-              {/* /** 
+                {merged
+                  ?.slice()
+                  .sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                  })
+                  .map((ingredient) => {
+                    const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
+                    const stockEqualsrecipeQunatity =
+                      ingredient.stockQuantity === ingredient.recipeQuantity;
+                    return (
+                      <Fragment key={ingredient._id}>
+                        {isInStock && !stockEqualsrecipeQunatity && (
+                          <StockListRecipeIngredient
+                            key={ingredient._id}
+                            isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
+                            ingredient={ingredient}
+                            onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                              addIngredientToShoppingList(ingredientObjId, quantity);
+                            }}
+                          />
+                        )}
+                      </Fragment>
+                    );
+                  })}
+                {/* /** 
                  IS NOT IN STOCK && STOCK EQUAL RECIPE QUANTITY
                 */}
-              {merged
-                ?.slice()
-                .sort((a, b) => {
-                  return a.name.localeCompare(b.name);
-                })
-                .map((ingredient) => {
-                  const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
-                  const stockEqualsrecipeQunatity =
-                    ingredient.stockQuantity === ingredient.recipeQuantity;
-                  return (
-                    <Fragment key={ingredient._id}>
-                      {isInStock && stockEqualsrecipeQunatity && (
-                        <StockListRecipeIngredient
-                          key={ingredient._id}
-                          isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
-                          ingredient={ingredient}
-                          onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
-                            addIngredientToShoppingList(ingredientObjId, quantity);
-                          }}
-                          onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
-                            console.log("delete: isInstock and Equal Res");
-                            deleteIngredientFromShoppingList(ingredientObjId, quantity);
-                          }}
-                        />
-                      )}
-                    </Fragment>
-                  );
-                })}
-              {/* /** 
+                {merged
+                  ?.slice()
+                  .sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                  })
+                  .map((ingredient) => {
+                    const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
+                    const stockEqualsrecipeQunatity =
+                      ingredient.stockQuantity === ingredient.recipeQuantity;
+                    return (
+                      <Fragment key={ingredient._id}>
+                        {isInStock && stockEqualsrecipeQunatity && (
+                          <StockListRecipeIngredient
+                            key={ingredient._id}
+                            isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
+                            ingredient={ingredient}
+                            onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                              addIngredientToShoppingList(ingredientObjId, quantity);
+                            }}
+                            onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                              console.log("delete: isInstock and Equal Res");
+                              deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                            }}
+                          />
+                        )}
+                      </Fragment>
+                    );
+                  })}
+                {/* /** 
                  IS NOT IN STOCK
                 */}
-              {merged
+                {merged
+                  ?.slice()
+                  .sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                  })
+                  .map((ingredient) => {
+                    const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
+                    return (
+                      <Fragment key={ingredient._id}>
+                        {!isInStock && (
+                          <StockListRecipeIngredient
+                            key={ingredient._id}
+                            isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
+                            ingredient={ingredient}
+                            onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                              addIngredientToShoppingList(ingredientObjId, quantity);
+                            }}
+                            onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                              console.log("delete: isInstock");
+                              deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                            }}
+                          />
+                        )}
+                      </Fragment>
+                    );
+                  })}
+              </Stack>
+            ) : (
+              ""
+            )}
+          </Grid>
+          <Grid mt={5}>
+            <Stack spacing={2} direction="column">
+              <Box pb={2}>
+                <h4>Aktueller Bestand</h4>
+              </Box>
+              {stock
                 ?.slice()
                 .sort((a, b) => {
-                  return a.name.localeCompare(b.name);
+                  return a.ingredient.name.localeCompare(b.ingredient.name);
                 })
                 .map((ingredient) => {
-                  const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
                   return (
-                    <Fragment key={ingredient._id}>
-                      {!isInStock && (
-                        <StockListRecipeIngredient
-                          key={ingredient._id}
-                          isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
-                          ingredient={ingredient}
-                          onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
-                            addIngredientToShoppingList(ingredientObjId, quantity);
-                          }}
-                          onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
-                            console.log("delete: isInstock");
-                            deleteIngredientFromShoppingList(ingredientObjId, quantity);
-                          }}
-                        />
-                      )}
-                    </Fragment>
+                    <StockListIngredient
+                      key={ingredient._id}
+                      ingredient={
+                        (ingredient = {
+                          ...ingredient.ingredient,
+                          quantity: ingredient.quantity,
+                        })
+                      }
+                      onDeleteIngredientFromStockList={(ingredientObjId, quantity) => {
+                        deleteIngredientFromStockList(ingredientObjId, quantity);
+                      }}
+                      onAddIngredientToStockList={(ingredientObjId, quantity) => {
+                        addIngredientToStockList(ingredientObjId, quantity);
+                      }}
+                      onOpenDialog={(id, amount, val) => {
+                        handleClickOpenDialog(id, amount, val);
+                      }}
+                      isLoadingFromStock={isLoadingFromStock}
+                    />
                   );
                 })}
             </Stack>
-          </Box>
-        ) : (
-          ""
-        )}
-
-        <Box>
-          <Stack spacing={2} direction="column">
-            <Box pb={2}>
-              <h4>Aktueller Bestand</h4>
-            </Box>
-            {stock
-              ?.slice()
-              .sort((a, b) => {
-                return a.ingredient.name.localeCompare(b.ingredient.name);
-              })
-              .map((ingredient) => {
-                return (
-                  <StockListIngredient
-                    key={ingredient._id}
-                    ingredient={
-                      (ingredient = {
-                        ...ingredient.ingredient,
-                        quantity: ingredient.quantity,
-                      })
-                    }
-                    onDeleteIngredientFromStockList={(ingredientObjId, quantity) => {
-                      deleteIngredientFromStockList(ingredientObjId, quantity);
-                    }}
-                    onAddIngredientToStockList={(ingredientObjId, quantity) => {
-                      addIngredientToStockList(ingredientObjId, quantity);
-                    }}
-                    onOpenDialog={(id, amount, val) => {
-                      handleClickOpenDialog(id, amount, val);
-                    }}
-                    isLoadingFromStock={isLoadingFromStock}
-                  />
-                );
-              })}
-          </Stack>
-        </Box>
-      </Stack>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 }

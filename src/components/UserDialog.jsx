@@ -16,25 +16,21 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
-import Switch from "@mui/material/Switch";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { dark } from "@mui/material/styles/createPalette";
+import { UserSwitchThemeColorMode } from "./UserSwitchThemeColorMode";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
-export function UserDialog({ open, onHandleCloseUserDialog }) {
+export function UserDialog({ open, onHandleCloseUserDialog, theme, colorMode }) {
   const { user } = useContext(UserContext);
 
-  const [colorTheme, setColorTheme] = useState(user?.colorTheme === "dark" ? true : false);
-  //   console.log(user?.address);
   return (
     <>
       {/* <Button variant="outlined" onClick={onHandleClickOpen}>
         Open full-screen dialog
       </Button> */}
       {/* <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}> */}
-      <Dialog fullScreen open={open} onClose={onHandleCloseUserDialog} sx={{ padding: "1em" }}>
+      <Dialog fullScreen open={open} onClose={onHandleCloseUserDialog} sx={{ padding: "3em" }}>
         <AppBar sx={{ position: "relative" }}>
           <Toolbar sx={{ display: "flex", justifyContent: "flex-end" }}>
             <IconButton
@@ -53,15 +49,6 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
             </Button>
           </Toolbar>
         </AppBar>
-        {/* <List>
-          <ListItemButton>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-          </ListItemButton>
-        </List> */}
         <Grid container spacing={1} direction="column" ml={10} mt={10}>
           <Grid container direction="row">
             <Grid width={100}>Name:</Grid>
@@ -102,11 +89,13 @@ export function UserDialog({ open, onHandleCloseUserDialog }) {
 
           <Grid container direction="column" mt={3}>
             <Grid>
-              <FormControlLabel control={<Switch defaultChecked />} label="Dark Theme" />
+              <UserSwitchThemeColorMode
+                colorTheme={user?.colorTheme}
+                theme={theme}
+                colorMode={colorMode}
+              />
             </Grid>
-            <Grid>
-              <FormControlLabel control={<Switch />} label="Light Theme" />
-            </Grid>
+            <Grid>{/* <FormControlLabel control={<Switch />} label="Light Theme" /> */}</Grid>
           </Grid>
         </Grid>
       </Dialog>

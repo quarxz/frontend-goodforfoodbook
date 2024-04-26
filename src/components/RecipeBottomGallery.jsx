@@ -13,6 +13,9 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+
 const { VITE_API_URL: url } = import.meta.env;
 
 export function RecipeBottomGallery({ recipe, trigger }) {
@@ -22,8 +25,7 @@ export function RecipeBottomGallery({ recipe, trigger }) {
   const [isError, setIsError] = useState(false);
 
   const { id } = useParams();
-  // console.log(id);
-  // console.log(recipe?.category);
+  const theme = useTheme();
 
   const loadAllRecipesFromCatgory = useCallback(async () => {
     try {
@@ -45,10 +47,23 @@ export function RecipeBottomGallery({ recipe, trigger }) {
     loadAllRecipesFromCatgory();
   }, [trigger]);
 
+  const xs = useMediaQuery(theme.breakpoints.down("xs"));
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
+  const md = useMediaQuery(theme.breakpoints.down("md"));
+  const lg = useMediaQuery(theme.breakpoints.down("lg"));
+  const xl = useMediaQuery(theme.breakpoints.down("xl"));
+
   return (
     <>
-      <ImageList sx={{ mt: 0, width: "80%" }}>
-        <ImageListItem key="Subheader" cols={3}></ImageListItem>
+      <ImageList
+        cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
+        // cols={matches_min_960 ? 4 : matches_min_960 ? 3 : matches_min_640 ? 2 : 1}
+        sx={{ mt: 3, width: "100%" }}
+      >
+        <ImageListItem
+          key="Subheader"
+          cols={xs ? 2 : sm ? 2 : md ? 2 : lg ? 3 : xl ? 4 : 5}
+        ></ImageListItem>
         {recipesFromCategory.map((recipe) => {
           // return <HomeRecipeItem recipe={recipe} />;
           return (

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 // Define the component to render the PDF
 const MyPDF = ({ shoppingList, user }) => (
   <Document>
-    <Page size="A4" style={styles.page}>
+    <Page size="A5" style={styles.page}>
       <View style={{ margin: 10, padding: 10 }}>
         <Text style={styles.title_h1}>Good-for-FoodBook</Text>
         <Text style={styles.title_h2}>Lieferadresse:</Text>
@@ -106,7 +106,7 @@ const PDFCreator = ({ shoppingList, user }) => (
             startIcon={<PrintSharpIcon />}
             size="large"
           >
-            Print to PDF
+            Liste als PDF ausdrucken
           </Button>
         )
       }

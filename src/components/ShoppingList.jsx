@@ -16,6 +16,10 @@ import { AddIngredientPanel } from "./AddIngredientPanel";
 import { ShoppingListIngredient } from "./ShoppingListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+
+import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
+import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 
 import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 import PrintSharpIcon from "@mui/icons-material/PrintSharp";
@@ -134,7 +138,7 @@ export function ShoppingList() {
 
   return (
     <>
-      <h2>Shopping List</h2>
+      <h2>Deine Shopping Liste</h2>
 
       {shoppingList?.length !== 0 && (
         <Box p={3} mb={5}>
@@ -149,11 +153,23 @@ export function ShoppingList() {
         }}
       />
 
-      <Stack spacing={5} direction="column" pb={10}>
-        <Box>
-          <h4> Bestandsliste Artikel hinzufügen</h4>
-        </Box>
-        <Box
+      <Grid spacing={5} direction="column" pb={10}>
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid>
+            <h4>Deiner Shopping Liste einen Artikel hinzufügen:</h4>
+          </Grid>
+          <Grid pt={2}>
+            <PlaylistAddSharpIcon fontSize="large" />
+          </Grid>
+        </Grid>
+        <Grid
           p={2}
           sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
           borderRadius={1}
@@ -163,43 +179,45 @@ export function ShoppingList() {
               addIngredientToShoppingList(ingredientObjId, quantity);
             }}
           />
-        </Box>
+        </Grid>
 
-        <Box>
-          <Stack spacing={2} direction="column">
-            <Box pb={2}>
-              <h4>Aktueller Bestand</h4>
-            </Box>
-            {shoppingList
-              ?.slice()
-              .sort((a, b) => {
-                return a.ingredient.name.localeCompare(b.ingredient.name);
-              })
-              .map((ingredient) => {
-                return (
-                  <ShoppingListIngredient
-                    key={ingredient._id}
-                    ingredient={
-                      (ingredient = {
-                        ...ingredient.ingredient,
-                        quantity: ingredient.quantity,
-                      })
-                    }
-                    onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
-                      deleteIngredientFromShoppingList(ingredientObjId, quantity);
-                    }}
-                    onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
-                      addIngredientToShoppingList(ingredientObjId, quantity);
-                    }}
-                    onOpenDialog={(id, amount, val) => {
-                      handleClickOpenDialog(id, amount, val);
-                    }}
-                  />
-                );
-              })}
-          </Stack>
-        </Box>
-      </Stack>
+        <Grid container direction="column" mt={5}>
+          <Grid>
+            <Stack spacing={2} direction="column">
+              <Box pb={2}>
+                <h4>Deine aktuelle Shopping Liste ...</h4>
+              </Box>
+              {shoppingList
+                ?.slice()
+                .sort((a, b) => {
+                  return a.ingredient.name.localeCompare(b.ingredient.name);
+                })
+                .map((ingredient) => {
+                  return (
+                    <ShoppingListIngredient
+                      key={ingredient._id}
+                      ingredient={
+                        (ingredient = {
+                          ...ingredient.ingredient,
+                          quantity: ingredient.quantity,
+                        })
+                      }
+                      onDeleteIngredientFromShoppingList={(ingredientObjId, quantity) => {
+                        deleteIngredientFromShoppingList(ingredientObjId, quantity);
+                      }}
+                      onAddIngredientToShoppingList={(ingredientObjId, quantity) => {
+                        addIngredientToShoppingList(ingredientObjId, quantity);
+                      }}
+                      onOpenDialog={(id, amount, val) => {
+                        handleClickOpenDialog(id, amount, val);
+                      }}
+                    />
+                  );
+                })}
+            </Stack>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 }
