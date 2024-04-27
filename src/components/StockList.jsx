@@ -39,7 +39,7 @@ export function StockList() {
   const { user } = useContext(UserContext);
   const { ingredients: ingredientsFromRecipe, recipeName } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
-    console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
+    // console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
   const { addMessage } = useContext(MessageContext);
   const { addShoppingListContextIngredients } = useContext(ShoppingListContext);
@@ -52,18 +52,17 @@ export function StockList() {
       try {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user?.id}/deleteIngredient`, {
+        const { data, status } = await axios.post(`${url}/users/${user?.id}/deleteIngredient`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
-        console.log(data);
-        console.log(data.message);
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -76,20 +75,17 @@ export function StockList() {
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredient`, {
+        const { data, status } = await axios.post(`${url}/users/${user?.id}/addIngredient`, {
           ingredientObjId: ingredientObjId,
           quantity: quantity,
         });
-        console.log(data);
-        console.log(data.message);
-        addMessage(data.message);
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -102,17 +98,13 @@ export function StockList() {
     try {
       setIsLoading(true);
       setIsLoadingFromStock(true);
-      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromStock`);
-      console.log(data.stock);
-      console.log(data.message);
-      // enqueueSnackbar(data.message, { variant: "info" });
+      const { data, status } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromStock`);
+      console.log(data.message, status);
       setStock(data.stock);
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -124,23 +116,21 @@ export function StockList() {
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(
+        const { data, status } = await axios.post(
           `${url}/users/${user?.id}/deleteIngredientFromSchoppingList`,
           {
             ingredientObjId: ingredientObjId,
             quantity: quantity,
           }
         );
-        console.log(data);
-        console.log(data.message);
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromShoppingList();
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -154,19 +144,21 @@ export function StockList() {
       try {
         setIsLoading(true);
         // const user = "65e5a98c3fd0f135269eabac";
-        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredientToSchoppingList`, {
-          ingredientObjId: ingredientObjId,
-          quantity: quantity,
-        });
-        console.log(data);
-        console.log(data.message);
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/addIngredientToSchoppingList`,
+          {
+            ingredientObjId: ingredientObjId,
+            quantity: quantity,
+          }
+        );
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromShoppingList();
         loadIngredientsFromStock();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -177,18 +169,16 @@ export function StockList() {
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
-      console.log(data.shoppingList);
-      console.log(data.message);
-      // enqueueSnackbar(data.message, { variant: "info" });
+      const { data, status } = await axios.get(
+        `${url}/users/${user?.id}/getIngredientsFromShoppingList`
+      );
+      console.log(data.message, status);
       setShoppingList(data.shoppingList);
       addShoppingListContextIngredients(data.shoppingList.length);
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -269,7 +259,6 @@ export function StockList() {
         ),
       });
     });
-    console.log(merged);
     setMerged(merged);
   }, [stock]);
 

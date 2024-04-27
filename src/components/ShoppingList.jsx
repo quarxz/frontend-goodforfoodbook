@@ -45,21 +45,20 @@ export function ShoppingList() {
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        const { data } = await axios.post(
+        const { data, status } = await axios.post(
           `${url}/users/${user?.id}/deleteIngredientFromSchoppingList`,
           {
             ingredientObjId: ingredientObjId,
             quantity: quantity,
           }
         );
-        console.log(data);
-        console.log(data.message);
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
         loadIngredientsFromShoppingList();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -72,18 +71,20 @@ export function ShoppingList() {
     async (ingredientObjId, quantity) => {
       try {
         setIsLoading(true);
-        const { data } = await axios.post(`${url}/users/${user?.id}/addIngredientToSchoppingList`, {
-          ingredientObjId: ingredientObjId,
-          quantity: quantity,
-        });
-        console.log(data);
-        console.log(data.message);
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/addIngredientToSchoppingList`,
+          {
+            ingredientObjId: ingredientObjId,
+            quantity: quantity,
+          }
+        );
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "info" });
         loadIngredientsFromShoppingList();
       } catch (err) {
         console.log(err);
-        enqueueSnackbar(err.message, { variant: "error" });
-        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.error(err.response.data.message);
+        console.error(err.response.status);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -94,18 +95,17 @@ export function ShoppingList() {
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
-      console.log(data.shoppingList);
-      console.log(data.message);
-
+      const { data, status } = await axios.get(
+        `${url}/users/${user?.id}/getIngredientsFromShoppingList`
+      );
+      console.log(data.message, status);
       enqueueSnackbar(data.message, { variant: "success" });
       setShoppingList(data.shoppingList);
       addShoppingListContextIngredients(data.shoppingList.length);
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -183,7 +183,7 @@ export function ShoppingList() {
 
         <Grid container direction="column" mt={5}>
           <Grid>
-            <Stack spacing={2} direction="column">
+            <Stack spacing={1} direction="column">
               <Box pb={2}>
                 <h4>Deine aktuelle Shopping Liste ...</h4>
               </Box>
