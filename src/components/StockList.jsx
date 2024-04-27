@@ -339,7 +339,7 @@ export function StockList() {
         <Grid direction="column" mt={5}>
           <Grid>
             {ingredientsFromRecipe ? (
-              <Stack spacing={2} direction="column">
+              <Stack spacing={0.5} direction="column">
                 <Box pb={2}>
                   <h4>Zutatenliste für {recipeName}</h4>
                 </Box>
@@ -436,7 +436,7 @@ export function StockList() {
             )}
           </Grid>
           <Grid mt={5}>
-            <Stack spacing={2} direction="column">
+            <Stack spacing={0.5} direction="column">
               <Box pb={2}>
                 <h4>Aktueller Bestand</h4>
               </Box>

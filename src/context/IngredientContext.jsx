@@ -6,7 +6,7 @@ export function IngredientProvider({ children }) {
   const [ingredients, setIngredients] = useState(null);
   const [recipeName, setRecipeName] = useState(null);
 
-  console.log(ingredients);
+  // console.log(ingredients);
 
   const addIngredients = (ingredients) => {
     setIngredients(ingredients);

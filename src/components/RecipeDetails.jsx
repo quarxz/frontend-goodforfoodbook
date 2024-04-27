@@ -55,24 +55,14 @@ export function RecipeDetails() {
   const loadRecipes = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/recipes/${id}`);
-      // const { data: ingredients } = await axios.get(
-      //   `${url}/recipes/${id}/getIngredientsFromRecipe`
-      // );
-      console.log(data.recipe);
-      // console.log(data.ingredients);
-      // setIngredients(ingredients.ingredients);
-
-      // console.log(status);
-      console.log(data.message);
-
-      enqueueSnackbar(data.message, { variant: "info" });
+      const { data, status } = await axios.get(`${url}/recipes/${id}`);
+      console.log(data.message, status);
       setRecipe(data.recipe);
       setCategory(data.recipe.category);
     } catch (err) {
       console.log(err);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.message);
+      console.error(err.response.data.message);
       setIsError(true);
     } finally {
       setIsLoading(false);

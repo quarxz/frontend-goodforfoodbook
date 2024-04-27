@@ -152,7 +152,11 @@ export function RootLayout() {
           primary: {
             ...(mode === "dark"
               ? {
+                  // main: blue[300],
+                  light: blue[100],
                   main: blue[300],
+                  dark: blue[500],
+                  contrastText: "#fff",
                 }
               : { main: pink[100] }),
           },
@@ -234,6 +238,7 @@ export function RootLayout() {
                 borderBottom: "0px dashed grey",
               }}
               className={`${sticky.isSticky ? styles.sticky : ""}`}
+              // style={{ backgroundColor: theme.palette.primary.dark }}
               ref={headerRef}
               zIndex={500}
             >

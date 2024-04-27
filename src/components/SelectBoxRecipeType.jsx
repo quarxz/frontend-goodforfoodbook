@@ -5,6 +5,8 @@ import { UserContext } from "../context/UserContext";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Box";
 import Typography from "@mui/material/Box";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,6 +19,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { BorderStyle } from "@mui/icons-material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,6 +35,7 @@ const MenuProps = {
 const names = ["einfach", "schnell", "gesund", "günstig", "klassisch"];
 
 export function SelectBoxRecipeType({ onhandleChangeRecipeType, filterRecipeType }) {
+  const theme = useTheme();
   return (
     <>
       <Grid>

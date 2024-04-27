@@ -65,18 +65,16 @@ export function Home() {
   const loadIngredientsFromShoppingList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user?.id}/getIngredientsFromShoppingList`);
-      console.log(data.shoppingList);
-      console.log(data.message);
-      enqueueSnackbar(data.message, { variant: "info" });
-      // setShoppingList(data.shoppingList);
+      const { data, status } = await axios.get(
+        `${url}/users/${user?.id}/getIngredientsFromShoppingList`
+      );
+      console.log(data.message, status);
+      user && enqueueSnackbar(data.message, { variant: "success" });
       addShoppingListContextIngredients(data.shoppingList.length);
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -90,17 +88,16 @@ export function Home() {
   const loadRecipesFromUserRecipesList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${url}/users/${user?.id}/getRecipesFromUserRecipes`);
-      console.log(data.recipes);
-      console.log(data.message);
-      enqueueSnackbar(data.message, { variant: "info" });
+      const { data, status } = await axios.get(
+        `${url}/users/${user?.id}/getRecipesFromUserRecipes`
+      );
+      console.log(data.message, status);
+      user && enqueueSnackbar(data.message, { variant: "success" });
       setUsersRecipesList(data.recipes);
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      // enqueueSnackbar(err.message, { variant: "error" });
-      // enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -115,15 +112,13 @@ export function Home() {
     try {
       setIsLoading(true);
       const { data, status } = await axios.get(`${url}/recipes`);
-      console.log(data.recipes);
-      console.log(status);
-      console.log(data.message);
-      enqueueSnackbar(data.message, { variant: "info" });
+      console.log(data.message, status);
+      user && enqueueSnackbar(data.message, { variant: "success" });
       setRecipes(data.recipes);
     } catch (err) {
       console.log(err);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.message);
+      console.error(err.message.data.message);
       setIsError(true);
     } finally {
       setIsLoading(false);

@@ -51,23 +51,19 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const { data } = await axios.post(
+        const { data, status } = await axios.post(
           `${url}/users/${user?.id}/checkRecipeIsInUserRecipeList`,
           {
             recipeObjectId: id,
           }
         );
-        console.log(data.message);
-        enqueueSnackbar(data.message, { variant: "success" });
+        console.log(data.message, status);
         setIsChecked(!isChecked);
       }
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      // setIsChecked(!isChecked);
-      // enqueueSnackbar(err.message, { variant: "info" });
-      enqueueSnackbar(err.response.data.message, { variant: "info" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoadingIntern(false);
@@ -78,18 +74,19 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const { data } = await axios.post(`${url}/users/${user?.id}/addRecipeToUserRecipeList`, {
-          recipeObjectId: id,
-        });
-        console.log(data.message);
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/addRecipeToUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
+        console.log(data.message, status);
         enqueueSnackbar(data.message, { variant: "success" });
       }
     } catch (err) {
       console.log(err);
-      console.log(err.response.data.message);
-      console.log(err.response.status);
-      enqueueSnackbar(err.message, { variant: "error" });
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsChecked(!isChecked);
       setIsError(true);
     } finally {
@@ -101,13 +98,19 @@ export function RecipeContent({ recipe, isloading, id }) {
     try {
       setIsLoadingIntern(true);
       if (recipe?.category) {
-        const { data } = await axios.post(`${url}/users/${user?.id}/deleteRecipeToUserRecipeList`, {
-          recipeObjectId: id,
-        });
-        console.log(data.message);
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/deleteRecipeToUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
+        console.log(data.message, status);
+        enqueueSnackbar(data.message, { variant: "success" });
       }
     } catch (err) {
       console.log(err);
+      console.error(err.response.data.message);
+      console.error(err.response.status);
       setIsError(true);
     } finally {
       setIsLoadingIntern(false);
@@ -126,11 +129,9 @@ export function RecipeContent({ recipe, isloading, id }) {
 
   const handleRecipeCheck = () => {
     if (!isChecked) {
-      console.log("checked");
       addRecipeToUserRecipeList();
       setIsChecked(!isChecked);
     } else {
-      console.log("unchecked");
       removeRecipeToUserRecipeList();
       setIsChecked(!isChecked);
     }

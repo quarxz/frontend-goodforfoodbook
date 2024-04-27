@@ -67,9 +67,45 @@ export function StockListRecipeIngredient({
             sx={
               isInStock
                 ? stockWarning(ingredient.recipeQuantity)
-                  ? { border: deepOrange[100], backgroundColor: orange[500] }
-                  : { border: lightGreen[200], backgroundColor: lightGreen[500] }
-                : { border: orange[100], backgroundColor: deepOrange[500] }
+                  ? {
+                      border: deepOrange[100],
+                      backgroundColor: orange[500],
+                      cursor: "pointer",
+                      opacity: "0.9",
+                      zIndex: "1",
+                      "&:hover": {
+                        bgcolor: deepOrange[800],
+                        opacity: "1",
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out ",
+                      },
+                    }
+                  : {
+                      border: lightGreen[200],
+                      backgroundColor: lightGreen[500],
+                      cursor: "pointer",
+                      opacity: "0.9",
+                      zIndex: "1",
+                      "&:hover": {
+                        bgcolor: lightGreen[800],
+                        opacity: "1",
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out ",
+                      },
+                    }
+                : {
+                    border: orange[100],
+                    backgroundColor: deepOrange[500],
+                    cursor: "pointer",
+                    opacity: "0.9",
+                    zIndex: "1",
+                    "&:hover": {
+                      bgcolor: red[600],
+                      opacity: "1",
+                      transform: "scale(1.05)",
+                      transition: "transform 0.3s ease-in-out ",
+                    },
+                  }
             }
             borderRadius={1}
             width="60%"
