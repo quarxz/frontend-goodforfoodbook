@@ -425,7 +425,7 @@ export function StockList() {
             )}
           </Grid>
           <Grid mt={5}>
-            <Stack spacing={0.5} direction="column">
+            <Stack spacing={0.2} direction="column">
               <Box pb={2}>
                 <h4>Aktueller Bestand</h4>
               </Box>

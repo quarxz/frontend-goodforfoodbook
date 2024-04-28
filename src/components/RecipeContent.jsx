@@ -19,12 +19,25 @@ import Typography from "@mui/material/Typography";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material/styles";
 
 import SendIcon from "@mui/icons-material/Send";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 
-import { grey } from "@mui/material/colors";
+import {
+  purple,
+  blue,
+  red,
+  pink,
+  amber,
+  grey,
+  lightBlue,
+  deepOrange,
+  cyan,
+  teal,
+} from "@mui/material/colors";
 
 export function RecipeContent({ recipe, isloading, id }) {
   const [isloadingIntern, setIsLoadingIntern] = useState(false);
@@ -34,6 +47,7 @@ export function RecipeContent({ recipe, isloading, id }) {
   const [rating, setRating] = useState(recipe?.rating === undefined ? 0 : recipe?.rating);
 
   const { user } = useContext(UserContext);
+  const theme = useTheme();
 
   const { addIngredients, addRecipeName } = useContext(IngredientContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -156,10 +170,10 @@ export function RecipeContent({ recipe, isloading, id }) {
   return (
     <>
       {recipe?.image ? (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
           <Grid container spacing={{ xs: 2, lg: 10 }}>
-            <Grid container spacing={2} direction="column">
-              <Grid>
+            <Grid container spacing={3} direction="column">
+              <Grid sx={{ boxShadow: "0px 0px 10px -5px rgba(0,0,0,0.85)", pb: 0.6 }}>
                 <img
                   src={`${recipe?.image}`}
                   alt={`Bild für rezipe ${recipe?.name}`}
@@ -167,7 +181,7 @@ export function RecipeContent({ recipe, isloading, id }) {
                   width={600}
                 />
               </Grid>
-              <Grid>
+              <Grid mt={2}>
                 {recipe?.rating && (
                   <Grid
                     container
@@ -333,17 +347,22 @@ export function RecipeContent({ recipe, isloading, id }) {
       ) : (
         <Box
           sx={{
-            padding: "0 0 0 0",
-            border: "0px dashed grey",
+            position: "relative",
+            padding: "0",
             display: "flex",
             justifyContent: "center",
             flexGrow: 1,
+            boxShadow: "0px 0px 10px -5px rgba(0,0,0,0.85)",
+            overflow: "hidden",
           }}
-          bgcolor={grey[800]}
+          bgcolor={theme.palette.secondary.light}
         >
           <Grid
             component="ul"
-            sx={{ padding: "2em 0 ", "li:not(:first-of-type)": { borderTop: "1px solid #eee" } }}
+            sx={{
+              padding: "2em 0 ",
+              "li:not(:first-of-type)": { borderTop: "1px solid #eee" },
+            }}
           >
             {recipe?.ingredients.map((ingredient) => {
               return (

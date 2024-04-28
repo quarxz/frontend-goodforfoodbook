@@ -20,6 +20,8 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 import SendIcon from "@mui/icons-material/Send";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 import ProductionQuantityLimitsSharpIcon from "@mui/icons-material/ProductionQuantityLimitsSharp";
 
 export function StockListRecipeIngredient({
@@ -41,7 +43,7 @@ export function StockListRecipeIngredient({
 
   const timer = setTimeout(() => {
     setVisibility("visible");
-  }, 1000);
+  }, 2000);
 
   const MIN_LENGTH = 1;
 
@@ -77,7 +79,7 @@ export function StockListRecipeIngredient({
                         bgcolor: deepOrange[800],
                         opacity: "1",
                         transform: "scale(1.05)",
-                        transition: "transform 0.3s ease-in-out ",
+                        transition: "all 0.3s ease-in-out ",
                       },
                     }
                   : {
@@ -177,7 +179,7 @@ export function StockListRecipeIngredient({
                       countItem > 1 && setCountItem((prev) => prev - 1);
                     }}
                   >
-                    -
+                    <RemoveSharpIcon />
                   </Button>
                   <Box width={60}>
                     <TextField
@@ -211,7 +213,7 @@ export function StockListRecipeIngredient({
                       countItem > 0 && setCountItem((prev) => prev + 1);
                     }}
                   >
-                    +
+                    <AddSharpIcon />
                   </Button>
                 </Stack>
                 <Tooltip
@@ -280,7 +282,7 @@ export function StockListRecipeIngredient({
                       countItem > 1 && setCountItem((prev) => prev - 1);
                     }}
                   >
-                    -
+                    <RemoveSharpIcon />
                   </Button>
                   <Box width={60}>
                     <TextField
@@ -314,7 +316,7 @@ export function StockListRecipeIngredient({
                       countItem > 0 && setCountItem((prev) => prev + 1);
                     }}
                   >
-                    +
+                    <AddSharpIcon />
                   </Button>
                 </Stack>
 

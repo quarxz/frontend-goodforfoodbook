@@ -34,13 +34,25 @@ import { RecipesFilter } from "./RecipesFilter";
 import { UserListsNav } from "./UserListsNav";
 import { UserFabNav } from "./UserFabNav";
 import Grid from "@mui/material/Unstable_Grid2";
+import Paper from "@mui/material/Paper";
 
 /**
  * https://mui.com/material-ui/customization/color/
  */
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { purple, blue, red, pink, amber, grey, lightBlue, deepOrange } from "@mui/material/colors";
+import {
+  purple,
+  blue,
+  red,
+  pink,
+  amber,
+  grey,
+  lightBlue,
+  deepOrange,
+  cyan,
+  teal,
+} from "@mui/material/colors";
 
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import KeyboardArrowUpSharpIcon from "@mui/icons-material/KeyboardArrowUpSharp";
@@ -125,25 +137,6 @@ export function RootLayout() {
     []
   );
 
-  useEffect(() => {
-    // console.log(user?.colorTheme, mode, prefersDarkTheme.matches);
-    if (user && user?.colorTheme === "light") {
-      colorMode.toggleColorMode();
-    }
-    if (user && user?.colorTheme === undefined && prefersDarkTheme.matches === false) {
-      colorMode.toggleColorMode();
-    }
-    if (user && user?.colorTheme !== "" && prefersDarkTheme.matches === false) {
-      colorMode.toggleColorMode();
-    }
-    if (prefersDarkTheme.matches === false) {
-      colorMode.toggleColorMode();
-    }
-    if (!user && mode === "light") {
-      colorMode.toggleColorMode();
-    }
-  }, [user]);
-
   const theme = useMemo(
     () =>
       createTheme({
@@ -158,19 +151,30 @@ export function RootLayout() {
                   dark: blue[500],
                   contrastText: "#fff",
                 }
-              : { main: pink[100] }),
+              : { light: pink[100], main: pink[800], dark: pink[500], contrastText: "#fff" }),
+          },
+          secondary: {
+            ...(mode === "dark"
+              ? {
+                  // main: blue[300],
+                  light: grey[800],
+                  main: blue[300],
+                  dark: blue[500],
+                  contrastText: "#fff",
+                }
+              : { light: teal[100], main: teal[200], dark: teal[400], contrastText: "#fff" }),
           },
           ...(mode === "dark"
             ? {
                 background: {
                   default: grey[900],
-                  paper: grey[800],
+                  paper: grey[900],
                 },
               }
             : {
                 background: {
-                  default: pink[900],
-                  paper: pink[900],
+                  default: grey[200],
+                  paper: pink[300],
                 },
               }),
           text: {
@@ -188,6 +192,25 @@ export function RootLayout() {
       }),
     [mode]
   );
+
+  useEffect(() => {
+    // console.log(user?.colorTheme, mode, prefersDarkTheme.matches);
+    if (user && user?.colorTheme === "light") {
+      colorMode.toggleColorMode();
+    }
+    if (user && user?.colorTheme === undefined && prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (user && user?.colorTheme !== "" && prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (prefersDarkTheme.matches === false) {
+      colorMode.toggleColorMode();
+    }
+    if (!user && mode === "light") {
+      colorMode.toggleColorMode();
+    }
+  }, [user, theme.mode]);
 
   const matches_lg = useMediaQuery(theme.breakpoints.up("lg"));
 
@@ -232,15 +255,22 @@ export function RootLayout() {
           <CssBaseline enableColorScheme />
           <SnackbarProvider maxSnack={3}>
             <Box
+              zIndex="50"
               component="nav"
               sx={{
                 pt: 4,
-                borderBottom: "0px dashed grey",
+                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                height: 170,
               }}
               className={`${sticky.isSticky ? styles.sticky : ""}`}
-              // style={{ backgroundColor: theme.palette.primary.dark }}
+              // style={{ backgroundColor: theme.palette.secondary.dark }}
+              // style={{ backgroundColor: theme.palette.primary.main }}
+              style={
+                theme.palette.mode === "dark"
+                  ? { backgroundColor: grey[900] }
+                  : { backgroundColor: teal[200] }
+              }
               ref={headerRef}
-              zIndex={500}
             >
               <Box
                 className={styles.innerNavBox}
@@ -255,7 +285,11 @@ export function RootLayout() {
                 }}
               >
                 <Box component="div" className={styles.logo}>
-                  <NavLink to="/">Good-for-FoodBook</NavLink>
+                  <NavLink to="/">
+                    <Typography sx={{ textShadow: " 1px 1px 5px #242424;" }}>
+                      Good-for-FoodBook
+                    </Typography>
+                  </NavLink>
                 </Box>
 
                 {!matches_lg && (
@@ -363,7 +397,7 @@ export function RootLayout() {
                 {showButton && (
                   <Box
                     className={"scrolltotop"}
-                    sx={{ position: "absolute", right: "20px", bottom: "-120px" }}
+                    sx={{ position: "absolute", right: "20px", bottom: "-150px" }}
                   >
                     <Fab color="primary" aria-label="to top button" onClick={handleScrollToTop}>
                       <KeyboardArrowUpSharpIcon />

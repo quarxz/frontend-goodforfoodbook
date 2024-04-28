@@ -68,7 +68,20 @@ export function RecipeBottomGallery({ recipe, trigger }) {
           // return <HomeRecipeItem recipe={recipe} />;
           return (
             <Link key={recipe._id} to={"/" + recipe._id}>
-              <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+              <ImageListItem
+                key={recipe._id}
+                sx={{
+                  m: 2,
+                  boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
+                  opacity: ".9",
+
+                  "&:hover": {
+                    opacity: "1",
+                    transform: "scale(1.05)",
+                    transition: "transform 0.3s ease-in-out ",
+                  },
+                }}
+              >
                 <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
                 <ImageListItemBar id={recipe._id} title={recipe.name} subtitle={recipe.categorie} />
               </ImageListItem>

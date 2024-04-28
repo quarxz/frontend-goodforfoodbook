@@ -8,6 +8,7 @@ import { IngredientContext } from "../context/IngredientContext";
 
 import { AddIngredientPanel } from "./AddIngredientPanel";
 
+import { useTheme } from "@mui/material/styles";
 import { Box, Button, Stack } from "@mui/material";
 import TextField, { textFieldClasses } from "@mui/material/TextField";
 import Skeleton from "@mui/material/Skeleton";
@@ -25,10 +26,12 @@ import EditOffSharpIcon from "@mui/icons-material/EditOffSharp";
 import EditSharpIcon from "@mui/icons-material/EditSharp";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import SendIcon from "@mui/icons-material/Send";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 
 import { isElement } from "react-dom/test-utils";
 
-import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
+import { lightGreen, grey, red, orange, deepOrange, green, teal } from "@mui/material/colors";
 
 export function StockListIngredient({
   ingredient,
@@ -41,11 +44,12 @@ export function StockListIngredient({
   const [errorMessageTextfield, setErrorMessageTextfield] = useState("");
   const [visibility, setVisibility] = useState("hidden");
 
+  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
 
   const timer = setTimeout(() => {
     setVisibility("visible");
-  }, 1000);
+  }, 2000);
 
   return (
     <>
@@ -62,12 +66,25 @@ export function StockListIngredient({
               p={2}
               pl={3}
               sx={{
-                borderColor: grey[800],
+                borderColor: theme.palette.secondary.main,
+                backgroundColor: theme.palette.secondary.main,
                 borderWidth: "1px",
                 borderStyle: "solid",
                 display: "flex",
                 justifyContent: "space-between",
                 visibility: visibility,
+                cursor: "pointer",
+                opacity: "0.9",
+                zIndex: "1",
+                "&:hover": {
+                  border: theme.palette.secondary.light,
+                  backgroundColor: theme.palette.secondary.light,
+                  borderWidth: "1px",
+                  borderStyle: "solid",
+                  opacity: "1",
+                  transform: "scale(1.05)",
+                  transition: "transform 0.3s ease-in-out ",
+                },
               }}
               borderRadius={1}
               width="60%"
@@ -114,7 +131,7 @@ export function StockListIngredient({
                         countItem > 1 && setCountItem((prev) => prev - 1);
                       }}
                     >
-                      -
+                      <RemoveSharpIcon />
                     </Button>
                     <Box width={60}>
                       <TextField
@@ -148,7 +165,7 @@ export function StockListIngredient({
                         countItem < ingredient.quantity && setCountItem((prev) => prev + 1);
                       }}
                     >
-                      +
+                      <AddSharpIcon />
                     </Button>
 
                     <Tooltip

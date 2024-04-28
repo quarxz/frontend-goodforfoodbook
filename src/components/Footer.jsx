@@ -26,27 +26,47 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { lightGreen, grey, red, orange, deepOrange, green, blue } from "@mui/material/colors";
+import {
+  lightGreen,
+  grey,
+  red,
+  orange,
+  deepOrange,
+  green,
+  blue,
+  pink,
+  teal,
+} from "@mui/material/colors";
 import FacebookSharpIcon from "@mui/icons-material/FacebookSharp";
 import CameraAltSharpIcon from "@mui/icons-material/CameraAltSharp";
 import SendSharpIcon from "@mui/icons-material/SendSharp";
 
 export function Footer() {
+  const theme = useTheme();
   return (
     <>
-      <Box component="footer" sx={{ p: 3, borderTop: "0px dashed grey" }}>
-        <Grid container spacing={3} direction="column" pt={10} pb={10} bgcolor={grey[900]}>
+      <Box
+        component="footer"
+        sx={{ borderTop: "0px dashed grey" }}
+        mt={10}
+        style={
+          theme.palette.mode === "dark"
+            ? { backgroundColor: grey[900] }
+            : { backgroundColor: teal[200] }
+        }
+      >
+        <Grid container spacing={3} direction="column" pt={10} pb={15}>
           <Grid>&copy; 2024 - falkking soft</Grid>
           <Grid container direction="column">
             <Grid>Follow us!</Grid>
             <Grid container direction="row" display="flex" justifyContent="center">
               <Grid>
-                <Tooltip title="Facebook" placement="right-end">
+                <Tooltip title="Facebook" placement="bottom">
                   <Fab
                     aria-label="Link to Facebook"
                     sx={{
                       "&:hover": {
-                        bgcolor: red[600],
+                        bgcolor: blue[800],
                       },
                     }}
                   >
@@ -55,12 +75,12 @@ export function Footer() {
                 </Tooltip>
               </Grid>
               <Grid>
-                <Tooltip title="Instagramm´" placement="right-end">
+                <Tooltip title="Instagramm´" placement="bottom">
                   <Fab
                     aria-label="Link to Instagram"
                     sx={{
                       "&:hover": {
-                        bgcolor: red[600],
+                        bgcolor: "#922CBA",
                       },
                     }}
                   >
@@ -69,12 +89,12 @@ export function Footer() {
                 </Tooltip>
               </Grid>
               <Grid>
-                <Tooltip title="Telegram" placement="right-end">
+                <Tooltip title="Telegram" placement="bottom">
                   <Fab
                     aria-label="Link to Telegram"
                     sx={{
                       "&:hover": {
-                        bgcolor: red[600],
+                        bgcolor: blue[400],
                       },
                     }}
                   >

@@ -27,10 +27,11 @@ import Zoom from "@mui/material/Zoom";
 import Fade from "@mui/material/Fade";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import { Category } from "@mui/icons-material";
 import { SelectBoxRecipeType } from "./SelectBoxRecipeType";
 import { SelectBoxNutrationType } from "./SelectBoxNutrationType";
+import Paper from "@mui/material/Paper";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -326,7 +327,20 @@ export function Home() {
                 // return <HomeRecipeItem recipe={recipe} />;
                 return (
                   <Link key={recipe._id} to={"/" + recipe._id}>
-                    <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+                    <ImageListItem
+                      key={recipe._id}
+                      sx={{
+                        m: 2,
+                        boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
+                        opacity: ".9",
+
+                        "&:hover": {
+                          opacity: "1",
+                          transform: "scale(1.05)",
+                          transition: "transform 0.3s ease-in-out ",
+                        },
+                      }}
+                    >
                       <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
 
                       <ImageListItemBar
@@ -364,7 +378,20 @@ export function Home() {
             {usersRecipesList.map((recipe) => {
               return (
                 <Link key={recipe._id} to={"/" + recipe._id}>
-                  <ImageListItem key={recipe._id} sx={{ m: 2 }}>
+                  <ImageListItem
+                    key={recipe._id}
+                    sx={{
+                      m: 2,
+                      boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
+                      opacity: ".9",
+
+                      "&:hover": {
+                        opacity: "1",
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out ",
+                      },
+                    }}
+                  >
                     <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" width={50} />
 
                     <ImageListItemBar
