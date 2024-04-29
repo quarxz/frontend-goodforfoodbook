@@ -38,7 +38,7 @@ export function UserTopNav({
         {user ? (
           <Box p={0.1}>
             <Button onClick={onHandleClickOpenUserDialog}>
-              Logged in as: {`${user.name?.firstname} ${user.name?.lastname}`}
+              Willkommen {`${user.name?.firstname} ${user.name?.lastname}`}
             </Button>
           </Box>
         ) : (

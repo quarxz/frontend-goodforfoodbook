@@ -5,7 +5,7 @@ import { IngredientContext } from "../context/IngredientContext";
 
 import { AddIngredientPanel } from "./AddIngredientPanel";
 
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import TextField, { textFieldClasses } from "@mui/material/TextField";
 import Skeleton from "@mui/material/Skeleton";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -64,7 +64,7 @@ export function StockListRecipeIngredient({
           <Skeleton variant="rectangular" animation="wave" width="60%" height={60} />
         ) : (
           <Box
-            p={2}
+            p={1.3}
             pl={3}
             sx={
               isInStock
@@ -119,31 +119,41 @@ export function StockListRecipeIngredient({
           >
             <Box>
               <Grid container spacing={0}>
-                <Grid width={180}>{ingredient.name}</Grid>
+                <Grid width={180} pt={1}>
+                  {ingredient.name}
+                </Grid>
                 {ingredient.category === "gewuerze" || ingredient.category === "kraeuter" ? (
                   ""
                 ) : (
                   <>
-                    <Grid width={10}>{isInStock ? "Bestand:" : ""}</Grid>
+                    <Grid width={10} pt={1}>
+                      {isInStock ? "Bestand:" : ""}
+                    </Grid>
                     <Grid width={120}>
                       {isInStock ? (
                         <Box textAlign="right" pr={1}>
-                          {ingredient.stockQuantity}
+                          <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                            {ingredient.stockQuantity}
+                          </Typography>
                         </Box>
                       ) : (
                         <Box textAlign="right" pr={1}>
-                          {ingredient.recipeQuantity}
+                          <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                            {ingredient.recipeQuantity}
+                          </Typography>
                         </Box>
                       )}
                     </Grid>
                   </>
                 )}
 
-                <Grid width={180}>{ingredient.unit}</Grid>
+                <Grid width={180} pt={1}>
+                  {ingredient.unit}
+                </Grid>
               </Grid>
             </Box>
-            <Box>
-              <Grid container spacing={0}>
+            <Box pt={1}>
+              <Grid container>
                 <Grid width={50}>
                   {isInStock && ingredient.recipeQuantity > 0
                     ? "- " + ingredient.recipeQuantity
@@ -176,20 +186,22 @@ export function StockListRecipeIngredient({
             ) : (
               <>
                 <Stack spacing={2} direction="row">
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      countItem > 1 && setCountItem((prev) => prev - 1);
-                    }}
-                  >
-                    <RemoveSharpIcon />
-                  </Button>
-                  <Box width={60}>
+                  <Box pt={1.3}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        countItem > 1 && setCountItem((prev) => prev - 1);
+                      }}
+                    >
+                      <RemoveSharpIcon />
+                    </Button>
+                  </Box>
+                  <Box width={60} pt={1}>
                     <TextField
                       error={errorMessageTextfield.length !== 0}
                       id="outlined-basic"
                       variant="outlined"
-                      sx={{ width: "60px" }}
+                      size="small"
                       inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
                       value={countItem}
                       onChange={(event) => {
@@ -210,58 +222,63 @@ export function StockListRecipeIngredient({
                       label={errorMessageTextfield}
                     />
                   </Box>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      countItem > 0 && setCountItem((prev) => prev + 1);
-                    }}
-                  >
-                    <AddSharpIcon />
-                  </Button>
-                </Stack>
-                <Tooltip
-                  title="Der Einkaufsliste hinzufügen"
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 700 }}
-                  placement="top"
-                >
-                  <Button
-                    onClick={() => {
-                      onAddIngredientToShoppingList(ingredient._id, countItem);
-                    }}
-                    variant="outlined"
-                  >
-                    <SendIcon />
-                  </Button>
-                </Tooltip>
-                {ingredient.shoppingListQuantity !== null && (
-                  <Box zIndex={1}>
+                  <Box pt={1.3}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        countItem > 0 && setCountItem((prev) => prev + 1);
+                      }}
+                    >
+                      <AddSharpIcon />
+                    </Button>
+                  </Box>
+
+                  <Box pt={1.3}>
                     <Tooltip
-                      title="Aus Shopping List entfernen"
+                      title="Der Einkaufsliste hinzufügen"
                       TransitionComponent={Fade}
                       TransitionProps={{ timeout: 700 }}
-                      placement="left"
+                      placement="top"
                     >
-                      <Fab
-                        aria-label="delete"
-                        sx={{
-                          "&:hover": {
-                            bgcolor: red[600],
-                          },
-                          bgcolor: lightGreen[500],
-                        }}
+                      <Button
                         onClick={() => {
-                          onDeleteIngredientFromShoppingList(
-                            ingredient._id,
-                            ingredient.shoppingListQuantity
-                          );
+                          onAddIngredientToShoppingList(ingredient._id, countItem);
                         }}
+                        variant="outlined"
                       >
-                        {ingredient.shoppingListQuantity}
-                      </Fab>
+                        <SendIcon />
+                      </Button>
                     </Tooltip>
                   </Box>
-                )}
+                  {ingredient.shoppingListQuantity !== null && (
+                    <Box zIndex={1}>
+                      <Tooltip
+                        title="Aus Shopping List entfernen"
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 700 }}
+                        placement="left"
+                      >
+                        <Fab
+                          aria-label="delete"
+                          sx={{
+                            "&:hover": {
+                              bgcolor: red[600],
+                            },
+                            bgcolor: lightGreen[500],
+                          }}
+                          onClick={() => {
+                            onDeleteIngredientFromShoppingList(
+                              ingredient._id,
+                              ingredient.shoppingListQuantity
+                            );
+                          }}
+                        >
+                          {ingredient.shoppingListQuantity}
+                        </Fab>
+                      </Tooltip>
+                    </Box>
+                  )}
+                </Stack>
               </>
             )}
           </>
@@ -279,20 +296,22 @@ export function StockListRecipeIngredient({
             ) : (
               <>
                 <Stack spacing={2} direction="row">
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      countItem > 1 && setCountItem((prev) => prev - 1);
-                    }}
-                  >
-                    <RemoveSharpIcon />
-                  </Button>
-                  <Box width={60}>
+                  <Box pt={1.3}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        countItem > 1 && setCountItem((prev) => prev - 1);
+                      }}
+                    >
+                      <RemoveSharpIcon />
+                    </Button>
+                  </Box>
+                  <Box width={60} pt={1}>
                     <TextField
                       error={errorMessageTextfield.length !== 0}
                       id="outlined-basic"
                       variant="outlined"
-                      sx={{ width: "60px" }}
+                      size="small"
                       inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
                       value={countItem}
                       onChange={(event) => {
@@ -313,59 +332,62 @@ export function StockListRecipeIngredient({
                       label={errorMessageTextfield}
                     />
                   </Box>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      countItem > 0 && setCountItem((prev) => prev + 1);
-                    }}
-                  >
-                    <AddSharpIcon />
-                  </Button>
-                </Stack>
-
-                <Tooltip
-                  title="Der Einkaufsliste hinzufügen"
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 700 }}
-                  placement="top"
-                >
-                  <Button
-                    onClick={() => {
-                      onAddIngredientToShoppingList(ingredient._id, countItem);
-                    }}
-                    variant="outlined"
-                  >
-                    <SendIcon />
-                  </Button>
-                </Tooltip>
-                {ingredient.shoppingListQuantity !== null && (
-                  <Box zIndex={1}>
+                  <Box pt={1.3}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        countItem > 0 && setCountItem((prev) => prev + 1);
+                      }}
+                    >
+                      <AddSharpIcon />
+                    </Button>
+                  </Box>
+                  <Box pt={1.3}>
                     <Tooltip
-                      title="Aus Shopping List entfernen"
+                      title="Der Einkaufsliste hinzufügen"
                       TransitionComponent={Fade}
                       TransitionProps={{ timeout: 700 }}
-                      placement="left"
+                      placement="top"
                     >
-                      <Fab
-                        aria-label="delete"
-                        sx={{
-                          "&:hover": {
-                            bgcolor: red[600],
-                          },
-                          bgcolor: lightGreen[500],
-                        }}
+                      <Button
                         onClick={() => {
-                          onDeleteIngredientFromShoppingList(
-                            ingredient._id,
-                            ingredient.shoppingListQuantity
-                          );
+                          onAddIngredientToShoppingList(ingredient._id, countItem);
                         }}
+                        variant="outlined"
                       >
-                        {ingredient.shoppingListQuantity}
-                      </Fab>
+                        <SendIcon />
+                      </Button>
                     </Tooltip>
                   </Box>
-                )}
+                  {ingredient.shoppingListQuantity !== null && (
+                    <Box zIndex={1}>
+                      <Tooltip
+                        title="Aus Shopping List entfernen"
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 700 }}
+                        placement="left"
+                      >
+                        <Fab
+                          aria-label="delete"
+                          sx={{
+                            "&:hover": {
+                              bgcolor: red[600],
+                            },
+                            bgcolor: lightGreen[500],
+                          }}
+                          onClick={() => {
+                            onDeleteIngredientFromShoppingList(
+                              ingredient._id,
+                              ingredient.shoppingListQuantity
+                            );
+                          }}
+                        >
+                          {ingredient.shoppingListQuantity}
+                        </Fab>
+                      </Tooltip>
+                    </Box>
+                  )}
+                </Stack>
               </>
             )}
           </>

@@ -44,12 +44,12 @@ export function UserListsNav() {
             component={NavLink}
             to="/stocklist"
             // sx={{ "color:active": "red", display: { xs: "none", lg: "inline-block" } }}
-            sx={
-              theme.palette.mode === "light" && {
-                color: theme.palette.getContrastText(grey[500]),
-                borderColor: theme.palette.getContrastText(grey[500]),
-              }
-            }
+            // sx={
+            //   theme.palette.mode === "light" && {
+            //     color: theme.palette.getContrastText(grey[500]),
+            //     borderColor: theme.palette.getContrastText(grey[500]),
+            //   }
+            // }
           >
             Bestand
           </Button>
@@ -60,12 +60,12 @@ export function UserListsNav() {
               variant="outlined"
               component={NavLink}
               to="/shoppinglist"
-              sx={
-                theme.palette.mode === "light" && {
-                  color: theme.palette.getContrastText(grey[500]),
-                  borderColor: theme.palette.getContrastText(grey[500]),
-                }
-              }
+              // sx={
+              //   theme.palette.mode === "light" && {
+              //     color: theme.palette.getContrastText(grey[500]),
+              //     borderColor: theme.palette.getContrastText(grey[500]),
+              //   }
+              // }
             >
               Shopping List
             </Button>

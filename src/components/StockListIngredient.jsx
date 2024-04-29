@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import { useSnackbar } from "notistack";
 
 import { useTheme } from "@mui/material/styles";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import TextField, { textFieldClasses } from "@mui/material/TextField";
 import Skeleton from "@mui/material/Skeleton";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -59,7 +59,7 @@ export function StockListIngredient({
         <>
           <Stack spacing={2} direction="row">
             <Box
-              p={2}
+              p={1.3}
               pl={3}
               sx={{
                 borderColor: theme.palette.secondary.main,
@@ -85,39 +85,47 @@ export function StockListIngredient({
               borderRadius={1}
               width="60%"
             >
-              <Stack spacing={2} direction="row">
+              <Stack spacing={2}>
                 <Grid container spacing={0}>
-                  <Grid width={180}>{ingredient.name}</Grid>
-                  <Grid width={50}>
-                    <Box textAlign="right" pr={1}>
-                      {ingredient.quantity}
-                    </Box>
+                  <Grid width={180} pt={1}>
+                    {ingredient.name}
                   </Grid>
-                  <Grid>
-                    {ingredient.category === "gewuerze" || ingredient.category === "kraeuter"
-                      ? ""
-                      : ingredient.unit}
+                  <Grid container direction="row">
+                    <Grid width={50}>
+                      <Box textAlign="right" pr={1}>
+                        <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                          {ingredient.quantity}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid pt={1}>
+                      {ingredient.category === "gewuerze" || ingredient.category === "kraeuter"
+                        ? ""
+                        : ingredient.unit}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Stack>
             </Box>
             <Stack spacing={2} direction="row">
-              <Tooltip title="Zutat bearbeiten" placement="left">
-                <Button
-                  onClick={() => {
-                    setCountElement((isElementOpen) => !isElementOpen);
-                    setCountItem(1);
-                  }}
-                  variant="outlined"
-                  size="small"
-                >
-                  {countElement ? (
-                    <EditOffSharpIcon fontSize="small" />
-                  ) : (
-                    <EditSharpIcon fontSize="small" />
-                  )}
-                </Button>
-              </Tooltip>
+              <Box pt={1.7}>
+                <Tooltip title="Zutat bearbeiten" placement="left">
+                  <Button
+                    onClick={() => {
+                      setCountElement((isElementOpen) => !isElementOpen);
+                      setCountItem(1);
+                    }}
+                    variant="outlined"
+                    size="small"
+                  >
+                    {countElement ? (
+                      <EditOffSharpIcon fontSize="small" />
+                    ) : (
+                      <EditSharpIcon fontSize="small" />
+                    )}
+                  </Button>
+                </Tooltip>
+              </Box>
               {countElement && (
                 <Box>
                   <Stack spacing={2} direction="row">
@@ -134,7 +142,6 @@ export function StockListIngredient({
                         error={errorMessageTextfield.length !== 0}
                         id="outlined-basic"
                         variant="outlined"
-                        sx={{ width: "60px" }}
                         inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
                         value={countItem}
                         onChange={(event) => {
@@ -182,22 +189,23 @@ export function StockListIngredient({
                   </Stack>
                 </Box>
               )}
-
-              <Tooltip title="Aus der Bestandliste löschen" placement="right-end">
-                <Button
-                  onClick={() => {
-                    if (countItem === ingredient.quantity) {
-                      onOpenDialog(ingredient._id, countItem, true);
-                    } else {
-                      onDeleteIngredientFromStockList(ingredient._id, countItem);
-                    }
-                  }}
-                  variant="outlined"
-                  size="small"
-                >
-                  <ClearSharpIcon fontSize="small" />
-                </Button>
-              </Tooltip>
+              <Box pt={1.7}>
+                <Tooltip title="Aus der Bestandliste löschen" placement="right-end">
+                  <Button
+                    onClick={() => {
+                      if (countItem === ingredient.quantity) {
+                        onOpenDialog(ingredient._id, countItem, true);
+                      } else {
+                        onDeleteIngredientFromStockList(ingredient._id, countItem);
+                      }
+                    }}
+                    variant="outlined"
+                    size="small"
+                  >
+                    <ClearSharpIcon fontSize="small" />
+                  </Button>
+                </Tooltip>
+              </Box>
             </Stack>
           </Stack>
         </>

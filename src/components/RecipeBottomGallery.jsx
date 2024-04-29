@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
-import { Box } from "@mui/material";
+import { Box, Stack, Grid, Rating, Typography } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import ImageList from "@mui/material/ImageList";
@@ -13,6 +13,20 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import StarRateSharpIcon from "@mui/icons-material/StarRateSharp";
+import {
+  purple,
+  blue,
+  red,
+  pink,
+  amber,
+  grey,
+  lightBlue,
+  deepOrange,
+  cyan,
+  teal,
+  lightGreen,
+} from "@mui/material/colors";
 
 const { VITE_API_URL: url } = import.meta.env;
 
@@ -21,6 +35,7 @@ export function RecipeBottomGallery({ recipe, trigger }) {
   const [recipeId, setRecipeId] = useState();
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [rating, setRating] = useState(3);
 
   const { id } = useParams();
   const theme = useTheme();
@@ -81,8 +96,52 @@ export function RecipeBottomGallery({ recipe, trigger }) {
                 }}
               >
                 <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
-                <ImageListItemBar id={recipe._id} title={recipe.name} subtitle={recipe.categorie} />
+                {/* <ImageListItemBar id={recipe._id} title={recipe.name} subtitle={recipe.categorie} /> */}
               </ImageListItem>
+              <Grid container direction="column" pl={3}>
+                {/* <Grid>
+                        {recipe.category.name.charAt(0).toUpperCase() +
+                          recipe.category.name.slice(1)}
+                      </Grid> */}
+                <Grid>
+                  <Typography style={{ fontFamily: "Roboto-Medium" }}>{recipe.name}</Typography>
+                </Grid>
+                <Grid>
+                  <Stack direction="row">
+                    <Box pt={0.5}>
+                      <Rating
+                        name="simple-controlled"
+                        value={recipe?.rating}
+                        onChange={(event, newValue) => {
+                          setRating(recipe?.rating);
+                        }}
+                        precision={0.5}
+                        size="small"
+                        icon={
+                          <StarRateSharpIcon
+                            fontSize="inherit"
+                            sx={
+                              theme.palette.mode === "light"
+                                ? { color: teal[300] }
+                                : { color: lightGreen[200] }
+                            }
+                          />
+                        }
+                      />
+                    </Box>
+                    <Box
+                      pl={1}
+                      sx={
+                        theme.palette.mode === "light" ? { color: grey[400] } : { color: grey[500] }
+                      }
+                    >
+                      <Typography style={{ fontFamily: "Roboto-Light" }}>
+                        ({Math.floor(Math.random() * 45) + 1})
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+              </Grid>
             </Link>
           );
         })}

@@ -181,7 +181,7 @@ export function ShoppingList() {
 
         <Grid container direction="column" mt={5}>
           <Grid>
-            <Stack spacing={1} direction="column">
+            <Stack spacing={0.5} direction="column">
               <Box pb={5} pt={2}>
                 <h4>Deine aktuelle Shopping Liste ...</h4>
               </Box>

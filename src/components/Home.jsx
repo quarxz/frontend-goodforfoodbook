@@ -445,30 +445,24 @@ export function Home() {
             ></ImageListItem>
             {usersRecipesList.map((recipe) => {
               return (
-                <>
-                  <Link key={recipe._id} to={"/" + recipe._id}>
-                    <ImageListItem
-                      key={recipe._id}
-                      sx={{
-                        m: 2,
-                        boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
-                        opacity: ".9",
+                <Link key={recipe._id} to={"/" + recipe._id}>
+                  <ImageListItem
+                    key={recipe._id}
+                    sx={{
+                      m: 2,
+                      boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
+                      opacity: ".9",
 
-                        "&:hover": {
-                          opacity: "1",
-                          transform: "scale(1.05)",
-                          transition: "transform 0.3s ease-in-out ",
-                        },
-                      }}
-                    >
-                      <img
-                        src={`${recipe.thumbnail}`}
-                        alt={recipe.name}
-                        loading="lazy"
-                        width={50}
-                      />
+                      "&:hover": {
+                        opacity: "1",
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out ",
+                      },
+                    }}
+                  >
+                    <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" width={50} />
 
-                      {/* <ImageListItemBar
+                    {/* <ImageListItemBar
                         id={recipe._id}
                         title={recipe.name}
                         subtitle={recipe.category.name}
@@ -481,57 +475,60 @@ export function Home() {
                           </IconButton>
                         }
                       /> */}
-                    </ImageListItem>
-                    <Grid container direction="column" pl={3}>
-                      {/* <Grid>
+                  </ImageListItem>
+                  <Grid container direction="column" pl={3}>
+                    {/* <Grid>
                         {recipe.category.name.charAt(0).toUpperCase() +
                           recipe.category.name.slice(1)}
                       </Grid> */}
-                      <Grid>
-                        <Typography style={{ fontFamily: "Roboto-Medium" }}>
-                          {recipe.name}
-                        </Typography>
-                      </Grid>
-                      <Grid>
-                        <Stack direction="row">
-                          <Box pt={0.5}>
-                            <Rating
-                              name="simple-controlled"
-                              value={recipe?.rating}
-                              onChange={(event, newValue) => {
-                                setRating(recipe?.rating);
-                              }}
-                              precision={0.5}
-                              size="small"
-                              icon={
-                                <StarRateSharpIcon
-                                  fontSize="inherit"
-                                  sx={
-                                    theme.palette.mode === "light"
-                                      ? { color: teal[300] }
-                                      : { color: lightGreen[200] }
-                                  }
-                                />
-                              }
-                            />
-                          </Box>
-                          <Box
-                            pl={1}
-                            sx={
-                              theme.palette.mode === "light"
-                                ? { color: grey[400] }
-                                : { color: grey[500] }
-                            }
-                          >
-                            <Typography style={{ fontFamily: "Roboto-Light" }}>
-                              ({Math.floor(Math.random() * 45) + 1})
-                            </Typography>
-                          </Box>
-                        </Stack>
-                      </Grid>
+                    <Grid
+                      sx={
+                        theme.palette.mode === "light"
+                          ? { color: grey[500] }
+                          : { color: theme.palette.primary.contrastText }
+                      }
+                    >
+                      <Typography style={{ fontFamily: "Roboto-Medium" }}>{recipe.name}</Typography>
                     </Grid>
-                  </Link>
-                </>
+                    <Grid>
+                      <Stack direction="row">
+                        <Box pt={0.5}>
+                          <Rating
+                            name="simple-controlled"
+                            value={recipe?.rating}
+                            onChange={(event, newValue) => {
+                              setRating(recipe?.rating);
+                            }}
+                            precision={0.5}
+                            size="small"
+                            icon={
+                              <StarRateSharpIcon
+                                fontSize="inherit"
+                                sx={
+                                  theme.palette.mode === "light"
+                                    ? { color: teal[300] }
+                                    : { color: lightGreen[200] }
+                                }
+                              />
+                            }
+                          />
+                        </Box>
+                        <Box
+                          pl={1}
+                          sx={
+                            theme.palette.mode === "light"
+                              ? { color: grey[400] }
+                              : { color: grey[500] }
+                          }
+                        >
+                          <Typography style={{ fontFamily: "Roboto-Light" }}>
+                            ({Math.floor(Math.random() * 45) + 1})
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Link>
               );
             })}
           </ImageList>

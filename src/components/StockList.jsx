@@ -266,6 +266,7 @@ export function StockList() {
       });
     });
     setMerged(merged);
+    console.log(merged);
   }, [stock]);
 
   useEffect(() => {
@@ -310,12 +311,12 @@ export function StockList() {
         ""
       )}
 
-      {/* <AlertDialog
+      <AlertDialog
         openDialog={openDialog}
         onHandleDecition={(val, decition) => {
           handleClickDecition(false, val, decition);
         }}
-      /> */}
+      />
 
       <Grid spacing={2} direction="column">
         <Grid
@@ -362,11 +363,13 @@ export function StockList() {
                   })
                   .map((ingredient) => {
                     const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
-                    const stockEqualsrecipeQunatity =
-                      ingredient.stockQuantity === ingredient.recipeQuantity;
+                    // const stockEqualsrecipeQunatity =
+                    //   ingredient.stockQuantity === ingredient.recipeQuantity;
+                    const stockBiggerRecipeQuantity =
+                      ingredient.stockQuantity > ingredient.recipeQuantity;
                     return (
                       <Fragment key={ingredient._id}>
-                        {isInStock && !stockEqualsrecipeQunatity && (
+                        {isInStock && stockBiggerRecipeQuantity && (
                           <StockListRecipeIngredient
                             key={ingredient._id}
                             isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
@@ -379,7 +382,7 @@ export function StockList() {
                       </Fragment>
                     );
                   })}
-                {/* /** 
+                {/* /**    
                  IS NOT IN STOCK && STOCK EQUAL RECIPE QUANTITY
                 */}
                 {merged
@@ -389,11 +392,11 @@ export function StockList() {
                   })
                   .map((ingredient) => {
                     const isInStock = stock?.some((obj) => obj.ingredient._id === ingredient._id);
-                    const stockEqualsrecipeQunatity =
-                      ingredient.stockQuantity === ingredient.recipeQuantity;
+                    const stockBiggerRecipeQuantity =
+                      ingredient.stockQuantity > ingredient.recipeQuantity;
                     return (
                       <Fragment key={ingredient._id}>
-                        {isInStock && stockEqualsrecipeQunatity && (
+                        {isInStock && !stockBiggerRecipeQuantity && (
                           <StockListRecipeIngredient
                             key={ingredient._id}
                             isInStock={stock?.some((obj) => obj.ingredient._id === ingredient._id)}
