@@ -6,15 +6,13 @@ import axios from "axios";
 
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { RecipeContent } from "./RecipeContent";
 
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import ListSubheader from "@mui/material/ListSubheader";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 const { VITE_API_URL: url } = import.meta.env;
 

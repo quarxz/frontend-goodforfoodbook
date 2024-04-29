@@ -1,22 +1,5 @@
-import styles from "./RecipesFilter.module.css";
+import { useState } from "react";
 
-import { useContext, useEffect, useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
-
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Box";
-import Typography from "@mui/material/Box";
-
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 

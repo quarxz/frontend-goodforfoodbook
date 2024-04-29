@@ -1,4 +1,3 @@
-import styles from "./StockList.module.css";
 import { useContext, useState, useEffect, useCallback, Fragment } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 

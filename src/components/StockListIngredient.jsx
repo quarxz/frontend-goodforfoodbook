@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useSnackbar } from "notistack";
 
-import { IngredientContext } from "../context/IngredientContext";
-
-import { AddIngredientPanel } from "./AddIngredientPanel";
-
 import { useTheme } from "@mui/material/styles";
 import { Box, Button, Stack } from "@mui/material";
 import TextField, { textFieldClasses } from "@mui/material/TextField";

@@ -13,12 +13,15 @@ import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import Badge from "@mui/material/Badge";
 
-import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
+import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 
 export function UserListsNav() {
   const { user, logout } = useContext(UserContext);
   const { shoppingListContext } = useContext(ShoppingListContext);
+  const theme = useTheme();
 
   return (
     <>
@@ -40,14 +43,30 @@ export function UserListsNav() {
             variant="outlined"
             component={NavLink}
             to="/stocklist"
-            sx={{ "color:active": "red", display: { xs: "none", lg: "inline-block" } }}
+            // sx={{ "color:active": "red", display: { xs: "none", lg: "inline-block" } }}
+            sx={
+              theme.palette.mode === "light" && {
+                color: theme.palette.getContrastText(grey[500]),
+                borderColor: theme.palette.getContrastText(grey[500]),
+              }
+            }
           >
             Bestand
           </Button>
         </Grid>
         <Grid>
           <Badge badgeContent={shoppingListContext} color="primary">
-            <Button variant="outlined" component={NavLink} to="/shoppinglist">
+            <Button
+              variant="outlined"
+              component={NavLink}
+              to="/shoppinglist"
+              sx={
+                theme.palette.mode === "light" && {
+                  color: theme.palette.getContrastText(grey[500]),
+                  borderColor: theme.palette.getContrastText(grey[500]),
+                }
+              }
+            >
               Shopping List
             </Button>
           </Badge>

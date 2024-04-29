@@ -1,0 +1,450 @@
+import { useContext, useState, useEffect, useCallback } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { RecipeContentIngredients } from "./RecipeContentIngredients";
+
+import axios from "axios";
+
+import { UserContext } from "../context/UserContext";
+import { IngredientContext } from "../context/IngredientContext";
+import { useSnackbar } from "notistack";
+
+import { Box, Button, Stack } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import { Gauge } from "@mui/x-charts/Gauge";
+import Grid from "@mui/material/Unstable_Grid2";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
+
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material/styles";
+
+import SendIcon from "@mui/icons-material/Send";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
+
+import {
+  purple,
+  blue,
+  red,
+  pink,
+  amber,
+  grey,
+  lightBlue,
+  deepOrange,
+  cyan,
+  teal,
+} from "@mui/material/colors";
+
+export function RecipeDetailsContent({ recipe, isloading, id }) {
+  const [isloadingIntern, setIsLoadingIntern] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [countPersons, setCountPersons] = useState(2);
+  const [rating, setRating] = useState(recipe?.rating === undefined ? 0 : recipe?.rating);
+
+  const { user } = useContext(UserContext);
+  const theme = useTheme();
+
+  const { addIngredients, addRecipeName, addRecipeId } = useContext(IngredientContext);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const navigate = useNavigate();
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+  const handleCheckStock = () => {
+    navigate("/stocklist");
+  };
+
+  const { VITE_API_URL: url } = import.meta.env;
+
+  const checkRecipeIsInUserRecipeList = useCallback(async () => {
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/checkRecipeIsInUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
+        console.log(data.message, status);
+        setIsChecked(!isChecked);
+      }
+    } catch (err) {
+      console.log(err);
+      console.error(err.response.data.message);
+      console.error(err.response.status);
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+  const addRecipeToUserRecipeList = useCallback(async () => {
+    console.log("Load Data");
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/addRecipeToUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
+        console.log(data.message, status);
+        enqueueSnackbar(data.message, { variant: "success" });
+      }
+    } catch (err) {
+      console.log(err);
+      console.error(err.response.data.message);
+      console.error(err.response.status);
+      setIsChecked(!isChecked);
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+  const removeRecipeToUserRecipeList = useCallback(async () => {
+    console.log("Load Data");
+    try {
+      setIsLoadingIntern(true);
+      if (recipe?.category) {
+        const { data, status } = await axios.post(
+          `${url}/users/${user?.id}/deleteRecipeToUserRecipeList`,
+          {
+            recipeObjectId: id,
+          }
+        );
+        console.log(data.message, status);
+        enqueueSnackbar(data.message, { variant: "success" });
+      }
+    } catch (err) {
+      console.log(err);
+      console.error(err.response.data.message);
+      console.error(err.response.status);
+      setIsError(true);
+    } finally {
+      setIsLoadingIntern(false);
+    }
+  });
+
+  useEffect(() => {
+    checkRecipeIsInUserRecipeList();
+    addIngredients(recipe?.ingredients);
+    addRecipeName(recipe?.name);
+    addRecipeId(recipe?._id);
+  }, [isloading]);
+
+  useEffect(() => {
+    calculatIngredientsQuantity(countPersons);
+  }, [countPersons]);
+
+  const handleRecipeCheck = () => {
+    if (!isChecked) {
+      addRecipeToUserRecipeList();
+      setIsChecked(!isChecked);
+    } else {
+      removeRecipeToUserRecipeList();
+      setIsChecked(!isChecked);
+    }
+  };
+
+  const calculatIngredientsQuantity = (countPersons) => {
+    addIngredients(
+      recipe?.ingredients.map((item) => {
+        if (item.quantity > 0) {
+          if (countPersons > 1) {
+            return { ...item, quantity: (item.quantity * countPersons) / 2 };
+          } else {
+            return { ...item, quantity: item.quantity / 2 };
+          }
+        } else {
+          return item;
+        }
+      })
+    );
+  };
+
+  return (
+    <>
+      {recipe?.image ? (
+        <Box>
+          <Grid container spacing={{ xs: 2, lg: 10 }}>
+            <Grid container spacing={3} direction="column">
+              <Grid sx={{ boxShadow: "0px 0px 10px -5px rgba(0,0,0,0.85)", pb: 0.6 }}>
+                <img
+                  src={`${recipe?.image}`}
+                  alt={`Bild für rezipe ${recipe?.name}`}
+                  loading="lazy"
+                  width={600}
+                />
+              </Grid>
+              <Grid mt={2}>
+                {recipe?.rating && (
+                  <Grid
+                    container
+                    display="flex"
+                    justifyContent="start"
+                    flexDirection="row-reverse"
+                    spacing={3}
+                  >
+                    <Grid p={2}>
+                      <Typography component="legend">Jetzt Bewerten</Typography>
+                    </Grid>
+                    <Grid>
+                      <Rating
+                        name="simple-controlled"
+                        value={recipe?.rating}
+                        onChange={(event, newValue) => {
+                          setRating(newValue);
+                        }}
+                        precision={0.5}
+                        size="large"
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container spacing={5} direction="column">
+              <Grid>
+                {user ? (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Rezept Merken"
+                      onChange={handleRecipeCheck}
+                      checked={isChecked}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                    />
+                  </FormGroup>
+                ) : (
+                  ""
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      ) : (
+        <Skeleton variant="rectangular" animation="wave" width={600} height={400} />
+      )}
+
+      {isloading ? (
+        <Box>
+          <h2>
+            <Skeleton variant="rectangular" animation="wave" width="40%" />
+          </h2>
+          <h3>
+            <Skeleton variant="rectangular" animation="wave" width="30%" />
+          </h3>
+        </Box>
+      ) : (
+        <Box sx={{ flexGrow: 1 }}>
+          <h3>Zubereitung</h3>
+
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid sm={12} md={12} lg={6}>
+                {/* <Box>
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+                  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                  no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                </Box> */}
+                <Box>{recipe?.preparing}</Box>
+              </Grid>
+              <Grid sm={12} md={12} lg={6}>
+                <Stack
+                  spacing={5}
+                  direction="row"
+                  sx={{
+                    p: 2,
+
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Box>
+                    <Gauge
+                      width={70}
+                      height={70}
+                      value={recipe?.preparationTime}
+                      valueMin={0}
+                      valueMax={60}
+                    />
+                    <span>Zubereitung</span>
+                  </Box>
+
+                  <Box>
+                    <Gauge
+                      width={70}
+                      height={70}
+                      value={recipe?.waitingTime}
+                      valueMin={0}
+                      valueMax={60}
+                    />
+                    <span>Wartezeit</span>
+                  </Box>
+                  <Box>
+                    <Gauge
+                      width={70}
+                      height={70}
+                      value={recipe?.preparationTime + recipe?.waitingTime}
+                      valueMin={0}
+                      valueMax={60}
+                    />
+                    <span>Gesamtzeit</span>
+                  </Box>
+                </Stack>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <Box
+            sx={{
+              padding: "3em 0 0",
+              border: "0px dashed grey",
+              display: "flex",
+              justifyContent: "center",
+              flexGrow: 1,
+            }}
+          >
+            <Stack spacing={5} direction="row" p={1}>
+              <h2>Zutaten</h2>
+              <Box>
+                <Stack spacing={5} direction="row" p={1}>
+                  <Button
+                    onClick={() => {
+                      countPersons > 1 && setCountPersons((prev) => prev - 1);
+                    }}
+                  >
+                    <RemoveSharpIcon />
+                  </Button>
+                  <Stack spacing={1} direction="row" p={1}>
+                    <Box>{countPersons}</Box>
+                    <Box>{countPersons > 1 ? "Personen" : "Person"}</Box>
+                  </Stack>
+                  <Button
+                    onClick={() => {
+                      countPersons < 10 && setCountPersons((prev) => prev + 1);
+                    }}
+                  >
+                    <AddSharpIcon />
+                  </Button>
+                </Stack>
+              </Box>
+            </Stack>
+          </Box>
+        </Box>
+      )}
+
+      {isloading ? (
+        <Box>
+          <Skeleton variant="rectangular" animation="wave" width="30%" height="100px" />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            position: "relative",
+            padding: "0",
+            display: "flex",
+            justifyContent: "center",
+            flexGrow: 1,
+            overflow: "hidden",
+            borderRadius: "2% 50%",
+          }}
+          boxShadow={theme.palette.mode === "light" && "0px 0px 10px -5px rgba(0,0,0,0.85)"}
+          bgcolor={theme.palette.mode === "light" && theme.palette.secondary.light}
+        >
+          <Grid
+            component="ul"
+            sx={{
+              padding: "2em 0 ",
+              "li:not(:first-of-type)": { borderTop: "1px solid #eee" },
+            }}
+          >
+            {recipe?.ingredients.map((ingredient) => {
+              return (
+                <RecipeContentIngredients
+                  key={ingredient._id}
+                  ingredient={
+                    (ingredient = {
+                      ...ingredient.ingredient,
+                      quantity: ingredient.quantity,
+                    })
+                  }
+                  countPersons={countPersons}
+                />
+              );
+            })}
+          </Grid>
+        </Box>
+      )}
+      {isloading ? (
+        ""
+      ) : (
+        <Box
+          sx={{
+            padding: "1em 0 1em 0",
+            border: "0px dashed grey",
+            display: "flex",
+
+            flexGrow: 1,
+          }}
+        >
+          {/* <Box sx={{ flexGrow: 1, border: "0px solid red" }}>
+            <Grid container spacing={2} sx={{ border: "0px solid red" }}>
+              <Grid xs={12} lg={6}>
+                <h2>Zubereitung</h2>
+                {recipe?.preparing}
+              </Grid>
+              <Grid xs={12} lg={6}></Grid>
+            </Grid>
+          </Box> */}
+        </Box>
+      )}
+
+      {!user ? (
+        ""
+      ) : (
+        <Box p={5} sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            onClick={handleCheckStock}
+            size="large"
+            endIcon={<SendIcon />}
+          >
+            Alles auf Lager? Jetzt Bestand prüfen!
+          </Button>
+        </Box>
+      )}
+
+      {isloading ? (
+        ""
+      ) : (
+        <Box
+          sx={{
+            padding: "1em 0 1em 0",
+            border: "0px dashed grey",
+            display: "flex",
+
+            flexGrow: 1,
+          }}
+        >
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid xs={6}>
+                <h2>Weitere zur Suche passende Gerichte</h2>
+              </Grid>
+              <Grid xs={6}></Grid>
+            </Grid>
+          </Box>
+        </Box>
+      )}
+      {/* <Box>{JSON.stringify(recipe)}</Box> */}
+    </>
+  );
+}

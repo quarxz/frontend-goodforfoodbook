@@ -1,5 +1,3 @@
-import styles from "./ShoppingList.module.css";
-
 import { useContext, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 

@@ -149,9 +149,9 @@ export function RootLayout() {
                   light: blue[100],
                   main: blue[300],
                   dark: blue[500],
-                  contrastText: "#fff",
+                  contrastText: grey[200],
                 }
-              : { light: pink[100], main: pink[800], dark: pink[500], contrastText: "#fff" }),
+              : { light: pink[100], main: pink[800], dark: pink[500], contrastText: grey[100] }),
           },
           secondary: {
             ...(mode === "dark"
@@ -184,7 +184,7 @@ export function RootLayout() {
                   secondary: grey[200],
                 }
               : {
-                  primary: grey[900],
+                  primary: grey[800],
                   secondary: grey[900],
                 }),
           },
@@ -286,7 +286,7 @@ export function RootLayout() {
               >
                 <Box component="div" className={styles.logo}>
                   <NavLink to="/">
-                    <Typography sx={{ textShadow: " 1px 1px 5px #242424;" }}>
+                    <Typography sx={{ textShadow: " 1px 1px 10px #777;" }}>
                       Good-for-FoodBook
                     </Typography>
                   </NavLink>

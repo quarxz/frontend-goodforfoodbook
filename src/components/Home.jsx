@@ -1,4 +1,3 @@
-import styles from "./Home.module.css";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -8,7 +7,7 @@ import { SnackbarProvider, useSnackbar } from "notistack";
 import { SelectBoxCategory } from "./SelectBoxCategory";
 
 import axios from "axios";
-import { Box, Button, Fab, Stack } from "@mui/material";
+import { Box, Button, Fab, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 import { RecipesFilter } from "./RecipesFilter";
@@ -25,6 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import Fade from "@mui/material/Fade";
+import Rating from "@mui/material/Rating";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -35,14 +35,28 @@ import Paper from "@mui/material/Paper";
 
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ClearIcon from "@mui/icons-material/Clear";
+import StarRateSharpIcon from "@mui/icons-material/StarRateSharp";
 
-import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
+import {
+  purple,
+  blue,
+  red,
+  pink,
+  amber,
+  grey,
+  lightBlue,
+  deepOrange,
+  cyan,
+  teal,
+  lightGreen,
+} from "@mui/material/colors";
 
 export function Home() {
   const [recipes, setRecipes] = useState([]);
   const [usersRecipesList, setUsersRecipesList] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [rating, setRating] = useState(3);
 
   const { user } = useContext(UserContext);
   const { addShoppingListContextIngredients } = useContext(ShoppingListContext);
@@ -343,7 +357,7 @@ export function Home() {
                     >
                       <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" />
 
-                      <ImageListItemBar
+                      {/* <ImageListItemBar
                         id={recipe._id}
                         title={recipe.name}
                         subtitle={recipe.category.name}
@@ -355,8 +369,62 @@ export function Home() {
                             <ArrowCircleRightIcon />
                           </IconButton>
                         }
-                      />
+                      /> */}
                     </ImageListItem>
+                    <Grid container direction="column" pl={3}>
+                      {/* <Grid>
+                        {recipe.category.name.charAt(0).toUpperCase() +
+                          recipe.category.name.slice(1)}
+                      </Grid> */}
+                      <Grid
+                        sx={
+                          theme.palette.mode === "light"
+                            ? { color: grey[500] }
+                            : { color: theme.palette.primary.contrastText }
+                        }
+                      >
+                        <Typography style={{ fontFamily: "Roboto-Medium" }}>
+                          {recipe.name}
+                        </Typography>
+                      </Grid>
+                      <Grid>
+                        <Stack direction="row">
+                          <Box pt={0.5}>
+                            <Rating
+                              name="simple-controlled"
+                              value={recipe?.rating}
+                              onChange={(event, newValue) => {
+                                setRating(recipe?.rating);
+                              }}
+                              precision={0.5}
+                              size="small"
+                              icon={
+                                <StarRateSharpIcon
+                                  fontSize="inherit"
+                                  sx={
+                                    theme.palette.mode === "light"
+                                      ? { color: teal[300] }
+                                      : { color: lightGreen[200] }
+                                  }
+                                />
+                              }
+                            />
+                          </Box>
+                          <Box
+                            pl={1}
+                            sx={
+                              theme.palette.mode === "light"
+                                ? { color: grey[400] }
+                                : { color: grey[500] }
+                            }
+                          >
+                            <Typography style={{ fontFamily: "Roboto-Light" }}>
+                              ({Math.floor(Math.random() * 45) + 1})
+                            </Typography>
+                          </Box>
+                        </Stack>
+                      </Grid>
+                    </Grid>
                   </Link>
                 );
               })}
@@ -377,38 +445,93 @@ export function Home() {
             ></ImageListItem>
             {usersRecipesList.map((recipe) => {
               return (
-                <Link key={recipe._id} to={"/" + recipe._id}>
-                  <ImageListItem
-                    key={recipe._id}
-                    sx={{
-                      m: 2,
-                      boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
-                      opacity: ".9",
+                <>
+                  <Link key={recipe._id} to={"/" + recipe._id}>
+                    <ImageListItem
+                      key={recipe._id}
+                      sx={{
+                        m: 2,
+                        boxShadow: "0px 0px 15px -5px rgba(0,0,0,0.85)",
+                        opacity: ".9",
 
-                      "&:hover": {
-                        opacity: "1",
-                        transform: "scale(1.05)",
-                        transition: "transform 0.3s ease-in-out ",
-                      },
-                    }}
-                  >
-                    <img src={`${recipe.thumbnail}`} alt={recipe.name} loading="lazy" width={50} />
+                        "&:hover": {
+                          opacity: "1",
+                          transform: "scale(1.05)",
+                          transition: "transform 0.3s ease-in-out ",
+                        },
+                      }}
+                    >
+                      <img
+                        src={`${recipe.thumbnail}`}
+                        alt={recipe.name}
+                        loading="lazy"
+                        width={50}
+                      />
 
-                    <ImageListItemBar
-                      id={recipe._id}
-                      title={recipe.name}
-                      subtitle={recipe.category.name}
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                          aria-label={`info about ${recipe.name}`}
-                        >
-                          <ArrowCircleRightIcon />
-                        </IconButton>
-                      }
-                    />
-                  </ImageListItem>
-                </Link>
+                      {/* <ImageListItemBar
+                        id={recipe._id}
+                        title={recipe.name}
+                        subtitle={recipe.category.name}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+                            aria-label={`info about ${recipe.name}`}
+                          >
+                            <ArrowCircleRightIcon />
+                          </IconButton>
+                        }
+                      /> */}
+                    </ImageListItem>
+                    <Grid container direction="column" pl={3}>
+                      {/* <Grid>
+                        {recipe.category.name.charAt(0).toUpperCase() +
+                          recipe.category.name.slice(1)}
+                      </Grid> */}
+                      <Grid>
+                        <Typography style={{ fontFamily: "Roboto-Medium" }}>
+                          {recipe.name}
+                        </Typography>
+                      </Grid>
+                      <Grid>
+                        <Stack direction="row">
+                          <Box pt={0.5}>
+                            <Rating
+                              name="simple-controlled"
+                              value={recipe?.rating}
+                              onChange={(event, newValue) => {
+                                setRating(recipe?.rating);
+                              }}
+                              precision={0.5}
+                              size="small"
+                              icon={
+                                <StarRateSharpIcon
+                                  fontSize="inherit"
+                                  sx={
+                                    theme.palette.mode === "light"
+                                      ? { color: teal[300] }
+                                      : { color: lightGreen[200] }
+                                  }
+                                />
+                              }
+                            />
+                          </Box>
+                          <Box
+                            pl={1}
+                            sx={
+                              theme.palette.mode === "light"
+                                ? { color: grey[400] }
+                                : { color: grey[500] }
+                            }
+                          >
+                            <Typography style={{ fontFamily: "Roboto-Light" }}>
+                              ({Math.floor(Math.random() * 45) + 1})
+                            </Typography>
+                          </Box>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </Link>
+                </>
               );
             })}
           </ImageList>

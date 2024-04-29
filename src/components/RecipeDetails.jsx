@@ -1,23 +1,15 @@
-import styles from "./RecipeDetails.module.css";
-import { useContext, useState, useEffect, useCallback } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 import axios from "axios";
 
-import { Box } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
-import { RecipeContent } from "./RecipeContent";
-
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
-import ListSubheader from "@mui/material/ListSubheader";
+import { RecipeDetailsContent } from "./RecipeDetailsContent";
 import { RecipeBottomGallery } from "./RecipeBottomGallery";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 export function RecipeDetails() {
   const [category, setCategory] = useState();
@@ -38,17 +30,6 @@ export function RecipeDetails() {
   const matches_max_960 = useMediaQuery("(max-width:960px)");
   const matches_max_1280 = useMediaQuery("(max-width:1280px)");
   const matches_max_1920 = useMediaQuery("(max-width:1920px)");
-
-  // const matchDownXS = useMediaQuery(theme.breakpoints.down("xs"));
-  // const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
-  // const matchDownMD = useMediaQuery(theme.breakpoints.down("md"));
-  // const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
-  // const matchDownXL = useMediaQuery(theme.breakpoints.down("xl"));
-  // console.log("matchDownXS:", matchDownXS);
-  // console.log("matchDownSM:", matchDownSM);
-  // console.log("matchDownMD:", matchDownMD);
-  // console.log("matchDownLG:", matchDownLG);
-  // console.log("matchDownXL:", matchDownXL);
 
   const { VITE_API_URL: url } = import.meta.env;
 
@@ -77,7 +58,7 @@ export function RecipeDetails() {
   return (
     <>
       <h1>{recipe?.name}</h1>
-      <RecipeContent recipe={recipe} isloading={isloading} id={id} />
+      <RecipeDetailsContent recipe={recipe} isloading={isloading} id={id} />
       <RecipeBottomGallery recipe={recipe} trigger={isloading} />
     </>
   );

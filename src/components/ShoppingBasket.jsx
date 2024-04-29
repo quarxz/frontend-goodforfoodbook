@@ -1,4 +1,3 @@
-import styles from "./ShoppingBasket.module.css";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 
