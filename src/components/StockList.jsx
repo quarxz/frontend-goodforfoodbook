@@ -1,6 +1,6 @@
 import styles from "./StockList.module.css";
 import { useContext, useState, useEffect, useCallback, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { IngredientContext } from "../context/IngredientContext";
@@ -16,8 +16,10 @@ import { StockListIngredient } from "./StockListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import Fab from "@mui/material/Fab";
 
 import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
+import ArrowBackIosNewSharpIcon from "@mui/icons-material/ArrowBackIosNewSharp";
 
 import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 
@@ -35,9 +37,14 @@ export function StockList() {
   const [idToDeleteIngredient, setIdToDeleteIngredient] = useState();
   const [amountToDelete, setAmountToDelete] = useState();
 
+  const navigate = useNavigate();
   const [isLoadingFromStock, setIsLoadingFromStock] = useState(false);
   const { user } = useContext(UserContext);
-  const { ingredients: ingredientsFromRecipe, recipeName } = useContext(IngredientContext);
+  const {
+    ingredients: ingredientsFromRecipe,
+    recipeName,
+    recipeId,
+  } = useContext(IngredientContext);
   if (ingredientsFromRecipe) {
     // console.log("ingredientsFromRecipe:", ingredientsFromRecipe);
   }
@@ -275,6 +282,7 @@ export function StockList() {
   };
   const handleClickDecition = (bool, val, decition) => {
     console.log(val, decition, idToDeleteIngredient);
+
     setOpenDialog(bool);
     if (decition === "AGREE") {
       deleteIngredientFromStockList(idToDeleteIngredient, amountToDelete);
@@ -284,18 +292,31 @@ export function StockList() {
   return (
     <>
       <h2>Deine Zutaten Listen</h2>
+      {recipeId ? (
+        <Box p={3}>
+          <Button
+            variant="outlined"
+            component={NavLink}
+            color="primary"
+            aria-label="to top button"
+            // onClick={() => navigate(-1)}
+            to={"/" + recipeId}
+            startIcon={<ArrowBackIosNewSharpIcon />}
+          >
+            zurück zum Rezept: {recipeName}
+          </Button>
+          <Link></Link>
+        </Box>
+      ) : (
+        ""
+      )}
 
-      {/* <Box p={5}> */}
-      {/* <Link onClick={() => navigate(-1)}>Back</Link> */}
-      {/* Link zurück */}
-      {/* </Box> */}
-
-      <AlertDialog
+      {/* <AlertDialog
         openDialog={openDialog}
         onHandleDecition={(val, decition) => {
           handleClickDecition(false, val, decition);
         }}
-      />
+      /> */}
 
       <Grid spacing={2} direction="column">
         <Grid
@@ -315,7 +336,7 @@ export function StockList() {
         </Grid>
         <Grid
           p={2}
-          sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
+          sx={{ borderColor: grey[800], borderWidth: "0px", borderStyle: "solid" }}
           borderRadius={1}
         >
           <AddIngredientPanel
@@ -329,7 +350,7 @@ export function StockList() {
           <Grid>
             {ingredientsFromRecipe ? (
               <Stack spacing={0.5} direction="column">
-                <Box pb={2}>
+                <Box pb={5} pt={2}>
                   <h4>Zutatenliste für {recipeName}</h4>
                 </Box>
                 {/* /** 
@@ -426,7 +447,7 @@ export function StockList() {
           </Grid>
           <Grid mt={5}>
             <Stack spacing={0.2} direction="column">
-              <Box pb={2}>
+              <Box pb={5} pt={2}>
                 <h4>Aktueller Bestand</h4>
               </Box>
               {stock

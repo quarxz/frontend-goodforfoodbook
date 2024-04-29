@@ -157,7 +157,7 @@ export function RootLayout() {
             ...(mode === "dark"
               ? {
                   // main: blue[300],
-                  light: grey[800],
+                  light: blue[200],
                   main: blue[300],
                   dark: blue[500],
                   contrastText: "#fff",
@@ -194,7 +194,7 @@ export function RootLayout() {
   );
 
   useEffect(() => {
-    // console.log(user?.colorTheme, mode, prefersDarkTheme.matches);
+    console.log(user?.colorTheme, mode, prefersDarkTheme.matches);
     if (user && user?.colorTheme === "light") {
       colorMode.toggleColorMode();
     }

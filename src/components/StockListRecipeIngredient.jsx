@@ -70,39 +70,42 @@ export function StockListRecipeIngredient({
               isInStock
                 ? stockWarning(ingredient.recipeQuantity)
                   ? {
-                      border: deepOrange[100],
+                      border: orange[500],
                       backgroundColor: orange[500],
                       cursor: "pointer",
                       opacity: "0.9",
                       zIndex: "1",
                       "&:hover": {
-                        bgcolor: deepOrange[800],
+                        border: orange[300],
+                        backgroundColor: orange[300],
                         opacity: "1",
                         transform: "scale(1.05)",
                         transition: "all 0.3s ease-in-out ",
                       },
                     }
                   : {
-                      border: lightGreen[200],
+                      border: lightGreen[500],
                       backgroundColor: lightGreen[500],
                       cursor: "pointer",
                       opacity: "0.9",
                       zIndex: "1",
                       "&:hover": {
-                        bgcolor: lightGreen[800],
+                        border: lightGreen[300],
+                        bgcolor: lightGreen[300],
                         opacity: "1",
                         transform: "scale(1.05)",
                         transition: "transform 0.3s ease-in-out ",
                       },
                     }
                 : {
-                    border: orange[100],
+                    border: deepOrange[500],
                     backgroundColor: deepOrange[500],
                     cursor: "pointer",
                     opacity: "0.9",
                     zIndex: "1",
                     "&:hover": {
-                      bgcolor: red[600],
+                      border: deepOrange[300],
+                      bgcolor: deepOrange[300],
                       opacity: "1",
                       transform: "scale(1.05)",
                       transition: "transform 0.3s ease-in-out ",
@@ -245,7 +248,7 @@ export function StockListRecipeIngredient({
                           "&:hover": {
                             bgcolor: red[600],
                           },
-                          bgcolor: green[500],
+                          bgcolor: lightGreen[500],
                         }}
                         onClick={() => {
                           onDeleteIngredientFromShoppingList(
@@ -349,7 +352,7 @@ export function StockListRecipeIngredient({
                           "&:hover": {
                             bgcolor: red[600],
                           },
-                          bgcolor: green[500],
+                          bgcolor: lightGreen[500],
                         }}
                         onClick={() => {
                           onDeleteIngredientFromShoppingList(

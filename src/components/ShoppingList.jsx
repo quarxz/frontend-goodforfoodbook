@@ -171,7 +171,7 @@ export function ShoppingList() {
         </Grid>
         <Grid
           p={2}
-          sx={{ borderColor: grey[800], borderWidth: "1px", borderStyle: "solid" }}
+          sx={{ borderColor: grey[800], borderWidth: 0, borderStyle: "solid" }}
           borderRadius={1}
         >
           <AddIngredientPanel
@@ -184,7 +184,7 @@ export function ShoppingList() {
         <Grid container direction="column" mt={5}>
           <Grid>
             <Stack spacing={1} direction="column">
-              <Box pb={2}>
+              <Box pb={5} pt={2}>
                 <h4>Deine aktuelle Shopping Liste ...</h4>
               </Box>
               {shoppingList

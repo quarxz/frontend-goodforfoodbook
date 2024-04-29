@@ -27,7 +27,7 @@ export function UserTopNav({
   selectedValue,
 }) {
   const { user, logout } = useContext(UserContext);
-  const { addIngredients } = useContext(IngredientContext);
+  const { addIngredients, addRecipeId } = useContext(IngredientContext);
 
   const matches_lg = useMediaQuery(theme.breakpoints.up("lg"));
 
@@ -64,6 +64,7 @@ export function UserTopNav({
                   onClick={() => {
                     onHandleOpenLoginDialog();
                     addIngredients("");
+                    addRecipeId("");
                   }}
                 >
                   Login

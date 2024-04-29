@@ -49,7 +49,7 @@ export function RecipeContent({ recipe, isloading, id }) {
   const { user } = useContext(UserContext);
   const theme = useTheme();
 
-  const { addIngredients, addRecipeName } = useContext(IngredientContext);
+  const { addIngredients, addRecipeName, addRecipeId } = useContext(IngredientContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -135,6 +135,7 @@ export function RecipeContent({ recipe, isloading, id }) {
     checkRecipeIsInUserRecipeList();
     addIngredients(recipe?.ingredients);
     addRecipeName(recipe?.name);
+    addRecipeId(recipe?._id);
   }, [isloading]);
 
   useEffect(() => {
@@ -354,6 +355,7 @@ export function RecipeContent({ recipe, isloading, id }) {
             flexGrow: 1,
             boxShadow: "0px 0px 10px -5px rgba(0,0,0,0.85)",
             overflow: "hidden",
+            borderRadius: "2% 50%",
           }}
           bgcolor={theme.palette.secondary.light}
         >

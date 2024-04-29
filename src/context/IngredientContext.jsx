@@ -5,6 +5,7 @@ export const IngredientContext = createContext();
 export function IngredientProvider({ children }) {
   const [ingredients, setIngredients] = useState(null);
   const [recipeName, setRecipeName] = useState(null);
+  const [recipeId, setRecipeId] = useState(null);
 
   // console.log(ingredients);
 
@@ -14,8 +15,13 @@ export function IngredientProvider({ children }) {
   const addRecipeName = (name) => {
     setRecipeName(name);
   };
+  const addRecipeId = (recipeId) => {
+    setRecipeId(recipeId);
+  };
   return (
-    <IngredientContext.Provider value={{ ingredients, addIngredients, recipeName, addRecipeName }}>
+    <IngredientContext.Provider
+      value={{ ingredients, addIngredients, recipeName, addRecipeName, recipeId, addRecipeId }}
+    >
       {children}
     </IngredientContext.Provider>
   );

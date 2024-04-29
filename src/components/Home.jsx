@@ -243,7 +243,7 @@ export function Home() {
       </Grid>
 
       <Grid container spacing={3}>
-        <h2>Rezepte die glücklich machen ...</h2>
+        <h2>Leckere Rezepte</h2>
 
         {isloading ? (
           <Box sx={{ width: "100%" }}>
