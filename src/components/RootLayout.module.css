@@ -50,3 +50,13 @@
 nav.sticky {
   height: 130px;
 }
+
+@keyframes smoothScroll {
+  0% {
+    transform: translateY(-142px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}

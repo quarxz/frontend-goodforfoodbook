@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useSnackbar } from "notistack";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import TextField, { textFieldClasses } from "@mui/material/TextField";
@@ -45,19 +46,29 @@ export function ShoppingListIngredient({
     setVisibility("visible");
   }, 1000);
 
+  const xs = useMediaQuery(theme.breakpoints.down("xs"));
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
+  const md = useMediaQuery(theme.breakpoints.down("md"));
+  const lg = useMediaQuery(theme.breakpoints.down("lg"));
+  const xl = useMediaQuery(theme.breakpoints.down("xl"));
+
   return (
     <>
       {visibility === "hidden" ? (
-        <Stack direction="row" spacing={2}>
-          <Skeleton variant="rectangular" animation="wave" width="60%" height={60} />
-          <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-          <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-        </Stack>
+        <Grid container direction="row">
+          <Grid xs={12} md={8} lg={7}>
+            <Skeleton variant="rounded" animation="wave" sx={{ width: 1, height: 60 }} />
+          </Grid>
+        </Grid>
       ) : (
         <>
-          <Stack spacing={2} direction="row">
-            <Box
+          <Grid container direction="row">
+            <Grid
+              container
               p={1.3}
+              xs={12}
+              md={8}
+              lg={7}
               pl={3}
               sx={{
                 borderColor: theme.palette.secondary.main,
@@ -76,45 +87,57 @@ export function ShoppingListIngredient({
                   borderWidth: "1px",
                   borderStyle: "solid",
                   opacity: "1",
-                  transform: "scale(1.05)",
-                  transition: "transform 0.3s ease-in-out ",
+                  // transform: "scale(1.05)",
+                  // transition: "transform 0.3s ease-in-out ",
                 },
               }}
               borderRadius={1}
-              width="60%"
-            >
-              <Stack spacing={2} direction="row">
-                <Grid container spacing={0}>
-                  <Grid width={180} pt={1}>
-                    {ingredient.name}
-                  </Grid>
+              justifyContent="space-between"
 
-                  <Grid container direction="row">
-                    <Grid width={50}>
-                      <Box textAlign="right" pr={1}>
-                        <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
-                          {ingredient.quantity}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid pt={1}>
-                      {ingredient.category === "gewuerze" || ingredient.category === "kraeuter"
-                        ? ""
-                        : ingredient.unit}
-                    </Grid>
+              // onClick={() => {
+              //   setCountElement((isElementOpen) => !isElementOpen);
+              //   setCountItem(1);
+              // }}
+            >
+              <Grid container spacing={0}>
+                <Grid width={180} pt={1}>
+                  <Typography style={{ fontFamily: "Roboto-Bold", fontSize: "1em" }}>
+                    {ingredient.name}
+                  </Typography>
+                </Grid>
+                <Grid container direction="row">
+                  <Grid width={50}>
+                    <Box textAlign="right" pr={1}>
+                      <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                        {ingredient.quantity}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid pt={1}>
+                    {ingredient.category === "gewuerze" || ingredient.category === "kraeuter"
+                      ? ""
+                      : ingredient.unit}
                   </Grid>
                 </Grid>
-              </Stack>
-            </Box>
-            <Stack spacing={2} direction="row">
-              <Box pt={1.7}>
-                <Tooltip title="Zutat bearbeiten" placement="top">
+              </Grid>
+
+              <Grid container>
+                <Stack direction="row" spacing={1}>
                   <Button
                     onClick={() => {
                       setCountElement((isElementOpen) => !isElementOpen);
                       setCountItem(1);
                     }}
-                    variant="outlined"
+                    sx={
+                      theme.palette.mode === "dark"
+                        ? {
+                            color: theme.palette.getContrastText(grey[500]),
+                            // borderColor: theme.palette.getContrastText(grey[500]),
+                          }
+                        : ""
+                    }
+                    // variant="contained"
+                    variant={countElement ? "contained" : "outlined"}
                     size="small"
                   >
                     {countElement ? (
@@ -123,8 +146,31 @@ export function ShoppingListIngredient({
                       <EditSharpIcon fontSize="small" />
                     )}
                   </Button>
-                </Tooltip>
-              </Box>
+                  <Button
+                    onClick={() => {
+                      if (countItem === ingredient.quantity) {
+                        onOpenDialog(ingredient._id, countItem, true);
+                      } else {
+                        onDeleteIngredientFromShoppingList(ingredient._id, countItem);
+                      }
+                    }}
+                    sx={
+                      theme.palette.mode === "dark"
+                        ? {
+                            color: theme.palette.getContrastText(grey[500]),
+                            // borderColor: theme.palette.getContrastText(grey[500]),
+                          }
+                        : ""
+                    }
+                    variant="outlined"
+                    size="small"
+                  >
+                    <ClearSharpIcon fontSize="small" />
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+            <Grid xs={12} md={4} lg={5} pl={2} container direction="row">
               {countElement && (
                 <Box>
                   <Stack spacing={2} direction="row">
@@ -189,25 +235,8 @@ export function ShoppingListIngredient({
                   </Stack>
                 </Box>
               )}
-              <Box pt={1.7}>
-                <Tooltip title="Aus der Bestandliste löschen" placement="right-end">
-                  <Button
-                    onClick={() => {
-                      if (countItem === ingredient.quantity) {
-                        onOpenDialog(ingredient._id, countItem, true);
-                      } else {
-                        onDeleteIngredientFromShoppingList(ingredient._id, countItem);
-                      }
-                    }}
-                    variant="outlined"
-                    size="small"
-                  >
-                    <ClearSharpIcon fontSize="small" />
-                  </Button>
-                </Tooltip>
-              </Box>
-            </Stack>
-          </Stack>
+            </Grid>
+          </Grid>
         </>
       )}
     </>

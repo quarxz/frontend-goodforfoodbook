@@ -17,6 +17,8 @@ import Fade from "@mui/material/Fade";
 
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 import { lightGreen, grey, red, orange, deepOrange, green } from "@mui/material/colors";
 import SendIcon from "@mui/icons-material/Send";
@@ -36,6 +38,7 @@ export function StockListRecipeIngredient({
   const [errorMessageTextfield, setErrorMessageTextfield] = useState("");
 
   const [visibility, setVisibility] = useState("hidden");
+  const theme = useTheme();
 
   const stockWarning = (quantity) => {
     return quantity > 0 && quantity >= ingredient.stockQuantity ? true : false;
@@ -46,6 +49,12 @@ export function StockListRecipeIngredient({
   }, 2000);
 
   const MIN_LENGTH = 1;
+
+  const xs = useMediaQuery(theme.breakpoints.down("xs"));
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
+  const md = useMediaQuery(theme.breakpoints.down("md"));
+  const lg = useMediaQuery(theme.breakpoints.down("lg"));
+  const xl = useMediaQuery(theme.breakpoints.down("xl"));
 
   return (
     <>
@@ -59,11 +68,17 @@ export function StockListRecipeIngredient({
         </Stack>
       ) : (
         <> */}
-      <Stack spacing={2} direction="row">
+      <Grid container direction="row">
         {visibility === "hidden" ? (
-          <Skeleton variant="rectangular" animation="wave" width="60%" height={60} />
+          <Grid container xs={12} md={8} lg={7}>
+            <Skeleton variant="rounded" animation="wave" sx={{ width: 1, height: 60 }} />
+          </Grid>
         ) : (
-          <Box
+          <Grid
+            container
+            xs={12}
+            md={8}
+            lg={7}
             p={1.3}
             pl={3}
             sx={
@@ -79,8 +94,8 @@ export function StockListRecipeIngredient({
                         border: orange[300],
                         backgroundColor: orange[300],
                         opacity: "1",
-                        transform: "scale(1.05)",
-                        transition: "all 0.3s ease-in-out ",
+                        // transform: "scale(1.05)",
+                        // transition: "all 0.3s ease-in-out ",
                       },
                     }
                   : {
@@ -93,8 +108,8 @@ export function StockListRecipeIngredient({
                         border: lightGreen[300],
                         bgcolor: lightGreen[300],
                         opacity: "1",
-                        transform: "scale(1.05)",
-                        transition: "transform 0.3s ease-in-out ",
+                        // transform: "scale(1.05)",
+                        // transition: "transform 0.3s ease-in-out ",
                       },
                     }
                 : {
@@ -107,178 +122,178 @@ export function StockListRecipeIngredient({
                       border: deepOrange[300],
                       bgcolor: deepOrange[300],
                       opacity: "1",
-                      transform: "scale(1.05)",
-                      transition: "transform 0.3s ease-in-out ",
+                      // transform: "scale(1.05)",
+                      // transition: "transform 0.3s ease-in-out ",
                     },
                   }
             }
             borderRadius={1}
-            width="60%"
-            display="flex"
             justifyContent="space-between"
+            wrap="nowrap"
           >
-            <Box>
-              <Grid container spacing={0}>
-                <Grid width={180} pt={1}>
+            <Grid container direction="row" wrap="nowrap">
+              <Grid width={120} pt={1}>
+                <Typography style={{ fontFamily: "Roboto-Bold", fontSize: "1em" }}>
                   {ingredient.name}
-                </Grid>
-                {ingredient.category === "gewuerze" || ingredient.category === "kraeuter" ? (
-                  ""
-                ) : (
-                  <>
-                    <Grid width={10} pt={1}>
-                      {isInStock ? "Bestand:" : ""}
-                    </Grid>
-                    <Grid width={120}>
-                      {isInStock ? (
-                        <Box textAlign="right" pr={1}>
-                          <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
-                            {ingredient.stockQuantity}
-                          </Typography>
-                        </Box>
-                      ) : (
-                        <Box textAlign="right" pr={1}>
-                          <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
-                            {ingredient.recipeQuantity}
-                          </Typography>
-                        </Box>
-                      )}
-                    </Grid>
-                  </>
-                )}
+                </Typography>
+              </Grid>
+              {ingredient.category === "gewuerze" || ingredient.category === "kraeuter" ? (
+                <Grid height={40}></Grid>
+              ) : (
+                <>
+                  <Grid width={10} pt={1}>
+                    {isInStock ? "Bestand:" : ""}
+                  </Grid>
+                  <Grid width={120}>
+                    {isInStock ? (
+                      <Box textAlign="right" pr={1}>
+                        <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                          {ingredient.stockQuantity}
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box textAlign="right" pr={1}>
+                        <Typography style={{ fontFamily: "Roboto-Black", fontSize: "1.5em" }}>
+                          {ingredient.recipeQuantity}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Grid>
+                </>
+              )}
+              <Grid pt={1} width={130}>
+                {ingredient.unit}
+              </Grid>
+            </Grid>
 
-                <Grid width={180} pt={1}>
-                  {ingredient.unit}
-                </Grid>
+            <Grid container direction="row" pr={2}>
+              <Grid minWidth={70}>
+                {ingredient.shoppingListQuantity === null ? (
+                  <Typography
+                    textAlign="right"
+                    style={{ fontFamily: "Roboto-Black", fontSize: "1.5em", opacity: 0.5 }}
+                  >
+                    {isInStock && ingredient.recipeQuantity > 0
+                      ? "- " + ingredient.recipeQuantity
+                      : ""}
+                    {!isInStock && ingredient.recipeQuantity > 0
+                      ? "+ " + ingredient.recipeQuantity
+                      : ""}
+                  </Typography>
+                ) : (
+                  ""
+                )}
               </Grid>
-            </Box>
-            <Box pt={1}>
-              <Grid container>
-                <Grid width={50}>
-                  {isInStock && ingredient.recipeQuantity > 0
-                    ? "- " + ingredient.recipeQuantity
-                    : ""}
-                  {!isInStock && ingredient.recipeQuantity > 0
-                    ? "+ " + ingredient.recipeQuantity
-                    : ""}
-                </Grid>
-                <Grid width={50}>
-                  {isInStock && stockWarning(ingredient.recipeQuantity) ? (
-                    <ProductionQuantityLimitsSharpIcon fontSize="small" />
-                  ) : (
-                    ""
-                  )}
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         )}
+
         {isInStock && stockWarning(ingredient.recipeQuantity) && (
           <>
             {visibility === "hidden" ? (
-              <Stack direction="row" spacing={2}>
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="circular" width={60} height={60} />
-              </Stack>
+              <Grid>
+                <Grid xs={12} md={8} lg={7}>
+                  <Skeleton variant="rounded" animation="wave" sx={{ width: 1, height: 60 }} />
+                </Grid>
+              </Grid>
             ) : (
               <>
-                <Stack spacing={2} direction="row">
-                  <Box pt={1.3}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        countItem > 1 && setCountItem((prev) => prev - 1);
-                      }}
-                    >
-                      <RemoveSharpIcon />
-                    </Button>
-                  </Box>
-                  <Box width={60} pt={1}>
-                    <TextField
-                      error={errorMessageTextfield.length !== 0}
-                      id="outlined-basic"
-                      variant="outlined"
-                      size="small"
-                      inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
-                      value={countItem}
-                      onChange={(event) => {
-                        const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
-                        console.log(event.target.value.length);
-                        if (isNaN(parseInt(onlyNumb))) {
-                          setCountItem(0);
-                        } else {
-                          setCountItem(parseInt(onlyNumb));
-                        }
-
-                        // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
-
-                        event.target.value === ""
-                          ? setErrorMessageTextfield("Error!")
-                          : setErrorMessageTextfield("");
-                      }}
-                      label={errorMessageTextfield}
-                    />
-                  </Box>
-                  <Box pt={1.3}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        countItem > 0 && setCountItem((prev) => prev + 1);
-                      }}
-                    >
-                      <AddSharpIcon />
-                    </Button>
-                  </Box>
-
-                  <Box pt={1.3}>
-                    <Tooltip
-                      title="Der Einkaufsliste hinzufügen"
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 700 }}
-                      placement="top"
-                    >
+                <Grid xs={12} md={4} lg={5} pl={2}>
+                  <Stack spacing={2} direction="row">
+                    <Box pt={1.3}>
                       <Button
-                        onClick={() => {
-                          onAddIngredientToShoppingList(ingredient._id, countItem);
-                        }}
                         variant="outlined"
+                        onClick={() => {
+                          countItem > 1 && setCountItem((prev) => prev - 1);
+                        }}
                       >
-                        <SendIcon />
+                        <RemoveSharpIcon />
                       </Button>
-                    </Tooltip>
-                  </Box>
-                  {ingredient.shoppingListQuantity !== null && (
-                    <Box zIndex={1}>
+                    </Box>
+                    <Box width={60} pt={1}>
+                      <TextField
+                        error={errorMessageTextfield.length !== 0}
+                        id="outlined-basic"
+                        variant="outlined"
+                        size="small"
+                        inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
+                        value={countItem}
+                        onChange={(event) => {
+                          const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
+                          console.log(event.target.value.length);
+                          if (isNaN(parseInt(onlyNumb))) {
+                            setCountItem(0);
+                          } else {
+                            setCountItem(parseInt(onlyNumb));
+                          }
+
+                          // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
+
+                          event.target.value === ""
+                            ? setErrorMessageTextfield("Error!")
+                            : setErrorMessageTextfield("");
+                        }}
+                        label={errorMessageTextfield}
+                      />
+                    </Box>
+                    <Box pt={1.3}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          countItem > 0 && setCountItem((prev) => prev + 1);
+                        }}
+                      >
+                        <AddSharpIcon />
+                      </Button>
+                    </Box>
+
+                    <Box pt={1.3}>
                       <Tooltip
-                        title="Aus Shopping List entfernen"
+                        title="Der Einkaufsliste hinzufügen"
                         TransitionComponent={Fade}
                         TransitionProps={{ timeout: 700 }}
-                        placement="left"
+                        placement="top"
                       >
-                        <Fab
-                          aria-label="delete"
-                          sx={{
-                            "&:hover": {
-                              bgcolor: red[600],
-                            },
-                            bgcolor: lightGreen[500],
-                          }}
+                        <Button
                           onClick={() => {
-                            onDeleteIngredientFromShoppingList(
-                              ingredient._id,
-                              ingredient.shoppingListQuantity
-                            );
+                            onAddIngredientToShoppingList(ingredient._id, countItem);
                           }}
+                          variant="outlined"
                         >
-                          {ingredient.shoppingListQuantity}
-                        </Fab>
+                          <SendIcon />
+                        </Button>
                       </Tooltip>
                     </Box>
-                  )}
-                </Stack>
+                    {ingredient.shoppingListQuantity !== null && (
+                      <Box zIndex={1}>
+                        <Tooltip
+                          title="Aus Shopping List entfernen"
+                          TransitionComponent={Fade}
+                          TransitionProps={{ timeout: 700 }}
+                          placement="left"
+                        >
+                          <Fab
+                            aria-label="delete"
+                            sx={{
+                              "&:hover": {
+                                bgcolor: red[600],
+                              },
+                              bgcolor: lightGreen[500],
+                            }}
+                            onClick={() => {
+                              onDeleteIngredientFromShoppingList(
+                                ingredient._id,
+                                ingredient.shoppingListQuantity
+                              );
+                            }}
+                          >
+                            {ingredient.shoppingListQuantity}
+                          </Fab>
+                        </Tooltip>
+                      </Box>
+                    )}
+                  </Stack>
+                </Grid>
               </>
             )}
           </>
@@ -286,113 +301,113 @@ export function StockListRecipeIngredient({
         {!isInStock && (
           <>
             {visibility === "hidden" ? (
-              <Stack direction="row" spacing={2}>
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="rectangular" animation="wave" width={60} height={60} />
-                <Skeleton variant="circular" width={60} height={60} />
-              </Stack>
+              <Grid>
+                <Grid xs={12} md={8} lg={7}>
+                  <Skeleton variant="rounded" animation="wave" sx={{ width: 1, height: 60 }} />
+                </Grid>
+              </Grid>
             ) : (
               <>
-                <Stack spacing={2} direction="row">
-                  <Box pt={1.3}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        countItem > 1 && setCountItem((prev) => prev - 1);
-                      }}
-                    >
-                      <RemoveSharpIcon />
-                    </Button>
-                  </Box>
-                  <Box width={60} pt={1}>
-                    <TextField
-                      error={errorMessageTextfield.length !== 0}
-                      id="outlined-basic"
-                      variant="outlined"
-                      size="small"
-                      inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
-                      value={countItem}
-                      onChange={(event) => {
-                        const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
-                        console.log(event.target.value.length);
-                        if (isNaN(parseInt(onlyNumb))) {
-                          setCountItem(0);
-                        } else {
-                          setCountItem(parseInt(onlyNumb));
-                        }
-
-                        // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
-
-                        event.target.value === ""
-                          ? setErrorMessageTextfield("Error!")
-                          : setErrorMessageTextfield("");
-                      }}
-                      label={errorMessageTextfield}
-                    />
-                  </Box>
-                  <Box pt={1.3}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        countItem > 0 && setCountItem((prev) => prev + 1);
-                      }}
-                    >
-                      <AddSharpIcon />
-                    </Button>
-                  </Box>
-                  <Box pt={1.3}>
-                    <Tooltip
-                      title="Der Einkaufsliste hinzufügen"
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 700 }}
-                      placement="top"
-                    >
+                <Grid xs={12} md={4} lg={5} pl={2}>
+                  <Stack spacing={2} direction="row">
+                    <Box pt={1.3}>
                       <Button
-                        onClick={() => {
-                          onAddIngredientToShoppingList(ingredient._id, countItem);
-                        }}
                         variant="outlined"
+                        onClick={() => {
+                          countItem > 1 && setCountItem((prev) => prev - 1);
+                        }}
                       >
-                        <SendIcon />
+                        <RemoveSharpIcon />
                       </Button>
-                    </Tooltip>
-                  </Box>
-                  {ingredient.shoppingListQuantity !== null && (
-                    <Box zIndex={1}>
+                    </Box>
+                    <Box width={60} pt={1}>
+                      <TextField
+                        error={errorMessageTextfield.length !== 0}
+                        id="outlined-basic"
+                        variant="outlined"
+                        size="small"
+                        inputProps={{ min: 1, style: { textAlign: "right" }, maxLength: 3 }}
+                        value={countItem}
+                        onChange={(event) => {
+                          const onlyNumb = event.target.value.replace(/[^0-9]/g, "0");
+                          console.log(event.target.value.length);
+                          if (isNaN(parseInt(onlyNumb))) {
+                            setCountItem(0);
+                          } else {
+                            setCountItem(parseInt(onlyNumb));
+                          }
+
+                          // event.target.value === 0 ? setCountItem(0) : setCountItem(onlyNumb);
+
+                          event.target.value === ""
+                            ? setErrorMessageTextfield("Error!")
+                            : setErrorMessageTextfield("");
+                        }}
+                        label={errorMessageTextfield}
+                      />
+                    </Box>
+                    <Box pt={1.3}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          countItem > 0 && setCountItem((prev) => prev + 1);
+                        }}
+                      >
+                        <AddSharpIcon />
+                      </Button>
+                    </Box>
+                    <Box pt={1.3}>
                       <Tooltip
-                        title="Aus Shopping List entfernen"
+                        title="Der Einkaufsliste hinzufügen"
                         TransitionComponent={Fade}
                         TransitionProps={{ timeout: 700 }}
-                        placement="left"
+                        placement="top"
                       >
-                        <Fab
-                          aria-label="delete"
-                          sx={{
-                            "&:hover": {
-                              bgcolor: red[600],
-                            },
-                            bgcolor: lightGreen[500],
-                          }}
+                        <Button
                           onClick={() => {
-                            onDeleteIngredientFromShoppingList(
-                              ingredient._id,
-                              ingredient.shoppingListQuantity
-                            );
+                            onAddIngredientToShoppingList(ingredient._id, countItem);
                           }}
+                          variant="outlined"
                         >
-                          {ingredient.shoppingListQuantity}
-                        </Fab>
+                          <SendIcon />
+                        </Button>
                       </Tooltip>
                     </Box>
-                  )}
-                </Stack>
+                    {ingredient.shoppingListQuantity !== null && (
+                      <Box zIndex={1}>
+                        <Tooltip
+                          title="Aus Shopping List entfernen"
+                          TransitionComponent={Fade}
+                          TransitionProps={{ timeout: 700 }}
+                          placement="left"
+                        >
+                          <Fab
+                            aria-label="delete"
+                            sx={{
+                              "&:hover": {
+                                bgcolor: red[600],
+                              },
+                              bgcolor: lightGreen[500],
+                            }}
+                            onClick={() => {
+                              onDeleteIngredientFromShoppingList(
+                                ingredient._id,
+                                ingredient.shoppingListQuantity
+                              );
+                            }}
+                          >
+                            {ingredient.shoppingListQuantity}
+                          </Fab>
+                        </Tooltip>
+                      </Box>
+                    )}
+                  </Stack>
+                </Grid>
               </>
             )}
           </>
         )}
-      </Stack>
+      </Grid>
     </>
   );
 }

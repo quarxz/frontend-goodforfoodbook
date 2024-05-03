@@ -6,7 +6,13 @@ import {
   Text,
   View,
   StyleSheet,
+  Font,
 } from "@react-pdf/renderer";
+
+import source from "../assets/fonts/Grape_Nuts/Grape_Nuts/GrapeNuts-Regular.ttf";
+
+// Register font
+Font.register({ family: "GrapeNuts", src: source });
 
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Box, Button, Stack } from "@mui/material";
@@ -30,17 +36,19 @@ const styles = StyleSheet.create({
   title_h1: {
     fontSize: 21,
     lineHeight: 3,
+    fontFamily: "GrapeNuts",
   },
   title_h2: {
     fontSize: 14,
     lineHeight: 2.5,
+    fontFamily: "GrapeNuts",
   },
   item: {
     fontSize: 12,
     lineHeight: 1.5,
     flexDirection: "row",
-
     width: "90%",
+    fontFamily: "GrapeNuts",
   },
 });
 

@@ -263,6 +263,7 @@ export function RootLayout() {
                 height: 170,
               }}
               className={`${sticky.isSticky ? styles.sticky : ""}`}
+              ref={headerRef}
               // style={{ backgroundColor: theme.palette.secondary.dark }}
               // style={{ backgroundColor: theme.palette.primary.main }}
               style={
@@ -270,11 +271,9 @@ export function RootLayout() {
                   ? { backgroundColor: grey[900] }
                   : { backgroundColor: teal[200] }
               }
-              ref={headerRef}
             >
               <Box
                 className={styles.innerNavBox}
-                style={{ marginTop: 0 }}
                 sx={{
                   margin: "0 auto",
                   padding: "10px 0 0 0",
@@ -286,7 +285,9 @@ export function RootLayout() {
               >
                 <Box component="div" className={styles.logo}>
                   <NavLink to="/">
-                    <Typography sx={{ textShadow: " 1px 1px 10px #777;" }}>
+                    <Typography
+                    // sx={{ textShadow: " 1px 1px 10px #777;" }}
+                    >
                       Good-for-FoodBook
                     </Typography>
                   </NavLink>
