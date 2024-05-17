@@ -15,7 +15,6 @@ import { StockListIngredient } from "./StockListIngredient";
 
 import { Box, Button, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import Fab from "@mui/material/Fab";
 
 import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
 import ArrowBackIosNewSharpIcon from "@mui/icons-material/ArrowBackIosNewSharp";
