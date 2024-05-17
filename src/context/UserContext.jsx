@@ -1,14 +1,18 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState } from "react";
 import axios from "axios";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
+  
 
   const [isloading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  async function login(email, password) {
+  
+
+  async function login(email) {
     setUser({ email });
     try {
       setIsLoading(true);
@@ -18,10 +22,11 @@ export function UserProvider({ children }) {
       console.log(response.data);
       console.log(response.status);
       setUser(response.data);
-      setUrl(url);
+      // setUrl(url);
     } catch (err) {
       setIsError(true);
       err && console.log(err);
+      console.log(isError)
     } finally {
       setIsLoading(false);
       console.log(isloading);
