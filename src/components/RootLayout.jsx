@@ -1,5 +1,5 @@
 import styles from "./RootLayout.module.css";
-import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import {
@@ -9,13 +9,12 @@ import {
   useMemo,
   createContext,
   useRef,
-  useCallback,
 } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-import { MessageContext } from "../context/MessageContext";
-import { SnackbarProvider, useSnackbar } from "notistack";
+
+import { SnackbarProvider } from "notistack";
 
 import Drawer from "@mui/material/Drawer";
 import { LoginDialog } from "./LoginDialog";
@@ -26,15 +25,14 @@ import Container from "@mui/material/Box";
 import Typography from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+
 import IconButton from "@mui/material/IconButton";
 
-import { RecipesFilter } from "./RecipesFilter";
+
 import { UserListsNav } from "./UserListsNav";
 import { UserFabNav } from "./UserFabNav";
 import Grid from "@mui/material/Unstable_Grid2";
-import Paper from "@mui/material/Paper";
+
 
 /**
  * https://mui.com/material-ui/customization/color/
@@ -42,23 +40,16 @@ import Paper from "@mui/material/Paper";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import {
-  purple,
   blue,
-  red,
   pink,
-  amber,
   grey,
-  lightBlue,
-  deepOrange,
-  cyan,
   teal,
 } from "@mui/material/colors";
 
 import MenuSharpIcon from "@mui/icons-material/MenuSharp";
 import KeyboardArrowUpSharpIcon from "@mui/icons-material/KeyboardArrowUpSharp";
 // import ArrowCircleUpSharpIcon from "@mui/icons-material/ArrowCircleUpSharp";
-import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
-import ShoppingCartCheckoutSharpIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
+
 
 import { UserTopNav } from "./UserTopNav";
 import { Footer } from "./Footer";
@@ -114,10 +105,10 @@ export function RootLayout() {
   }, []);
   /** */
 
-  const [userTheme, setUserTheme] = useState();
+ 
   const { user, login } = useContext(UserContext);
 
-  const { message } = useContext(MessageContext);
+ 
 
   let prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -277,7 +268,7 @@ export function RootLayout() {
                 sx={{
                   margin: "0 auto",
                   padding: "10px 0 0 0",
-                  maxWidth: "100%", // Default maxWidth for all breakpoints
+                  // maxWidth: "100%",
                   maxWidth: { xs: "640px", sm: "960px", md: "960px", lg: "1200px", xl: "1500px" },
                   display: "flex",
                   justifyContent: "space-between",
@@ -358,7 +349,7 @@ export function RootLayout() {
             <Box
               component="main"
               sx={{
-                maxWidth: "100%",
+                // maxWidth: "100%",
                 maxWidth: { xs: "640px", sm: "960px", md: "960px", lg: "1200px", xl: "1500px" },
               }}
             >
